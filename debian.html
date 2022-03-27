@@ -5,29 +5,31 @@
     <meta charset="utf-8">
   </head>
   <body>
-su -
+    <p>su -</p>
 
-nano /etc/apt/sources.list
+    <p>nano /etc/apt/sources.list</p>
 
-########################################################################################
-#                                 Repositórios Oficiais                                #
-########################################################################################
-
-deb http://deb.debian.org/debian/ bullseye main contrib non-free
-# deb-src http://deb.debian.org/debian/ bullseye main contrib non-free
-
-deb http://deb.debian.org/debian-security/ bullseye-security main contrib non-free
-# deb-src http://deb.debian.org/debian-security/ bullseye-security main contrib non-free
-
-deb http://deb.debian.org/debian bullseye-updates main contrib non-free
-# deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free
-
-## Debian Bullseye Backports
-# deb http://deb.debian.org/debian bullseye-backports main contrib non-free
-# deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free
-
-########################################################################################
-
+    <p>########################################################################################</p>
+    <p>#                                 Repositórios Oficiais                                #</p>
+    <p>########################################################################################</p>
+    <p></p>
+    <p>deb http://deb.debian.org/debian/ bullseye main contrib non-free</p>
+    <p># deb-src http://deb.debian.org/debian/ bullseye main contrib non-free</p>
+    <p></p>
+    <p>deb http://deb.debian.org/debian-security/ bullseye-security main contrib non-free</p>
+    <p># deb-src http://deb.debian.org/debian-security/ bullseye-security main contrib non-free</p>
+    <p></p>
+    <p>deb http://deb.debian.org/debian bullseye-updates main contrib non-free</p>
+    <p># deb-src http://deb.debian.org/debian bullseye-updates main contrib non-free</p>
+    <p></p>
+    <p>deb https://www.deb-multimedia.org bullseye main non-free</p>
+    <p></p>
+    <p>## Debian Bullseye Backports</p>
+    <p># deb http://deb.debian.org/debian bullseye-backports main contrib non-free</p>
+    <p># deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free</p>
+    <p></p>
+    <p>########################################################################################</p>
+    <p></p>
 apt update && apt upgrade
 
 apt install debian-goodies
@@ -57,9 +59,6 @@ sudo apt install flatpak
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 sudo apt install faad ffmpeg gstreamer1.0-fdkaac gstreamer1.0-libav gstreamer1.0-vaapi gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly lame libavcodec-extra libavcodec-extra58 libavdevice58 libgstreamer1.0-0 sox twolame vorbis-tools
-
-#Copie e cole a seguinte linha ao final do arquivo sources.list ## nano /etc/apt/sources.list
-deb https://www.deb-multimedia.org bullseye main non-free
 
 #Baixe este arquivo
 wget http://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
