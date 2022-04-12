@@ -19,6 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Hacerfak
+author: Eder Gross Cichelero
 email: hacerfak4@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Meu blog pessoal para compartilhar conhecimento!
@@ -26,7 +27,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://hacerfak.com.br" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 github_username:  Hacerfak
-steam_username: Hacerfak
+steam: Hacerfak
 
 # Build settings
 theme: minima
