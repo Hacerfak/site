@@ -4,3 +4,5 @@
 
 layout: home
 ---
+
+Aqui é meu arquivo de descobertas e sua finalidade é compartilhar conhecimento!
