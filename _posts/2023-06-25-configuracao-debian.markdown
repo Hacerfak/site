@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Configurações pós instalação do debian"
-date:   2023-06-25 22:30:00 -0300
+date:   2023-06-25 17:00:00 -0300
 categories: debian
 ---
 
