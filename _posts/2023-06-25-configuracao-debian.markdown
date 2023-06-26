@@ -22,3 +22,7 @@ Dito isso é importante lembrar que pode ser que algumas das configurações nã
 Quanto a instalação do Debian, ela é feita de forma limpa sem instalar nenhum tipo de pacote ou utilitário adicional pelo `tasksel` que é executado durante a instalação.
 
 Basicamente ao finalizar a instalação eu tenho um sistema com 999 pacotes instalados.
+
+_imagem_
+
+Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: `apt list –-installed | wc -l` ou `sudo apt list –-installed | wc -l` caso não seja superusuário.
