@@ -82,7 +82,7 @@ Onde temos as seguintes seções:
   + **main** - Sendo o componente principal da distribuição, é nele onde estão os kerneis linux, por exemplo. Consiste em pacotes [DFSG](https://www.debian.org/social_contract.pt.html)-compliant, que não dependem de software fora desta área para operar. Estes são os únicos pacotes considerados parte da distribuição Debian.
   + **contrib** - Pacotes contêm software compatível com DFSG, mas têm dependências não principais (possivelmente empacotado para Debian em non-free).
   + **non-free** - Contém software que não está em conformidade com o DFSG.
-  + **non-free-firmware** - Contém firmwares de hardwares que não estão em conformidade com o DFSG.
+  + **non-free-firmware** - Contém firmwares/drivers que não estão em conformidade com o DFSG.
 
 Nessa instalação, vou utilizar a distribuição **unstable** ou **sid** para obter os pacotes mais recentes que ainda estão em fase de testes.
 
