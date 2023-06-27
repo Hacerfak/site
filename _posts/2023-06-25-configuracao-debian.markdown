@@ -24,15 +24,13 @@ Quanto a instalação do Debian, ela é feita a partir de uma mídia de instala�
 
 Basicamente ao finalizar a instalação eu tenho um sistema com 222 pacotes instalados.
 
-_imagem_
-
 Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: `apt list –-installed | wc -l` ou `sudo apt list –-installed | wc -l` caso não seja superusuário.
 
-# Configuração Inicial
+# Configuração Inicial #
 
-## O pacote SUDO
+## O pacote SUDO ##
 
-Como primeiro passo eu instalo o pacote [sudo](https://wiki.debian.org/sudo) para conseguir executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no usuário _root_.
+Como primeiro passo eu instalo o pacote [sudo](https://wiki.debian.org/sudo) para conseguir executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no usuário _root_. Depois é só executar os comandos:
 
 1. `apt install sudo` - para instalar o pacote.
 2. `adduser usuário sudo` - para adicionar o usuário ao grupo _sudo_, e assim ter acesso aos recursos. Onde "usuário" é o seu login.
