@@ -79,7 +79,7 @@ Onde temos as seguintes seções:
   + **non-free** - Contém software que não está em conformidade com o DFSG.
   + **non-free-firmware** - Contém firmwares/drivers que não estão em conformidade com o DFSG.
 
-Nessa instalação, vou utilizar a distribuição **unstable** ou **sid** para obter os pacotes mais recentes que ainda estão em fase de testes.
+Nessa instalação, vou utilizar a distribuição **unstable** ou **sid** para obter os pacotes mais recentes que ainda estão em fase de testes. Você pode obter mais informações sobre essa distribuição acessando [aqui](https://www.debian.org/releases/sid/).
 
 A cópia do meu **sources.list** pode ser obtida [aqui](/assets/sources.txt).
 
