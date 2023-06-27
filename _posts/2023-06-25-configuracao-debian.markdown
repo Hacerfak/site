@@ -5,7 +5,7 @@ date:   2023-06-25 17:00:00 -0300
 categories: debian
 ---
 
-Nesse post, vou mostrar quais são as configurações e instalções que faço após realizar a instalação do debian.
+Nesse post, vou mostrar quais são as configurações que faço após realizar a instalação do debian.
 
 # A máquina...
 
@@ -60,3 +60,40 @@ Para visualizar seu conteúdo, podemos usar o comando `cat /etc/apt/sources.list
 Para editá-lo, devemos usar o comando sudo para ter privilégios de superusuário e assim poder salvar o arquivo depois, senão temos apenas o acesso a leitura.
 
 Como editor de texto, eu gosto de utilizar o [nano](https://packages.debian.org/bookworm/nano). Então para editar o arquivo, usamos:
+
+`sudo nano /etc/apt/sources.list`
+
+A sintaxe para configuração os repositórios basicamente é:
+
+  deb http://site.example.com/debian distribution component1 component2 component3
+  deb-src http://site.example.com/debian distribution component1 component2 component3
+
+ou
+
+  deb http://deb.debian.org/debian/ bookworm main non-free-firmware
+  deb-src http://deb.debian.org/debian/ bookworm main non-free-firmware
+
+Onde temos as seguintes seções:
+
++ **Tipo de arquivo** - Aqui é o início da sintaxe, onde podemos ter **deb** para arquivos binários ou **deb-src** para o código fonte.
++ **URL do espelho** - Aqui é onde se informa a URL do espelho junto com seu protocolo.
++ **Distribuição** - Nesse ponto é onde especificamos qual é a distruição que queremos utilizar ao pegar os pacotes ou códigos no repositório, no nosso caso o padrão vem como **bookworm**, onde esse é o nome da distribuição do debian 12. Os nomes das distribuições do debian são inspiradas no filme _Toy Story_.
++ **Componentes** - No final da configuração, atribuímos os componentes que vamos utilizar daquele repositório, onde temos
+  + **main** - Sendo o componente principal da distribuição, é nele onde estão os kerneis linux, por exemplo. Consiste em pacotes [DFSG](https://www.debian.org/social_contract.pt.html)-compliant, que não dependem de software fora desta área para operar. Estes são os únicos pacotes considerados parte da distribuição Debian.
+  + **contrib** - Pacotes contêm software compatível com DFSG, mas têm dependências não principais (possivelmente empacotado para Debian em non-free).
+  + **non-free** - Contém software que não está em conformidade com o DFSG.
+  + **non-free-firmware** - Contém firmwares de hardwares que não estão em conformidade com o DFSG.
+
+Nessa instalação, vou utilizar a distribuição **unstable** ou **sid** para obter os pacotes mais recentes que ainda estão em fase de testes.
+
+A cópia do meu **sources.list** pode ser obtida [aqui](/assets/sources.txt).
+
+Recomendo utilizar todos os espelhos do Brasil, mas também é possível utilizar apenas um deles, ai vai conforme sua necessidade. Também é importante testar qual deles é mais rápido na sua região.
+
+Você pode obter mais informações sobre a configuração do sources.list [aqui](https://wiki.debian.org/pt_BR/SourcesList) e sobre as distribuições [aqui](https://www.debian.org/releases/).
+
+Ao editar o arquivo através do nano, basta pressionar **Ctrl + O** para salvar e **Ctrl + X** para sair do modo de edição do arquivo.
+
+Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo apt update` e após a atualização, podemos atualizar o sistema da distribuição _bookworm_ para _sid_ usando o comando `sudo apt dist-upgrade`
+
+Após finalizar a atualização, temos o debian na distribuição unstable ou sid.
