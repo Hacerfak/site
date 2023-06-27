@@ -12,9 +12,9 @@ Primeiro, é importante ressaltar que essa instalação será feita em uma máqu
 - **CPU:** Ryzen 5 5600x
 - **MB:** Asus TUF Gaming X570-PLUS/BR
   - *Áudio:* ALC S1200A (ALC1200)
-  - *LAN:* Realtek L8200A (RTL8111/RTL8168)
+  - *LAN:* Realtek L8200A (RTL8111/8168/8411)
 - **GPU:** RTX 3070
-- **Wi-Fi/BT:** Intel AX210
+- **Wi-Fi/BT:** Intel Wi-Fi 6 (AX210/AX211/AX411) 160MHz
 
 Dito isso é importante lembrar que pode ser que algumas das configurações não se apliquem a qualquer instalação do Debian, pois isso varia muito conforme o hardware onde o sistema foi instalado.
 
