@@ -22,7 +22,7 @@ Dito isso é importante lembrar que pode ser que algumas das configurações nã
 
 Quanto a instalação do Debian, ela é feita a partir de uma mídia de instalação do tipo [netinst](https://www.debian.org/CD/netinst/), ou seja, uma mídia de instalação mínima que depende de uma conexão com a internet para baixar os pacotesdo sistema. Além disso a instalação é feita de forma limpa, sem instalar nenhum tipo de pacote ou utilitário adicional pelo `tasksel` que é executado durante a instalação.
 
-Basicamente ao finalizar a instalação eu tenho um sistema com _222_ pacotes instalados.
+Basicamente ao finalizar a instalação eu tenho um sistema com **222** pacotes instalados.
 
 Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: `apt list –-installed | wc -l` ou `sudo apt list –-installed | wc -l` caso não seja superusuário.
 
