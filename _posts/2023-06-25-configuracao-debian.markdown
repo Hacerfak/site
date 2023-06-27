@@ -65,13 +65,13 @@ Como editor de texto, eu gosto de utilizar o [nano](https://packages.debian.org/
 
 A sintaxe para configuração os repositórios basicamente é:
 
-  deb http://site.example.com/debian distribution component1 component2 component3
-  deb-src http://site.example.com/debian distribution component1 component2 component3
+    deb http://site.example.com/debian distribution component1 component2 component3
+    deb-src http://site.example.com/debian distribution component1 component2 component3
 
 ou
 
-  deb http://deb.debian.org/debian/ bookworm main non-free-firmware
-  deb-src http://deb.debian.org/debian/ bookworm main non-free-firmware
+    deb http://deb.debian.org/debian/ bookworm main non-free-firmware
+    deb-src http://deb.debian.org/debian/ bookworm main non-free-firmware
 
 Onde temos as seguintes seções:
 
