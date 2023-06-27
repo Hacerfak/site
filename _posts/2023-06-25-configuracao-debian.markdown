@@ -32,10 +32,10 @@ Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: `ap
 
 ## O pacote SUDO
 
-Como primeiro passo eu instalo o pacote `sudo` para conseguir executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no usuário _root_.
+Como primeiro passo eu instalo o pacote [sudo](https://wiki.debian.org/sudo) para conseguir executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no usuário _root_.
 
 1. `apt install sudo` - para instalar o pacote.
-2. `adduser _usuário_ sudo` - para adicionar o usuário ao grupo _sudo_, e assim ter acesso aos recursos. Onde "usuário" é o seu login.
+2. `adduser usuário sudo` - para adicionar o usuário ao grupo _sudo_, e assim ter acesso aos recursos. Onde "usuário" é o seu login.
 
 Após é só deslogar de root com o comando _exit_
 
