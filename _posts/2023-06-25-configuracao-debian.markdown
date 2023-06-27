@@ -10,12 +10,12 @@ Nesse post, vou mostrar quais são as configurações e instalções que faço a
 Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
 
 🖥️
-**CPU:** Ryzen 5 5600x
-**MB:** Asus TUF Gaming X570-PLUS/BR
-  *Audio:* ALC S1200A (ALC1200)
-  *LAN:* Realtek L8200A (RTL8111/RTL8168)
-**GPU:** RTX 3070
-**Wi-Fi/BT:** Intel AX210
+- **CPU:** Ryzen 5 5600x
+- **MB:** Asus TUF Gaming X570-PLUS/BR
+  - *Audio:* ALC S1200A (ALC1200)
+  - *LAN:* Realtek L8200A (RTL8111/RTL8168)
+- **GPU:** RTX 3070
+- **Wi-Fi/BT:** Intel AX210
 
 Dito isso é importante lembrar que pode ser que algumas das configurações não se apliquem a qualquer instalação do Debian, pois isso varia muito conforme o hardware onde o sistema foi instalado.
 
