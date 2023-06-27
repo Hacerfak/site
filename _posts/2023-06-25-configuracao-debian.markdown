@@ -68,17 +68,12 @@ A sintaxe para configuração os repositórios basicamente é:
     deb http://site.example.com/debian distribution component1 component2 component3
     deb-src http://site.example.com/debian distribution component1 component2 component3
 
-ou
-
-    deb http://deb.debian.org/debian/ bookworm main non-free-firmware
-    deb-src http://deb.debian.org/debian/ bookworm main non-free-firmware
-
 Onde temos as seguintes seções:
 
 + **Tipo de arquivo** - Aqui é o início da sintaxe, onde podemos ter **deb** para arquivos binários ou **deb-src** para o código fonte.
 + **URL do espelho** - Aqui é onde se informa a URL do espelho junto com seu protocolo.
 + **Distribuição** - Nesse ponto é onde especificamos qual é a distruição que queremos utilizar ao pegar os pacotes ou códigos no repositório, no nosso caso o padrão vem como **bookworm**, onde esse é o nome da distribuição do debian 12. Os nomes das distribuições do debian são inspiradas no filme _Toy Story_.
-+ **Componentes** - No final da configuração, atribuímos os componentes que vamos utilizar daquele repositório, onde temos
++ **Componentes** - No final da configuração, atribuímos os componentes que vamos utilizar daquele repositório, onde temos:
   + **main** - Sendo o componente principal da distribuição, é nele onde estão os kerneis linux, por exemplo. Consiste em pacotes [DFSG](https://www.debian.org/social_contract.pt.html)-compliant, que não dependem de software fora desta área para operar. Estes são os únicos pacotes considerados parte da distribuição Debian.
   + **contrib** - Pacotes contêm software compatível com DFSG, mas têm dependências não principais (possivelmente empacotado para Debian em non-free).
   + **non-free** - Contém software que não está em conformidade com o DFSG.
