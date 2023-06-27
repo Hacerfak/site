@@ -94,6 +94,6 @@ Você pode obter mais informações sobre a configuração do sources.list [aqui
 
 Ao editar o arquivo através do nano, basta pressionar **Ctrl + O** para salvar e **Ctrl + X** para sair do modo de edição do arquivo.
 
-Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo apt update` e após a atualização, podemos atualizar o sistema da distribuição _bookworm_ para _sid_ usando o comando `sudo apt dist-upgrade`
+Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo apt update` e após a atualização, podemos atualizar o sistema da distribuição _bookworm_ para _sid_ usando o comando `sudo apt full-upgrade`
 
 Após finalizar a atualização, temos o debian na distribuição unstable ou sid.
