@@ -7,9 +7,8 @@ categories: debian
 
 Nesse post, vou mostrar quais são as configurações e instalções que faço após realizar a instalação do debian.
 
-Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
+Primeiro, é importante ressaltar que essa instalação será feita em uma máquina 🖥️ com as seguintes configurações:
 
-🖥️
 - **CPU:** Ryzen 5 5600x
 - **MB:** Asus TUF Gaming X570-PLUS/BR
   - *Audio:* ALC S1200A (ALC1200)
