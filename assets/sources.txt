@@ -1,0 +1,10 @@
+#------------------------------------------------------------------------------#
+#                   OFFICIAL DEBIAN REPOS                    
+#------------------------------------------------------------------------------#
+
+deb http://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
+deb http://alcateia.ufscar.br/debian/ unstable main contrib non-free non-free-firmware
+deb http://ftp.br.debian.org/debian/ unstable main contrib non-free non-free-firmware
+deb http://debian.c3sl.ufpr.br/debian/ unstable main contrib non-free non-free-firmware
+
