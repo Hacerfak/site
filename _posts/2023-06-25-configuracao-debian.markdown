@@ -7,9 +7,9 @@ categories: debian
 
 Nesse post, vou mostrar quais são as configurações que faço após realizar a instalação do debian.
 
-# A máquina...
+# A máquina 🖥️
 
-Primeiro, é importante ressaltar que essa instalação será feita em uma máquina 🖥️ com as seguintes configurações:
+Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
 
 - **CPU:** Ryzen 5 5600x
 - **MB:** Asus TUF Gaming X570-PLUS/BR
@@ -92,3 +92,95 @@ Ao editar o arquivo através do nano, basta pressionar **Ctrl + O** para salvar 
 Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo apt update` e após a atualização, podemos atualizar o sistema da distribuição _bookworm_ para _sid_ usando o comando `sudo apt full-upgrade`
 
 Após finalizar a atualização, temos o debian na distribuição unstable ou sid.
+
+# Firmwares
+
+Por padrão, agora o debian inclui os firmwares na mídia de instalação, realizando a instalação dos mesmos durante o processo de instalação. Melhorando assim a compatibilidade do sistema com o hardware da máquina e facilitando a vida do usuário. Porém isso vale a partir de agora na versão 12 do debian, versões anteriores é necessário realizar a instalação dos firmwares manualmente após a instalação do sistema.
+
+Entretanto para essa máquina o adaptador de rede LAN é uma Realtek R8168, porém no firmware padrão contido no pacote *firmware-realtek* dos repositórios, não oferece um suporte 100% para esse adaptador, fazendo com que tenhamos uma utilização mínima do adaptador, frente ao seu potencial.
+
+Por este motivo, que irei realizar a instalção de outro firmware, mantido pela comunidade e que utiliza o DKMS para recompilar o firmware a cada novo kernel instalado no sistema, isso garante que ele funcione mesmo após a atualização do kernel para um mais recente.
+
+Para instalar esse novo firmware, então rodo o comando `apt install r8168-dkms`
+
+Ele irá instalar vários outros pacotes como dependência e irá desabilitar o módulo r8169 do firmware padrão do pacote *firmware-realtek* na próxima vez que reiniciarmos a máquina.
+
+Para verificar os firmawares e módulos carregados na inicialização, podemos rodar o comando `dmesg` para ver o log da última inicialização do sistema.
+Para procurar por algo específico, podemos complementar o comnado adicionando o comando `grep`, ficando dessa forma: `dmesg | grep r8169` para verificar o módulo carregado nesse momento. Após reiniciarmos a máquina podemos pesquisar **r8168** no lugar de r8169.
+
+Agora vamos realizar a instalação do driver de vídeo da NVIDIA. No meu caso eu tenho uma RTX 3070 e ela já possui os módulos de kernel open source que a NVIDIA liberou para a comunidade, porém no meu caso vou continuar utilizando os drivers proprietários.
+
+Nesse caso a instalação em um desktop é muito simples, visto que eu só tenho essa fonte de vídeo no sistema (pois o 5600x nao possui vídeo integrado, por exemplo). Para quem tem um notebook com vídeo hibrido, essa configuração geralmente nao se aplica, sendo necessário verificar se há alguma alternativa e/ou solução.
+
+Para a minha placa, basicamente é só instalar o meta-pacote `nvidia-driver`, assim ele instalará todos os pacotes necessários para o driver.
+
+Da mesma forma como ocorre para o driver de rede, a instalação padrão do debian instala os drivers open source da nouveau. Mas realizando a instalação dos drivers da NVIDIA esse drivers são colocados em uma lista negra para não serem carregador com a incialização do sistema, deixando apenas os drivers proprietários serem carregados.
+
+Além disso, os drivers da NVIDIA também usam DKMS para compilar os módulos do kernel para cada kernel instalado no sistema e consequentemente para qualquer kernel novo a ser instalado.
+
+# Microcode e CPU Frequency Scaling
+
+Ao trabalhar com Linux, é interessante instalarmos os microcodes para nosso processador, eles são patchs de segurança e também correções para que o funcionamento e o comportamento do processador sejam conforme as especificações do fabricante.
+
+Ele atua como um "driver" do processador no kernel linux e deve ser carregado na inicialização do sistema.
+
+No debian 12, o microcode também já é instalado por padrão durante a instalação do sistema, assim como os demais drivers.
+
+A única coisa que fica de fora é o driver ACPI para controle de frequencia do processador. O debian ainda usa o legado acpi-cpufreq, mas tando a AMD como a Intel, possuem controladores próprios que aproveitam muito mais a performance e a eficiencia que o processador pode proporcionar.
+
+No meu caso eu vou instalar o driver da AMD, o `amd-pstate` que é uma módulo de kernel e também precisa ser carregado na inicialização do sistema. Esse driver se aproveita do recursos AMD CPPC (Collaborative Processor Performance Control) disponível nos processadores mais recentes da AMD, porém para habilitar ele no kernel é importante que o recurso esteja habilitado na BIOS da placa mãe.
+
+Geralmente essas opções ficam no automático, mas podem ser encontradas na BIOS em AMD CBS > NBIO > AMD CPPC
+
+Para habilitar esse módulo do kernel na incialização o modo mais fácil é indicarmos ele nos argumentos de inicialização do GRUB
+
+Para isso vamos editar o arquivo `/etc/default/grub`
+
+1. `nano /etc/default/grub`
+2. Na opção **GRUB_CMDLINE_LINUX_DEFAULT** adicionamos o comando `amd_pstate=active` no final para que ele seja carregado na inicialização do kernel.
+
+Exemplo de como fica preenchido: GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_pstate=active"
+
+Aproveitando que estamos editando o arquivo do GRUB, vamos rever algumas opções
+
+# GRUB
+
+O grub é nosso gerenciador de incialização padrão do debian. Existem outros sistemas de inicialização mas o GRUB é o mais popular até então.
+
+Além da adição do módulo da amd-pstate, há outras duas configurações que gosto de realizar.
+
+descomentar a linha **GRUB_DISABLE_OS_PROBER=false**, para fazer com que o grub reconheça qualquer outro sistema instalado na máquina, e como eu utilizo um Windows 11 em outro SSD, ele será reconhecido e uma ,inha de inicialização será criada para ele ao atualizarmos o arquivo de configuração posteriormente.
+
+Além dessa, tem também a linha **GRUB_GFXMODE** onde podemos descomentá-la e aplicar a resolução que quermos que a tela de inicialização do grub tenha. Note porém, que essa resolução nem sempre é a mesma que vamos utilizar nativamente no monitor, isso depende do driver VBE da placa de vídeo.
+
+No meu caso o driver tem suporte a resolução 4k, porém eu uso a resolução Full HD no grub, para as informações não ficarem tão pequenas kkkk.
+
+Para isso apenas configuro a linha como GRUB_GFXMODE=1920x1080
+
+Após essas edições, salvo o arquivo com Ctrl + O e depois fecho com Ctrl + X
+
+Então para atualizar o arquivo de configuração do grub, rodo o comando `update-grub`
+
+E assim vemos a atualização do arquivo ocorrendo.
+
+Nesse ponto podemos reiniciar a máquina para ver os efeitos das configuraçãoes.
+
+# Primeira reinicialização
+
+Após reinicar a máquina já podemos notar a primeira diferença, que é a resolução do terminal, aqui temos o driver na NVIDIA em ação.
+
+Ao rodarmos os comando `dmesg | grep r8168` vemos o firmware da placa de rede carregado e configurado.
+
+E ao rodar o comando  `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver` podemos ver que o driver do CPU frequency scalling carregado é o **amd_pstate_epp**
+
+Nesse ponto, temos o básico configurado, então vamos partir para o ambiente desktop.
+
+# GNOME
+
+O meu ambiente desktop preferido é de longe o gnome, acho ele muito limpo e fácil de usar. Além de ser muito versátil e bonito.
+
+Eu gosto de instalar o pacote `gnome-core` pois ele vem apenas com os pacotes essenciais, e conforme a demanda vou instalando o que necessito.
+
+Para instalar, basicamente é só rodar o comando `apt install gnome-core` e praticamente será feito um download de ~500MB
+
+Após o download e a instalação é só reiniciar a máquina e a mágica acontece.
