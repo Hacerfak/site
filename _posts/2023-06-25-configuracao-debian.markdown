@@ -186,3 +186,7 @@ Eu gosto de instalar o pacote `gnome-core` pois ele vem apenas com os pacotes es
 Para instalar, basicamente é só rodar o comando `apt install gnome-core` e praticamente será feito um download de ~500MB
 
 Após o download e a instalação é só reiniciar a máquina e a mágica acontece.
+
+**OBS:** Se por acaso o icone de rede não identificar sua rede cabeada, edite o arquivo `sudo nano /etc/NetworkManager/NetWorkManager.conf`
+
+Na seção [ifupdown] altere a opção `managed` para `true`, salve e reinicie a máquina.
