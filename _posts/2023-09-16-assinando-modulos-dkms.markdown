@@ -1,12 +1,14 @@
 ---
 layout: post
-title:  "SecureBoot - Assinando módulos automaticamente com DKMS"
+title:  "SecureBoot - Assinando módulos com DKMS"
 date:   2023-09-16 15:00:00 -0300
 categories: debian
 ---
+# Sobre o conteúdo
+
 Nesse post, vou mostrar como é fácil assinar e carregar a chave pública para a BIOS UEFI para usar na assinatura e validação dos módulos durante a incialização.
 
-# A máquina 🖥️
+## A máquina 🖥️
 
 Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
 
@@ -20,7 +22,7 @@ Primeiro, é importante ressaltar que essa instalação será feita em uma máqu
 
 **OBS:** O SecureBoot está habilitado na BIOS e o sistema foi instalado com recursos mínimos, sem uma DE e nem utilitários básicos do sistema. Você pode acompanhar o outro post sobre a instação [aqui]({% post_url 2023-06-25-configuracao-debian %}).
 
-# Pós-Instalação
+## Pós-Instalação
 
 Após ter instalado o sistema, apenas temos a tela do console para realizar login, nisso entro no usuário `root` e sigo com a instalção dos seguintes pacotes:
 
@@ -29,7 +31,7 @@ Após ter instalado o sistema, apenas temos a tela do console para realizar logi
 
 Com a instalação desses dois pacotes, você pode seguir com a instalação dos pacotes que deseja e então prosseguir.
 
-# DKMS
+## DKMS
 
 O Dynamic Kernel Module System (DKMS) ou Suporte Dinâmico de Módulo de Kernel é um framework que permite que ele recompile automaticamente todos os módulos DKMS quando uma nova versão do kernel é instalada. Isto permite manter os drivers de dispositivos fora da linha principal do kernel funcionando mesmo após uma atualização do kernel do Linux.
 
@@ -45,7 +47,7 @@ Nesse ponto podemos customizar e criar nossas próprias chaves, mas em questão 
 
 O nosso trabalho aqui será registrar a chave pública em nosso sistema UEFI. E aqui entra o `shim` e o `mokutil`.
 
-# Shim e o MOKutil
+## Shim e o MOKutil
 
 O [shim](https://packages.debian.org/bookworm/shim-signed) é um gerenciador de inicialização segura minimalista que permite verificar assinaturas de outros binários UEFI em relação ao DB/DBX de inicialização segura ou verificar um banco de dados de assinaturas integrado.
 
@@ -55,7 +57,7 @@ O [mokutil](https://packages.debian.org/bookworm/mokutil) fornece os meios para 
 
 Com esses dois, vamos poder carregar a chave pública do DKMS para nosso sistema UEFI e assim quando o sistema inicializar ele conseguirá validar os módulos assinados durante a construção no DKMS.
 
-# A inscrição da chave na BIOS UEFI
+## A inscrição da chave na BIOS UEFI
 
 As chaves padrões do DKMS ficam nesse local: `/var/lib/dkms`
 
