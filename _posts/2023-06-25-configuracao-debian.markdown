@@ -18,6 +18,8 @@ Primeiro, é importante ressaltar que essa instalação será feita em uma máqu
 - **GPU:** RTX 3070
 - **Wi-Fi/BT:** Intel Wi-Fi 6 (AX210/AX211/AX411) 160MHz
 
+**OBS:** O SecureBoot está desativado para essa instalação.
+
 Dito isso é importante lembrar que pode ser que algumas das configurações não se apliquem a qualquer instalação do Debian, pois isso varia muito conforme o hardware onde o sistema foi instalado.
 
 Quanto a instalação do Debian, ela é feita a partir de uma mídia de instalação do tipo [netinst](https://www.debian.org/CD/netinst/), ou seja, uma mídia de instalação mínima que depende de uma conexão com a internet para baixar os pacotesdo sistema. Além disso a instalação é feita de forma limpa, sem instalar nenhum tipo de pacote ou utilitário adicional pelo **tasksel** que é executado durante a instalação.
