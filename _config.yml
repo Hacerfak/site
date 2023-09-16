@@ -30,7 +30,8 @@ github_username:  Hacerfak
 
 locale: pt_BR
 
-
+webmaster_verifications:
+  google: 78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk
 
 # Build settings
 theme: minima
