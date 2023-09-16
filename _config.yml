@@ -18,15 +18,19 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Hacerfak
+title: Hacerfak Blog
 author: Eder Gross Cichelero
 email: hacerfak4@gmail.com
+tagline: Hacerfak Blog | Um blog dedicado ao conhecimento
 description: >- # this means to ignore newlines until "baseurl:"
-  Meu arquivo para compartilhar conhecimento!
+  Meu blog pessoal para compartilhar conhecimento!
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://hacerfak.com.br" # the base hostname & protocol for your site, e.g. http://example.com
-#twitter_username: jekyllrb
 github_username:  Hacerfak
+
+locale: pt_BR
+
+
 
 # Build settings
 theme: minima
