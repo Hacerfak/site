@@ -23,7 +23,10 @@ Para um passo a passo da instalação do debian como servidor, recomendo seguir 
 
 Após ter o server instalado, configurado o sources.list e rodando com SSH, então começamos os trabalhos.
 
-Lembrando que você pode acessar seu server via SSH através de qualquer terminal linux ou windows que tenham o cliente SSH habilitado. Para acessar usamos o seguinte comando: `ssh usuário@servidor -p porta` 
+Lembrando que você pode acessar seu server via SSH através de qualquer terminal linux ou windows que tenham o cliente SSH habilitado. Para acessar usamos o seguinte comando:
+~~~shell
+ssh usuário@servidor -p porta
+~~~
 
 Onde:
 - **usuário** é o usuário que você definiu durante a instalação. Lembrando que por padrão o SSH não permite conexão diretamente com o usuário **root**, você pode acessar com seu usuário normal e depois mudar para root com o comando `su -`; 
@@ -32,21 +35,35 @@ Onde:
 
 Antes de tudo vamos instalar algumas dependências, que no caso são, o próprio [server do WireGuard](https://www.wireguard.com/install/#debian-module-tools) e também vamos utilizar um utilitário mais prático de firewall, o [UFW](https://servidordebian.org/pt/buster/security/firewall/ufw).
 
-Para instalar os dois use o comando: `sudo apt install wireguard ufw`
+Para instalar os dois use o comando:
+~~~shell
+sudo apt install wireguard ufw
+~~~
 
 Ele irá instalar os dois pacotes e todas as suas dependências.
 
 ## UFW
 
 A primeira coisa que iremos fazer é permitir a conexão SSH antes de habilitar o firewall, para isso usamos o comando:
-`sudo ufw allow regra`
+~~~shell
+sudo ufw allow regra
+~~~
 
-O SSH é possui uma regra padrão que habilita a conexão para a porta padrão 22. Nesse caso usamos o comando `sudo ufw allow SSH`
+O SSH é possui uma regra padrão que habilita a conexão para a porta padrão 22. Nesse caso usamos o comando:
+~~~shell
+sudo ufw allow SSH
+~~~
 
-Caso tenha alterado a porta padrão do servidor SSH então especifique a porta e o protocolo que deseja liberar a conexão, exemplo: `sudo ufw allow 2222/tcp` assim será liberada as conexões de qualquer endereço para a porta **2222** utilizando protocolo **TCP**
+Caso tenha alterado a porta padrão do servidor SSH então especifique a porta e o protocolo que deseja liberar a conexão, exemplo:
+~~~shell
+sudo ufw allow 2222/tcp
+~~~
+assim será liberada as conexões de qualquer endereço para a porta **2222** utilizando protocolo **TCP**
 
-Após liberar as conexões para o servidor SSH podemos habilitar o UFW com o comando: `sudo ufw enable`
-
+Após liberar as conexões para o servidor SSH podemos habilitar o UFW com o comando:
+~~~shell
+sudo ufw enable
+~~~
 Ao longo do tutorial, iremos criar mais regras no firewall utilizando o UFW, mas por hora apenas liberamos o acesse ao SSH para continuar os trabalhos.
 
 ## Configurando o WireGuard-UI
@@ -57,11 +74,17 @@ Com o servidor WireGuard instalado, vamos começar a instação do WireGuard-UI,
 
 Vamos começar habilitando o IP forwarding do servidor, para que o server consiga encaminhar os pacotes para redes diferentes.
 
-Edite o arquivo `sysctl.conf` com o comando: `sudo nano /etc/sysctl.conf`
-
+Edite o arquivo `sysctl.conf` com o comando:
+~~~shell
+sudo nano /etc/sysctl.conf
+~~~
 Ao abrir o arquivo, descomente a linha `#net.ipv4.ip_forward=1` apenas removendo o **#** da frente.
 
-Após isso salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X** e rode o comando `sudo sysctl -p` para atualizar as configurações do sistema.
+Após isso salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X** e rode o comando:
+~~~shell
+sudo sysctl -p
+~~~
+para atualizar as configurações do sistema.
 
 # Configurando o UFW
 
@@ -72,10 +95,13 @@ Como eu não quero que os paineis web sejam acessados fora da rede local, poster
 Para o WireGuard-UI utilizo a porta **51821/tcp** enquanto para o servidor do WireGuard utilizo a porta **51820/udp**
 
 Então vamos criar as regras no UFW com o seguinte comando:
-
-`sudo ufw allow 51821/tcp && sudo ufw allow 51820/udp && sudo ufw allow proto udp to any port 51820`
-
-Após criar as novas regras, recarregamos o UFW com o comando: `sudo ufw reload`
+~~~shell
+sudo ufw allow 51821/tcp && sudo ufw allow 51820/udp && sudo ufw allow proto udp to any port 51820
+~~~
+Após criar as novas regras, recarregamos o UFW com o comando:
+~~~shell
+sudo ufw reload
+~~~
 
 # Baixando e configurando o WireGuard-UI
 
@@ -86,29 +112,38 @@ Primeiro passo é baixar os binários da sua arquitetura para seu servidor, para
 Primeiro acessamos a página de lançamentos do WireGuard-UI [aqui](https://github.com/ngoduykhanh/wireguard-ui/releases) e copiamos o link de download dos binários compatíveis com o nosso sistema, no nosso caso é o pacote `*-linux-amd64.tar.gz`
 
 Com o link copiado, então podemos rodar o comando de download do arquivo em nosso servidor com o wget. Exemplo:
-`wget https://github.com/ngoduykhanh/wireguard-ui/releases/download/v0.5.2/wireguard-ui-v0.5.2-linux-amd64.tar.gz`
-
+~~~shell
+wget https://github.com/ngoduykhanh/wireguard-ui/releases/download/v0.5.2/wireguard-ui-v0.5.2-linux-amd64.tar.gz
+~~~
 Isso irá baixar o arquivo para nosso diretório atual, que deve ser o **/home**
 
 Após o download, é possível verificar o arquivo no diretório com um `ls`
 
 ![Binário salvo no sistema](/assets/wireguard-ui-download.png)
 
-Agora vamos extrair o conteúdo do arquivo com o comando: `tar -xvzf  wireguard-ui-*.tar.gz`
+Agora vamos extrair o conteúdo do arquivo com o comando:
+~~~shell
+tar -xvzf  wireguard-ui-*.tar.gz
+~~~
 
 Após criamos um diretório para armazenar os binários em **/opt**
-
-`sudo mkdir /opt/wireguard-ui`
-
+~~~shell
+sudo mkdir /opt/wireguard-ui
+~~~
 Então movemos a pasta extraída para o diretório em /opt
+~~~shell
+sudo mv wireguard-ui /opt/wireguard-ui/
+~~~
 
-`sudo mv wireguard-ui /opt/wireguard-ui/`
-
-O próximo passo é criar o arquivo de configuração **.env** no diretório raiz. Para isso rodamos o comando `sudo nano /opt/wireguard-ui/.env` dessa forma o nano cria um arquivo novo assim que salvarmos a edição.
+O próximo passo é criar o arquivo de configuração **.env** no diretório raiz. Para isso rodamos o comando:
+~~~shell
+sudo nano /opt/wireguard-ui/.env
+~~~
+dessa forma o nano cria um arquivo novo assim que salvarmos a edição.
 
 Dentro desse arquivo vamos informar as seguintes linhas:
 
-~~~bash
+~~~ini
 # /opt/wireguard-ui/.env
 SESSION_SECRET=Uma senha aleatória
 WGUI_USERNAME=Seu usuário de acesso
@@ -117,14 +152,17 @@ WGUI_PASSWORD=Sua senha de acesso
 
 Exemplo:
 
-~~~bash
+~~~ini
 # /opt/wireguard-ui/.env
 SESSION_SECRET=123456789
 WGUI_USERNAME=Eder
 WGUI_PASSWORD=Eder123321
 ~~~
 
-Agora vamos confirmar qual é a interface de rede que estamos utilizando, para isso podemos rodar o comando: `ip addr ou ip route`
+Agora vamos confirmar qual é a interface de rede que estamos utilizando, para isso podemos rodar o comando:
+~~~shell
+ip addr ou ip route
+~~~
 
 Vamos considerar a interface que possui o ip estático do servidor ou então a interface padrão de rota.
 Que no meu caso é a **enp2s0**. Para você pode ser **eth0** ou qualquer outra, sempre verifique.
@@ -133,9 +171,13 @@ Com o conhecimento da interface padrão do sistema, vamos criar dois scripts par
 
 Primeiro criamos o script de pós-inicialização.
 
-Rode o comando `sudo nano /opt/wireguard-ui/postup.sh` e cole as seguintes linhas:
+Rode o comando:
+~~~shell
+sudo nano /opt/wireguard-ui/postup.sh
+~~~
+e cole as seguintes linhas:
 
-~~~bash
+~~~shell
 #!/usr/bin/bash
 # /opt/wireguard-ui/postup.sh
 ufw route allow in on wg0 out on enp2s0
@@ -146,9 +188,13 @@ iptables -t nat -I POSTROUTING -o enp2s0 -j MASQUERADE
 
 Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X**.
 
-Agora criaremos o arquivo de pós-termino do serviço, rodando o comando `sudo nano /opt/wireguard-ui/postdown.sh`. Cole as seguintes linhas:
+Agora criaremos o arquivo de pós-termino do serviço, rodando o comando:
+~~~shell
+sudo nano /opt/wireguard-ui/postdown.sh
+~~~
+e cole as seguintes linhas:
 
-~~~bash
+~~~shell
 #!/usr/bin/bash
 # /opt/wireguard-ui/postdown.sh
 ufw route delete allow in on wg0 out on enp2s0
@@ -159,7 +205,10 @@ iptables -t nat -D POSTROUTING -o enp2s0 -j MASQUERADE
 
 Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X**.
 
-Ao finalizar a criação dos dois scripts, vamos tornar eles executáveis, aplicando a seguinte regra: `sudo chmod +x /opt/wireguard-ui/post*.sh`
+Ao finalizar a criação dos dois scripts, vamos tornar eles executáveis, aplicando a seguinte regra:
+~~~shell
+sudo chmod +x /opt/wireguard-ui/post*.sh
+~~~
 
 # Criando o serviço WireGuard-UI com SystemD
 
@@ -167,9 +216,13 @@ Para conseguirmos incializar o serviço e gerenciar ele através do SystemD que 
 
 Vamos começar pelo script do serviço do WireGuard-UI.
 
-Rode o comando `sudo nano /etc/systemd/system/wireguard-ui-daemon.service` e cole as seguintes linhas:
+Rode o comando:
+~~~shell
+sudo nano /etc/systemd/system/wireguard-ui-daemon.service
+~~~
+e cole as seguintes linhas:
 
-~~~bash
+~~~ini
 [Unit]
 Description=Serviço WireGuard UI
 Wants=network-online.target
@@ -193,20 +246,32 @@ Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X**.
 
 Agora, vamos reiniciar o serviço do SystemD para atualizar a lista de serviços que ele pode gerenciar e assim carregar o novo serviço do WireGuard-UI.
 
-Rode o comando: `sudo systemctl daemon-reload && sudo systemctl start wireguard-ui-daemon.service`
+Rode o comando:
+~~~shell
+sudo systemctl daemon-reload && sudo systemctl start wireguard-ui-daemon.service
+~~~
 
-Dessa forma o sistema irá inciar o serviço do WireGuard-UI e já conseguirá visulizar ele rodando com o comando: `sudo systemctl status wireguard-ui-daemon.service`
+Dessa forma o sistema irá inciar o serviço do WireGuard-UI e já conseguirá visulizar ele rodando com o comando:
+~~~shell
+sudo systemctl status wireguard-ui-daemon.service
+~~~
 
 Por fim, vamos habilitar o serviço para ser inicializado junto com o sistema, caso ele reinicie.
-`sudo systemctl enable wireguard-ui-daemon.service`
+~~~shell
+sudo systemctl enable wireguard-ui-daemon.service
+~~~
 
 # Serviço para monitorar o WireGuard
 
 Como o WireGuard-UI cuida apenas da geração da configuração do WireGuard, você precisa de outro serviço SystemD para observar as alterações e reiniciar o serviço WireGuard quando for necessário.
 
-Para criar esse serviço rode o comando: `sudo nano /etc/systemd/system/wgui.service` e cole as seguintes linhas:
+Para criar esse serviço rode o comando:
+~~~shell
+sudo nano /etc/systemd/system/wgui.service
+~~~
+e cole as seguintes linhas:
 
-~~~bash
+~~~ini
 [Unit]
 Description=Reiniciar WireGuard
 After=network.target
@@ -219,9 +284,13 @@ ExecStart=/usr/bin/systemctl restart wg-quick@wg0.service
 RequiredBy=wgui.path
 ~~~
 
-Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X** e crie outro arquivo com o comando: `sudo nano /etc/systemd/system/wgui.path` e cole as seguintes linhas:
+Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X** e crie outro arquivo com o comando:
+~~~shell
+sudo nano /etc/systemd/system/wgui.path
+~~~
+e cole as seguintes linhas:
 
-~~~bash
+~~~ini
 [Unit]
 Description=Observar mudanças em /etc/wireguard/wg0.conf
 
@@ -235,8 +304,9 @@ WantedBy=multi-user.target
 Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X**.
 
 E para finalizar aplique esses novos serviços no SystemD com os seguintes comandos:
-
-`sudo systemctl daemon-reload && sudo systemctl enable wgui.{path,service} && sudo systemctl start wgui.{path,service}`
+~~~shell
+sudo systemctl daemon-reload && sudo systemctl enable wgui.{path,service} && sudo systemctl start wgui.{path,service}
+~~~
 
 Configuração inicial finalizada!
 
@@ -266,7 +336,12 @@ Cliue em **Save** e então acesse a página **Global Settings** e verifique os c
 
 Após verificar, clique em **Save** e então volte para a página **WireGuard Server** e clique em **Apply Config** e aguarde alguns segundos para o servidor WireGuard reiniciar.
 
-Após isso você pode rodar o comando `sudo wg show` no terminal do servidor para verificar que a interface **wg0** esta ativa e escutando na porta **51820**.
+Após isso você pode rodar o comando:
+~~~shell
+sudo wg show 
+~~~
+
+no terminal do servidor para verificar que a interface **wg0** esta ativa e escutando na porta **51820**.
 
 Ao finalizar essa etapa, agora o que resta a fazer é criar a regra de port forwarding no roteador, para que clientes de redes externas consigam acessar o servidor e assim estabelecer a conexão para o túnel e registrar os clientes no servidor para configurar os dispositivos clientes que irão usar a nossa VPN.
 
@@ -313,8 +388,7 @@ As portas utilizadas pelo Pihole são as seguintes:
 Como utilizamos o UFW para gerenciar nossas regras, segue a lista de regras para habilitar. Ative-as conforme os serviços que irá utilizar:
 
 IPv4:
-
-~~~bash
+~~~shell
 sudo ufw allow 80/tcp
 sudo ufw allow 53/tcp
 sudo ufw allow 53/udp
@@ -323,14 +397,19 @@ sudo ufw allow 67/udp
 ~~~
 
 IPv6:
-
-~~~bash
+~~~shell
 sudo ufw allow 546:547/udp
 ~~~
 
-A parte mais legal do Pihole é que ele possui um instalador autônomo, então para iniciar os trabalhos basta rodar o seguinte comando:
+Após finalizar, lembre de reiniciar o UFW para que as novas regras entrem em vigor:
+~~~shell
+sudo ufw reload
+~~~
 
-`sudo curl -sSL https://install.pi-hole.net | bash`
+A parte mais legal do Pihole é que ele possui um instalador autônomo, então para iniciar os trabalhos basta rodar o seguinte comando:
+~~~shell
+sudo curl -sSL https://install.pi-hole.net | bash
+~~~
 
 Dessa forma ele faz todo o serviço de baixar os pacotes e dependências necessárias.
 
