@@ -160,9 +160,8 @@ WGUI_PASSWORD=Eder123321
 ~~~
 
 Agora vamos confirmar qual é a interface de rede que estamos utilizando, para isso podemos rodar o comando:
-~~~shell
-ip addr ou ip route
-~~~
+
+`ip addr` ou `ip route`
 
 Vamos considerar a interface que possui o ip estático do servidor ou então a interface padrão de rota.
 Que no meu caso é a **enp2s0**. Para você pode ser **eth0** ou qualquer outra, sempre verifique.
