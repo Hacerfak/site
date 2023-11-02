@@ -240,6 +240,9 @@ E para finalizar aplique esses novos serviços no SystemD com os seguintes coman
 
 Configuração inicial finalizada!
 
+---
+
+
 ## Acessando o WireGuard-UI e finalizando a configuração
 
 Agora vamos acessar a interface web para finalizar a configuração do WireGuard e gerar os acessos dos clientes.
@@ -288,6 +291,9 @@ Após salvar, você pode realizar o download do arquivo de configuração ou ger
 E essa etapa inicial está concluída.
 
 Agora vamos finalizar criando o server DNS com Pihole e finalizar a configuração do WireGuard para utilizar o próprio Pihole como nosso servidor padrão de DNS para os clientes da VPN.
+
+---
+
 
 ## Pihole
 
@@ -357,6 +363,7 @@ Ao salvar as configurações, lembre-se de aplicar as configurações para que o
 Se por acaso os dados dos clientes não atualizarem, exclua os clientes cadastrados atualmente e crie-os novamente para que tenham as configurações atualizadas.
 
 ---
+
 
 E é isso pessoal!
 Chegamos ao fim dessa configuração.
