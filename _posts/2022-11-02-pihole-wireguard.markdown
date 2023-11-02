@@ -5,23 +5,21 @@ date:   2023-11-02 09:50:00 -0300
 categories: infra
 ---
 
-# Sobre o conteúdo
+## Sobre o conteúdo
 
 Nesse post vou ensinar a realizar a instalação e configuração de uma infra com Pihole para filtrar todas as nossas requisições de DNS da rede interna e utilizar a VPN do WireGuard para criar um túnel para direcionar o tráfego da rede de nossos dispositivos móveis para a nossa rede interna e assim se beneficiar do filtro de DNS do Pihole.
 
----
-
-# O Server
+## O Server
 
 Aqui estarei utilizando um notebook quase inutilizado como servidor. É um Acer A315-34-C5EY, com um modesto [Celeron N4000C](https://www.intel.com.br/content/www/br/pt/products/sku/199892/intel-celeron-processor-n4000c-4m-cache-up-to-2-60-ghz/specifications.html) e 4GB de RAM DDR4.
 
-# Instalação do Server
+## Instalação do Server
 
 Aqui utilizo debian como servidor. Realizo uma instalação limpa dele apenas instalando o sistema base e o servidor SSH que pode ser selecionado no Taksel durante a instalação.
 
 Para um passo a passo da instalação do debian como servidor, recomendo seguir esse [tutorial](https://blog.remontti.com.br/7236) do Rudimar Remontti. :D
 
-# Pós-Instalação
+## Pós-Instalação
 
 Após ter o server instalado, configurado o sources.list e rodando com SSH, então começamos os trabalhos.
 
@@ -38,7 +36,7 @@ Para instalar os dois use o comando: `sudo apt install wireguard ufw`
 
 Ele irá instalar os dois pacotes e todas as suas dependências.
 
-# UFW
+## UFW
 
 A primeira coisa que iremos fazer é permitir a conexão SSH antes de habilitar o firewall, para isso usamos o comando:
 `sudo ufw allow regra`
@@ -51,13 +49,11 @@ Após liberar as conexões para o servidor SSH podemos habilitar o UFW com o com
 
 Ao longo do tutorial, iremos criar mais regras no firewall utilizando o UFW, mas por hora apenas liberamos o acesse ao SSH para continuar os trabalhos.
 
----
-
-# Configurando o WireGuard-UI
+## Configurando o WireGuard-UI
 
 Com o servidor WireGuard instalado, vamos começar a instação do WireGuard-UI, um utilitário Web para configurar o servidor e também configurar os clientes da VPN.
 
-## IP forwarding
+# IP forwarding
 
 Vamos começar habilitando o IP forwarding do servidor, para que o server consiga encaminhar os pacotes para redes diferentes.
 
@@ -67,7 +63,7 @@ Ao abrir o arquivo, descomente a linha `#net.ipv4.ip_forward=1` apenas removendo
 
 Após isso salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X** e rode o comando `sudo sysctl -p` para atualizar as configurações do sistema.
 
-## Configurando o UFW
+# Configurando o UFW
 
 Agora vamos liberar as portas para acessar o Web-UI e também para permitir a conexão dos peers ao nosso servidor VPN.
 
@@ -81,7 +77,7 @@ Então vamos criar as regras no UFW com o seguinte comando:
 
 Após criar as novas regras, recarregamos o UFW com o comando: `sudo ufw reload`
 
-## Baixando e configurando o WireGuard-UI
+# Baixando e configurando o WireGuard-UI
 
 O WireGuard-UI é desenvolvido pela comunidade, e o repositório do projeto você encontra [aqui](https://github.com/ngoduykhanh/Wireguard-ui).
 
@@ -165,7 +161,7 @@ Salve o arquivo com **Ctrl+O** e feche o arquivo com **Ctrl+X**.
 
 Ao finalizar a criação dos dois scripts, vamos tornar eles executáveis, aplicando a seguinte regra: `sudo chmod +x /opt/wireguard-ui/post*.sh`
 
-## Criando o serviço WireGuard-UI com SystemD
+# Criando o serviço WireGuard-UI com SystemD
 
 Para conseguirmos incializar o serviço e gerenciar ele através do SystemD que é o sistema de inicialização padrão do Debian, precisamos criar os seu scripts de inicialização.
 
@@ -204,7 +200,7 @@ Dessa forma o sistema irá inciar o serviço do WireGuard-UI e já conseguirá v
 Por fim, vamos habilitar o serviço para ser inicializado junto com o sistema, caso ele reinicie.
 `sudo systemctl enable wireguard-ui-daemon.service`
 
-## Serviço para monitorar o WireGuard
+# Serviço para monitorar o WireGuard
 
 Como o WireGuard-UI cuida apenas da geração da configuração do WireGuard, você precisa de outro serviço SystemD para observar as alterações e reiniciar o serviço WireGuard quando for necessário.
 
@@ -244,9 +240,7 @@ E para finalizar aplique esses novos serviços no SystemD com os seguintes coman
 
 Configuração inicial finalizada!
 
----
-
-# Acessando o WireGuard-UI e finalizando a configuração
+## Acessando o WireGuard-UI e finalizando a configuração
 
 Agora vamos acessar a interface web para finalizar a configuração do WireGuard e gerar os acessos dos clientes.
 
@@ -273,7 +267,7 @@ Após isso você pode rodar o comando `sudo wg show` no terminal do servidor par
 
 Ao finalizar essa etapa, agora o que resta a fazer é criar a regra de port forwarding no roteador, para que clientes de redes externas consigam acessar o servidor e assim estabelecer a conexão para o túnel e registrar os clientes no servidor para configurar os dispositivos clientes que irão usar a nossa VPN.
 
-## Port Forwarding no roteador.
+# Port Forwarding no roteador.
 
 Nessa infra, eu tenho meu roteador principal GPON que roda o servidor DHCP da rede interna e o meu server que está rodando a VPN, então precisamos encaminhar todas as solicitações externas na porta 51820/UDP para a porta 51820/UDP do meu servidor que está na rede interna.
 
@@ -283,7 +277,7 @@ Aqui um exemplo de como fica a regra criada, lembrando que meu servidor tem IP e
 
 ![Regra de encaminhamento de porta no meu roteador](/assets/wg-port-forwarding.png)
 
-## Criando um cliente
+# Criando um cliente
 
 Para criar um cliente é muito simples. Na interface de gerenciamento do WireGuard, acesse em **WireGuard Clients** e clique em **+ New Client** e então preencha o campo **Name** e se desejar informe um e-mail no respectivo campo.
 
@@ -295,13 +289,11 @@ E essa etapa inicial está concluída.
 
 Agora vamos finalizar criando o server DNS com Pihole e finalizar a configuração do WireGuard para utilizar o próprio Pihole como nosso servidor padrão de DNS para os clientes da VPN.
 
----
-
-# Pihole
+## Pihole
 
 O Pihole irá atuar como nosso servidor DNS na rede interna, filtrando todas as requisições dos clientes inclusive de quem estará remoto usando nosso túnel VPN. Para conhecer mais do projeto, acesse o site deles: <https://pi-hole.net/>
 
-## Regras de Firewall
+# Regras de Firewall
 
 Antes de começar a instalação do Pihole, é necessário criar as regras de firewall para que os serviços dele sejam acessíveis as todos os nós da rede interna.
 
@@ -346,8 +338,6 @@ No painel do Pihole, basicamente vamos acessar a página **Settings** e na aba *
 
 Após isso basta salvar e finalizar a configuração no roteador e no WireGuard.
 
----
-
 # Usando o Pihole como server DNS da rede interna
 
 Para usar o Pihole que está rodando em nosso servidor da rede interna, vamos configurar o roteador que é nosso servidor DHCP para utilizar o IP do servidor como server DNS, então todos os nós da rede serão configurados automaticamente para utilizar o Pihole como DNS e assim se beneficiar dos filtros de domínios.
@@ -357,8 +347,6 @@ Novamente vou acessar a interface do meu roteador e na página de configuraçõe
 ![Configuração do servidor DHCP do roteador](/assets/pi-hole-dns-dhcp.png)
 
 Após essa configuração é só salvar e reiniciar o roteador.
-
----
 
 # Usando o Pihole como server DNS da VPN WireGuard
 
