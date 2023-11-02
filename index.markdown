@@ -3,6 +3,6 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: home
-sitemap: false
+sitemap: true
 ---
-Aqui é meu arquivo de descobertas e sua finalidade é compartilhar conhecimento!
+Bem-vindo ao meu blog! :D

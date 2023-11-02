@@ -6,4 +6,6 @@ permalink: /sobre/
 
 Olá! Meu nome é Eder Gross Cichelero.
 
-Nessa página você encontra algumas informações sobre min.
+![Esse sou eu!](/assets/eu.png)
+
+Gosto muito de aprender coisas novas e compartilhar esse novo conhecimento.
