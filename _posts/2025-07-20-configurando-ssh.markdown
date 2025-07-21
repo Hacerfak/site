@@ -23,7 +23,7 @@ sudo apt install openssh-server
 
 Após instalar o servidor, vamos editar algumas configurações básicas de segurança.
 
-Edite o arquivo *sshd_config* com seu editor de preferência.
+Edite o arquivo ==sshd_config== com seu editor de preferência.
 
 ~~~shell
 sudo nano /etc/ssh/sshd_config
@@ -31,7 +31,7 @@ sudo nano /etc/ssh/sshd_config
 
 Nesse arquivos vamos editar os seguintes parâmetros:
 
-```
+```Markdown
 # Se quiser alterar a porta padrão do SSH, o padrão é a 22
 Port 22 
 # Tempo que o usuario tem para fazer login, no caso defini para 10 segundos
@@ -61,9 +61,9 @@ Rode o comando:
 ssh-keygen -t rsa -c "Seu comentário"
 ~~~
 
-No processo de criação especifique onde as chaves serão salvas, por padrão elas ficam em *~/.ssh/*, legal que aqui você pode nomear elas e criar quantas chaves forem necessárias.
+No processo de criação especifique onde as chaves serão salvas, por padrão elas ficam em ==~/.ssh/==, legal que aqui você pode nomear elas e criar quantas chaves forem necessárias.
 
-*Atenção:* No processo de criação, você pode definir uma senha para as chaves ou não, caso não queira ficar digitando senha, crie as chaves sem senha, apenas pulando a etapa da senha com *Enter*
+==Atenção:== No processo de criação, você pode definir uma senha para as chaves ou não, caso não queira ficar digitando senha, crie as chaves sem senha, apenas pulando a etapa da senha com ==Enter==
 
 
 Com as chaves geradas, agora faça o upload chave pública no host que deseja:
@@ -71,7 +71,7 @@ Com as chaves geradas, agora faça o upload chave pública no host que deseja:
 ~~~shell
 scp -P 22  sua_chave.pub user@192.168.0.99:/home/user/.ssh/authorized_keys
 ~~~
-Com esse comando você irá se conectar ao host *user@192.168.0.99* e carregar *sua_chave.pub* renomeando o arquivo para *authorized_keys*. Nesse primeiro envio ele ainda irá solicitar a senha para se atenticar ao server, mas no próximo login já irá conectar diretamente pela chave gerada e carregado no host.
+Com esse comando você irá se conectar ao host ==user@192.168.0.99== e carregar ==sua_chave.pub== renomeando o arquivo para ==authorized_keys==. Nesse primeiro envio ele ainda irá solicitar a senha para se atenticar ao server, mas no próximo login já irá conectar diretamente pela chave gerada e carregado no host.
 
 Caso seja a primeira que você esteja se conectando ao host, ele ainda irá pedir a confirmação se deseja adicionar esse host a lista de hosts confiáveis.
 
@@ -81,4 +81,4 @@ Com essa simples configuração já temos um acesso tranquilo a nossas máquinas
 
 Claro, ainda há muita otimização pensando em segurança, principalmente se for expor o serviço do host para a WAN. Mas isso é assundo para outro post ou para ser atualziado aqui posteriormente!
 
-Abraços! <3
+Abraços! :heart:
