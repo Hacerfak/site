@@ -37,6 +37,10 @@ webmaster_verifications:
 
 # Build settings
 theme: minima
+
+minima:
+  skin: auto
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
