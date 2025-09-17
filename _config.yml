@@ -30,6 +30,8 @@ github_username:  Hacerfak
 
 locale: pt_BR
 
+google_analytics: G-1BK324EDDE # replace with your Google Analytics tracking ID
+
 webmaster_verifications:
   google: 78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk
 
