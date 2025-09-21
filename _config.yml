@@ -41,6 +41,8 @@ webmaster_verifications:
 
 # theme settings
 theme: minima
+minima:
+  date_format: "%-d %b %Y"
 
 #plugins
 plugins:
