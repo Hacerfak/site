@@ -3,7 +3,6 @@ layout: post
 title:  "Configuração básica do server SSH"
 date:   2025-07-20 20:05:00 -0300
 categories: debian
-lang: pt-BR
 ---
 # Sobre o conteúdo
 
@@ -13,7 +12,7 @@ Nesse post, vou mostrar como é fácil instalar e configurar o servidor SSH para
 
 No momento que escrevo esse post, estou usando Debian 13 (ainda não foi lançado oficialmente, eu sei, mas eu sou entusiasta kkk)
 
-Aqui assumo que você já tenha feito a instalação e configuração mínima do sistema, caso ainda não tenha feito isso, acompanhe nesse outro post [aqui]({% post_url 2023-06-25-configuracao-debian-pt-BR %}).
+Aqui assumo que você já tenha feito a instalação e configuração mínima do sistema, caso ainda não tenha feito isso, acompanhe nesse outro post [aqui]({% post_url 2023-06-25-configuracao-debian-12 %}).
 
 Vamos começar instalando o servidor SSH com o comando:
 ~~~shell

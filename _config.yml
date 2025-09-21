@@ -30,14 +30,9 @@ github_username:  Hacerfak
 
 # Localization settings for jekyll-polyglot
 locale: pt_BR
-languages: ["en", "pt-BR"]
-default_lang: "pt-BR"
-exclude_from_localization: ["javascript", "images", "css", "public", "sitemap"]
-parallel_localization: true
 
 # Analytics and webmaster tools
 google_analytics: G-1BK324EDDE 
-
 webmaster_verifications:
   google: 78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk
 
@@ -49,7 +44,6 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
-  - jekyll-polyglot
 
 # Exclude from processing.
 # The following items will not be processed, by default.

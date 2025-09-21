@@ -4,5 +4,4 @@
 
 layout: home
 sitemap: true
-lang: pt-BR
 ---
