@@ -102,9 +102,10 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet splash ... nvidia-drm.modeset=1"
 ~~~
 
 Veja um exemplo do meu arquivo `/etc/default/grub`: 
+
 ![Exemplo do arquivo grub](/assets/nvidia_driver/grub_example.png)
 
-Após ediytar o arquivo, salve e então atualize o GRUB com o comando:
+Após editar o arquivo, salve e então atualize o GRUB com o comando:
 ~~~shell
 sudo update-grub
 ~~~
@@ -122,7 +123,7 @@ Se eles não estiverem habilitados, você pode habilitá-los com o comando:
 sudo systemctl enable nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
 ~~~
 
-Além disso, você precisará verificar se o parâmetro do módulo NVIDIA PreserveVideoMemoryAllocations está ativado.
+Além disso, você precisará verificar se o parâmetro `PreserveVideoMemoryAllocations` do módulo NVIDIA está ativado.
 Para isso, rode o seguinte comando:
 ~~~shell
 echo 'options nvidia NVreg_PreserveVideoMemoryAllocations=1' > /etc/modprobe.d/nvidia-power-management.conf
@@ -142,4 +143,5 @@ Ao visualizar as informações do sistema, você verá que o Wayland está ativo
 ![Wayland ativo](/assets/nvidia_driver/gnome_wayland_active.png)
 
 E é isso galera, espero que esse post tenha ajudado vocês a configurar o Wayland no Gnome com placa de vídeo NVIDIA no Debian 12/13.
+
 Abraços! ❤️
