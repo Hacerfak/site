@@ -20,7 +20,7 @@ Primeiro, é importante ressaltar que essa instalação será feita em uma máqu
 - **Wi-Fi/BT:** Intel Wi-Fi 6 (AX210/AX211/AX411) 160MHz
 - **SO:** Debian 12 (bookworm)
 
-**OBS:** O SecureBoot está habilitado na BIOS e o sistema foi instalado com recursos mínimos, sem uma DE e nem utilitários básicos do sistema. Você pode acompanhar o outro post sobre a instação [aqui]({% post_url 2023-06-25-configuracao-debian-12 %}).
+**OBS:** O SecureBoot está habilitado na BIOS e o sistema foi instalado com recursos mínimos, sem uma DE e nem utilitários básicos do sistema. Você pode acompanhar o outro post sobre a instação [aqui]({% post_url 2023-06-25-configuracao-debian-13 %}).
 
 ## Pós-Instalação
 
@@ -63,13 +63,15 @@ As chaves padrões do DKMS ficam nesse local: `/var/lib/dkms`
 
 Como dito antes, após instalado o DKMS ele não vem com nenhuma chave, ela é gerada durante a primeira execução. Por isso nesse caso dessa máquina tenho duas opções. O módulo de kernel da Nvidia e o módulo de kernel da placa de rede. Instalando qualquer um dos dois, o DKMS já irá gerar as chaves.
 
-Rodando um dos comandos abaixo, baixamos os arquivos e o sistema inicia a instalação e construção usando DKMS:
+Rodando o comando abaixo, baixamos um pacote de testes e o sistema inicia a instalação e construção usando DKMS:
 
-- `apt install r8168-dkms` ou `apt install nvidia-driver nvidia-kernel-dkms`
+~~~shell
+apt install dkms-test-dkms
+~~~
 
 Após a instalação de um dos módulos, podemos verificar as chaves geradas em `/var/lib/dkms`, onde teremos a chave pública `mok.pub` e a privada `mok.key`.
 
-Também já podemos verificar o módulo e sua assinatura rodando o comando `modinfo módulo`, no meu caso pode ser `modinfo r8168` ou `modinfo nvidia-current`.
+Também já podemos verificar o módulo e sua assinatura rodando o comando `modinfo módulo`, no meu caso pode ser `modinfo r8168`, `modinfo nvidia-current` ou `modinfo dkms-test`.
 
 Note que na descrição teremos inforações sobre a assinatura do módulo.
 

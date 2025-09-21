@@ -116,9 +116,11 @@ Nesse caso a instalação em um desktop é muito simples, visto que eu só tenho
 
 Para a minha placa, basicamente é só instalar o meta-pacote `nvidia-driver`, assim ele instalará todos os pacotes necessários para o driver.
 
-Da mesma forma como ocorre para o driver de rede, a instalação padrão do debian instala os drivers open source da nouveau. Mas realizando a instalação dos drivers da NVIDIA esse drivers são colocados em uma lista negra para não serem carregador com a incialização do sistema, deixando apenas os drivers proprietários serem carregados.
+Da mesma forma como ocorre para o driver de rede, a instalação padrão do debian instala os drivers open source da nouveau. Mas realizando a instalação dos drivers da NVIDIA esse drivers são colocados em uma lista negra para não serem carregados com a incialização do sistema, deixando apenas os drivers proprietários serem carregados.
 
 Além disso, os drivers da NVIDIA também usam DKMS para compilar os módulos do kernel para cada kernel instalado no sistema e consequentemente para qualquer kernel novo a ser instalado.
+
+Mas se você deseja instalar o driver manualmente, você pode seguir os passos do meu post sobre [como instalar o driver NVIDIA manualmente no Debian 12/13]({% post_url 2025-09-21-configurando-wayland-gnome %}).
 
 # Microcode e CPU Frequency Scaling
 
