@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Como criar um alias no bash"
+title:  "How to create an alias in bash"
 date:   2022-08-31 22:30:00 -0300
 categories: bash
 lang: en
