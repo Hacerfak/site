@@ -11,12 +11,12 @@ Nesse post, vou mostrar como é fácil instalar e configurar o wayland no Gnome 
 Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
 
 - **OS:** Debian sid
- - *Kernel:* 6.16.7
- - *DE:* Gnome 48.5
- - *Greeter:* GDM3
- - *Display Server:* Xorg
+    - *Kernel:* 6.16.7
+    - *DE:* Gnome 48.5
+    - *Greeter:* GDM3
+    - *Display Server:* Xorg
 - **GPU:** RTX 3070
-  - *Driver:* 580.82.09
+    - *Driver:* 580.82.09
 - **SecureBoot:** Ativado
 - **DKMS:** Ativado
 
