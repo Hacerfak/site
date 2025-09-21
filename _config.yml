@@ -29,7 +29,8 @@ url: "https://hacerfak.com.br" # the base hostname & protocol for your site, e.g
 github_username:  Hacerfak
 youtube_username: "@hacerfak"
 
-show_excerpts: true
+#preview posts content in home page
+show_excerpts: false
 
 # Localization settings for jekyll-polyglot
 locale: pt_BR
