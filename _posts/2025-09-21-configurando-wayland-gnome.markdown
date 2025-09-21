@@ -8,13 +8,27 @@ categories: debian
 
 Nesse post, vou mostrar como é fácil instalar e configurar o wayland no Gnome 48 com placa de vídeo NVIDIA no Debian 12/13.
 
+Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
+
+- **OS:** Debian sid
+ - *Kernel:* 6.16.7
+ - *DE:* Gnome 48.5
+ - *Greeter:* GDM3
+ - *Display Server:* Xorg
+- **GPU:** RTX 3070
+  - *Driver:* 580.82.09
+- **SecureBoot:** Ativado
+- **DKMS:** Ativado
+
 ## Instalação do driver NVIDIA
 
-No momento que escrevo esse post, estou usando Debian 13 (trixie) com o kernel 6.16.7 e Gnome 48.5.
-O Driver NVIDIA utilizado é o 580.82.09 e a placa de vídeo é uma RTX 3070.
+No momento que escrevo esse post, já tenho o sistema rodando com driver NVIDIA usando o Xorg como servidor gráfico.
+
+Antes de tudo vou atualizar o driver para a versão mais recente, que no momento é a 580.82.09.
 
 O download do driver você pode fazer diretamente no site da NVIDIA [aqui](https://www.nvidia.com/Download/index.aspx).
-E para instalar o driver, após o download, primeiramente torne o arquivo executável com permissão de execução:
+
+Para instalar o driver, após o download, primeiramente torne o arquivo executável com permissão de execução:
 ~~~shell
 chmod +x NVIDIA-Linux-x86_64-580.82.09.run
 ~~~
