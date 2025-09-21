@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Configurações pós instalação do Debian 12"
+title:  "Configurações pós instalação do Debian 13"
 date:   2023-06-25 17:00:00 -0300
 categories: debian
 ---
