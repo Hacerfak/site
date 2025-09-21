@@ -70,7 +70,7 @@ Como editor de texto, eu gosto de utilizar o [nano](https://packages.debian.org/
 `sudo nano /etc/apt/sources.list.d/debian.sources`
 
 A sintaxe para configuração os repositórios basicamente é:
-  ~~~.env
+  ~~~Debian Sourcelist
   Types: deb deb-src
   URIs: http://deb.debian.org/debian/
   Suites: stable stable-backports
