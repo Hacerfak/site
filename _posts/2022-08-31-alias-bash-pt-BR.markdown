@@ -3,6 +3,7 @@ layout: post
 title:  "Como criar um alias no bash"
 date:   2022-08-31 22:30:00 -0300
 categories: bash
+lang: pt-BR
 ---
 
 Para criar um alias no bash, você pode utilizar o arquivo `.bashrc` do usuário root ou do usuário local.

@@ -4,5 +4,5 @@
 
 layout: home
 sitemap: true
+lang: pt-BR
 ---
-Bem-vindo ao meu blog! :D

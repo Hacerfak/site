@@ -2,6 +2,7 @@
 layout: page
 title: Sobre
 permalink: /sobre/
+lang: pt-BR
 ---
 
 Olá! Meu nome é Eder Gross Cichelero.

@@ -3,6 +3,7 @@ layout: post
 title:  "Configurações pós instalação do Debian 12"
 date:   2023-06-25 17:00:00 -0300
 categories: debian
+lang: pt-BR
 ---
 
 Nesse post, vou mostrar quais são as configurações que faço após realizar a instalação do debian.
