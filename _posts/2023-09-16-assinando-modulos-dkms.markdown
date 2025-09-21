@@ -20,7 +20,7 @@ Primeiro, é importante ressaltar que essa instalação será feita em uma máqu
 - **Wi-Fi/BT:** Intel Wi-Fi 6 (AX210/AX211/AX411) 160MHz
 - **SO:** Debian 12 (bookworm)
 
-**OBS:** O SecureBoot está habilitado na BIOS e o sistema foi instalado com recursos mínimos, sem uma DE e nem utilitários básicos do sistema. Você pode acompanhar o outro post sobre a instação [aqui]({% post_url 2023-06-25-configuracao-debian-13 %}).
+**OBS:** O SecureBoot está habilitado na BIOS e o sistema foi instalado com recursos mínimos, sem uma DE e nem utilitários básicos do sistema. Você pode acompanhar o outro post sobre a instação [aqui]({% post_url 2025-09-21-configuracao-debian-13 %}).
 
 ## Pós-Instalação
 
