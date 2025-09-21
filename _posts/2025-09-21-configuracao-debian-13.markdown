@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Configurações pós instalação do Debian 13"
-date:   2025-09-21 18:00:00 -0300
+title:  "Configurações pós instalação do Debian 12"
+date:   2023-06-25 17:00:00 -0300
 categories: debian
 ---
 
@@ -24,7 +24,7 @@ Dito isso é importante lembrar que pode ser que algumas das configurações nã
 
 Quanto a instalação do Debian, ela é feita a partir de uma mídia de instalação do tipo [netinst](https://www.debian.org/CD/netinst/), ou seja, uma mídia de instalação mínima que depende de uma conexão com a internet para baixar os pacotes do sistema. Além disso a instalação é feita de forma limpa, sem instalar nenhum tipo de pacote ou utilitário adicional pelo **tasksel** que é executado durante a instalação.
 
-Basicamente ao finalizar a instalação eu tenho um sistema com **~222** pacotes instalados.
+Basicamente ao finalizar a instalação eu tenho um sistema com **222** pacotes instalados.
 
 Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: `apt list –-installed | wc -l` ou `sudo apt list –-installed | wc -l` caso não seja superusuário.
 
@@ -55,27 +55,34 @@ Para ver a lista completa de espelhos de repositórios do debian, [acesse essa p
 
 # A configuração dos repositórios
 
-Para configurar os repositórios no debian, vamos editar o arquivo **sources.list**, este por sua vez pode ser acessado em **/etc/apt/sources.list**
+No debian 13 (Trixie), a configuração dos repositórios mudou um pouco, o novo formato de configuração dos espelho usa a referẽncia deb822, que é um formato mais flexível e que permite a configuração de múltiplos repositórios em um único arquivo.
 
-Para visualizar seu conteúdo, podemos usar o comando `cat /etc/apt/sources.list`
+Veja mais sobre esse novo formato no [manual do debian](https://www.debian.org/doc/manuals/debian-reference/ch02#_debian_archive_basics) e na [wiki do debian](https://wiki.debian.org/SourcesList).
+
+Para configurar os repositórios no debian, vamos editar o arquivo **debian.sources**, este por sua vez pode ser acessado em **/etc/apt/sources.list.d**
+
+Para visualizar seu conteúdo, podemos usar o comando `cat /etc/apt/sources.list.d/debian.sources`
 
 Para editá-lo, devemos usar o comando sudo para ter privilégios de superusuário e assim poder salvar o arquivo depois, senão temos apenas o acesso a leitura.
 
 Como editor de texto, eu gosto de utilizar o [nano](https://packages.debian.org/bookworm/nano). Então para editar o arquivo, usamos:
 
-`sudo nano /etc/apt/sources.list`
+`sudo nano /etc/apt/sources.list.d/debian.sources`
 
 A sintaxe para configuração os repositórios basicamente é:
-
-    deb http://site.example.com/debian distribution component1 component2 component3
-    deb-src http://site.example.com/debian distribution component1 component2 component3
+  ~~~ini
+  Types: deb deb-src
+  URIs: http://deb.debian.org/debian/
+  Suites: stable stable-backports
+  Components: main non-free-firmware contrib non-free
+  ~~~
 
 Onde temos as seguintes seções:
 
-+ **Tipo de arquivo** - Aqui é o início da sintaxe, onde podemos ter **deb** para arquivos binários ou **deb-src** para o código fonte.
-+ **URL do espelho** - Aqui é onde se informa a URL do espelho junto com seu protocolo.
-+ **Distribuição** - Nesse ponto é onde especificamos qual é a distruição que queremos utilizar ao pegar os pacotes ou códigos no repositório, no nosso caso o padrão vem como **bookworm**, onde esse é o nome da distribuição do debian 12. Os nomes das distribuições do debian são inspiradas no filme _Toy Story_.
-+ **Componentes** - No final da configuração, atribuímos os componentes que vamos utilizar daquele repositório, onde temos:
++ **Types** - Aqui é o início da sintaxe, onde podemos ter **deb** para arquivos binários ou **deb-src** para o código fonte.
++ **URIs** - Aqui é onde se informa a URL do espelho junto com seu protocolo.
++ **Suites** - Nesse ponto é onde especificamos qual é a distruição que queremos utilizar ao pegar os pacotes ou códigos no repositório, no nosso caso o padrão vem como **trixie**, onde esse é o nome da distribuição do debian 13. Os nomes das distribuições do debian são inspiradas no filme _Toy Story_.
++ **Components** - No final da configuração, atribuímos os componentes que vamos utilizar daquele repositório, onde temos:
   + **main** - Sendo o componente principal da distribuição, é nele onde estão os kerneis linux, por exemplo. Consiste em pacotes [DFSG](https://www.debian.org/social_contract.pt.html)-compliant, que não dependem de software fora desta área para operar. Estes são os únicos pacotes considerados parte da distribuição Debian.
   + **contrib** - Pacotes contêm software compatível com DFSG, mas têm dependências não principais (possivelmente empacotado para Debian em non-free).
   + **non-free** - Contém software que não está em conformidade com o DFSG.
@@ -83,17 +90,17 @@ Onde temos as seguintes seções:
 
 Nessa instalação, vou utilizar a distribuição **unstable** ou **sid** para obter os pacotes mais recentes que ainda estão em fase de testes. Você pode obter mais informações sobre essa distribuição acessando [aqui](https://www.debian.org/releases/sid/).
 
-A cópia do meu **sources.list** pode ser obtida [aqui](/assets/sources_debian_12.txt).
+A cópia do meu **sources.list** pode ser obtida [aqui](/assets/sources_debian_13.txt).
 
 Recomendo utilizar todos os espelhos do Brasil, mas também é possível utilizar apenas um deles, ai vai conforme sua necessidade. Também é importante testar qual deles é mais rápido na sua região.
 
-Você pode obter mais informações sobre a configuração do sources.list [aqui](https://wiki.debian.org/pt_BR/SourcesList) e sobre as distribuições [aqui](https://www.debian.org/releases/).
+Você pode obter mais informações sobre a configuração dos repositórios [aqui](https://wiki.debian.org/pt_BR/SourcesList) e sobre as distribuições [aqui](https://www.debian.org/releases/).
 
-Ao editar o arquivo através do nano, basta pressionar **Ctrl + O** para salvar e **Ctrl + X** para sair do modo de edição do arquivo.
+Ao editar o arquivo através do nano, basta pressionar **Ctrl + O** ou **Ctrl + S** para salvar e **Ctrl + X** para sair do modo de edição do arquivo.
 
-Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo apt update` e após a atualização, podemos atualizar o sistema da distribuição _bookworm_ para _sid_ usando o comando `sudo apt full-upgrade`
+Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo apt update` e após a atualização, podemos atualizar o sistema da distribuição _trixie_ para _sid_ usando o comando `sudo apt full-upgrade`
 
-Após finalizar a atualização, temos o debian na distribuição unstable ou sid.
+Após finalizar a atualização, temos o debian na distribuição **unstable** ou **sid**.
 
 # Firmwares
 
