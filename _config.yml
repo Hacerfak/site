@@ -19,8 +19,9 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Hacerfak
-author: Eder Gross Cichelero
-email: hacerfak4@gmail.com
+author: 
+  name: Eder Gross Cichelero
+  email: hacerfak4@gmail.com
 tagline: Hacerfak | Um blog dedicado ao conhecimento
 description: >- # this means to ignore newlines until "baseurl:"
   Conhecimento é poder!
@@ -41,9 +42,10 @@ webmaster_verifications:
   google: 78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk
 
 # theme settings
-theme: minima
+remote_theme: "jekyll/minima"
 minima:
   date_format: "%-d %b %Y"
+  skin: auto
 
 #plugins
 plugins:
