@@ -44,10 +44,10 @@ minima:
   date_format: "%-d %b %Y"
   skin: auto
   show_excerpts: false
-  hide_site_feed_link: false
+  hide_site_feed_link: true
 
   nav_pages:
-    - about.md
+    - about.markdown
 
   social_links:
     - title: Hacerfak no GitHub 
@@ -55,7 +55,13 @@ minima:
       url: "https://github.com/Hacerfak"
     - title: Hacerfak no YouTube
       icon: youtube
-      url: "https://www.youtube.com/@hacerfak"
+      url: "https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw"
+    - title: Hacerfak no Spotify
+      icon: spotify
+      url: "https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo"
+    - title: Hacerfak no SoundCloud
+      icon: soundcloud
+      url: "https://soundcloud.com/hacerfak-music"
 
 #plugins
 plugins:
