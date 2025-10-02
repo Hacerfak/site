@@ -89,11 +89,11 @@ Após isso reiniciamos a máquina para então realizarmos o enroll (inscrição)
 
 Ao reiniciar, será apresentada a página para realizar a inscrição, nessa primeira parte pode pressionar qualquer tecla.
 
-![Shim UEFI Key Management](/assets/shim.png)
+![Shim UEFI Key Management](/assets/dkms/shim.png)
 
 Após, selecionamos a opção **MOK Enroll**
 
-![Enroll MOK](/assets/enrollmok.png)
+![Enroll MOK](/assets/dkms/enrollmok.png)
 
 A partir desse ponto, na página **Enroll MOK** selecione a opção **Continue** e depois na tela **Enroll the Key(s)?** selecione a opção **Yes**.
 

@@ -119,7 +119,7 @@ Isso irá baixar o arquivo para nosso diretório atual, que deve ser o **/home**
 
 Após o download, é possível verificar o arquivo no diretório com um `ls`
 
-![Binário salvo no sistema](/assets/wireguard-ui-download.png)
+![Binário salvo no sistema](/assets/dns_vpn/wireguard-ui-download.png)
 
 Agora vamos extrair o conteúdo do arquivo com o comando:
 ~~~shell
@@ -352,7 +352,7 @@ Para fazer isso vou acessar a interface web do meu roteador, na seção de inter
 
 Aqui um exemplo de como fica a regra criada, lembrando que meu servidor tem IP estático.
 
-![Regra de encaminhamento de porta no meu roteador](/assets/wg-port-forwarding.png)
+![Regra de encaminhamento de porta no meu roteador](/assets/dns_vpn/wg-port-forwarding.png)
 
 # Criando um cliente
 
@@ -428,7 +428,7 @@ Para usar o Pihole que está rodando em nosso servidor da rede interna, vamos co
 
 Novamente vou acessar a interface do meu roteador e na página de configurações da rede local (LAN), irei acessar as configurações do servidor DHCP e e alterar o endereço do DNS primário para o DNS do meu servidor da rede interna, conforme o exemplo abaixo:
 
-![Configuração do servidor DHCP do roteador](/assets/pi-hole-dns-dhcp.png)
+![Configuração do servidor DHCP do roteador](/assets/dns_vpn/pi-hole-dns-dhcp.png)
 
 Após essa configuração é só salvar e reiniciar o roteador.
 

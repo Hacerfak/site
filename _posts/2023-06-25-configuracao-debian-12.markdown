@@ -83,7 +83,7 @@ Onde temos as seguintes seções:
 
 Nessa instalação, vou utilizar a distribuição **unstable** ou **sid** para obter os pacotes mais recentes que ainda estão em fase de testes. Você pode obter mais informações sobre essa distribuição acessando [aqui](https://www.debian.org/releases/sid/).
 
-A cópia do meu **sources.list** pode ser obtida [aqui](/assets/sources_debian_12.txt).
+A cópia do meu **sources.list** pode ser obtida [aqui](/assets/debian/sources_debian_12.txt).
 
 Recomendo utilizar todos os espelhos do Brasil, mas também é possível utilizar apenas um deles, ai vai conforme sua necessidade. Também é importante testar qual deles é mais rápido na sua região.
 

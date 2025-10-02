@@ -3,24 +3,123 @@ permalink: /404.html
 layout: default
 ---
 
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
+<style>
+  /* Estilos CSS para a página moderna */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f0f2f5;
+    /* Cinza claro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     text-align: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
   }
 
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
+  .container {
+    max-width: 650px;
+    padding: 50px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .container:hover {
+    transform: translateY(-5px);
+  }
+
+  .error-code {
+    font-size: 120px;
+    font-weight: 800;
+    color: #d1d5db;
+    /* Cinza suave */
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    transition: color 0.4s ease;
+  }
+
+  .container:hover .error-code {
+    color: #9ca3af;
+  }
+
+  h2 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 18px;
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  .image-container img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+    opacity: 0.9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: opacity 0.3s ease;
+  }
+
+  .image-container img:hover {
+    opacity: 1;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 14px 30px;
+    background-color: #007bff;
+    /* Azul primário */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .container {
+      padding: 30px;
+    }
+
+    .error-code {
+      font-size: 80px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 16px;
+    }
   }
 </style>
 
 <div class="container">
-  <h1>404</h1>
-
-  <p><strong>Essa página não foi encontrada :(</strong></p>
-  <p>Se você veio do futuro, talvez lá ela já exista! :D</p>
+  <h1 class="error-code">404</h1>
+  <h2>Oops! Página não encontrada.</h2>
+  <p>A página que você está procurando pode ter sido removida, alterado o nome ou está temporariamente indisponível. Não
+    se preocupe, vamos te ajudar a voltar para o caminho certo.</p>
+  <div class="image-container">
+    <img src="/assets/404.png" alt="Um CD perdido no espaço">
+  </div>
+  <a href="https://hacerfak.com.br" class="button">Ir para a página inicial</a>
 </div>
