@@ -3,6 +3,7 @@ layout: post
 title:  "SecureBoot - Assinando módulos com DKMS"
 date:   2023-09-16 15:00:00 -0300
 categories: debian
+featured: true
 ---
 # Sobre o conteúdo
 
@@ -78,8 +79,9 @@ Note que na descrição teremos inforações sobre a assinatura do módulo.
 Antes de reiniciar o computador, teremos que realizar a inscrição da chave pública em nosso sistema UEFI.
 
 Para efetuar a inscrição da chave no sistema UEFI, rodamos o seguinte comando:
-
-- `mokutil --import /var/lib/dkms/mok.pub`
+~~~shell
+mokutil --import /var/lib/dkms/mok.pub
+~~~
 
 Ao realizar esse processo será solicitado que se crie uma senha de entrada única que deve possuir ao menos 1 caractere.
 
@@ -99,11 +101,15 @@ A partir desse ponto, na página **Enroll MOK** selecione a opção **Continue**
 
 A próxima página irá solicitar a senha de uso único, digite a mesma que você criou quando inscreveu a chave e por fim selecione a opção **Reboot**.
 
-E está feito! :cheers:
+E está feito! 🍻
 
 Quando o sistema inicializar é possível verificar as chaves carregadas com o comando:
 
-- `mokutil --list-enrolled`
+~~~shell
+mokutil --list-enrolled
+~~~
 
 Você verá a CA do debian e também a chave do DKMS, além de outras chaves existentes em seu sistema UEFI.
+
+Até mais pessoal! 👋❤️
 

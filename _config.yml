@@ -1,82 +1,43 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you: 
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-
 title: Hacerfak
 author: 
   name: Eder Gross Cichelero
   email: hacerfak4@gmail.com
-# tagline: Hacerfak | Um blog dedicado ao conhecimento
-description: >- # this means to ignore newlines until "baseurl:"
-  Hacerfak | Um blog dedicado ao conhecimento
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://hacerfak.com.br" # the base hostname & protocol for your site, e.g. http://example.com
-
-
-
-# Localization settings
+email: hacerfak4@gmail.com
+description: >- # Descrição curta para o Google (Meta Description)
+  Dicas avançadas de Linux e tutoriais de Debian| Um blog dedicado ao conhecimento.
+url: "https://hacerfak.com.br" # Mude para seu URL do github quando publicar
+baseurl: ""
+permalink: /:year/:month/:day/:title/
+lang: pt-BR
 locale: pt_BR
+  # Fuso horário
+timezone: "America/Sao_Paulo"
 
-# Analytics and webmaster tools
-google_analytics: G-1BK324EDDE 
+# ID do Google Analytics (GA4)
+google_analytics: G-1BK324EDDE
+
 webmaster_verifications:
   google: 78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk
+  bing: COLE_AQUI_SEU_CODIGO_BING
 
-# theme settings
-remote_theme: "jekyll/minima"
-minima:
-  date_format: "%-d %b %Y"
-  skin: auto
-  show_excerpts: false
-  hide_site_feed_link: true
-
-  nav_pages:
-    - about.markdown
-
-  social_links:
-    - title: Hacerfak no GitHub 
-      icon: github
-      url: "https://github.com/Hacerfak"
-    - title: Hacerfak no YouTube
-      icon: youtube
-      url: "https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw"
-    - title: Hacerfak no Spotify
-      icon: spotify
-      url: "https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo"
-    - title: Hacerfak no SoundCloud
-      icon: soundcloud
-      url: "https://soundcloud.com/hacerfak-music"
-
-#plugins
+# Paginação
+paginate: 6
+paginate_path: "/blog/:num/"
 plugins:
-  - jekyll-feed
+  - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
+# Variáveis Sociais
+social:
+  name: Eder Gross Cichelero
+  github: https://github.com/Hacerfak
+  youtube: https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw
+  spotify: https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo
+  soundcloud: https://soundcloud.com/hacerfak-music
+  steam: https://steamcommunity.com/id/hacerfak
+
+
 exclude:
   - .sass-cache/
   - .jekyll-cache/

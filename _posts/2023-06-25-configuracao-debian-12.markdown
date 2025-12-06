@@ -192,3 +192,5 @@ Após o download e a instalação é só reiniciar a máquina e a mágica aconte
 **OBS:** Se por acaso o icone de rede não identificar sua rede cabeada, edite o arquivo `sudo nano /etc/NetworkManager/NetWorkManager.conf`
 
 Na seção [ifupdown] altere a opção `managed` para `true`, salve e reinicie a máquina.
+
+Está feito! Agora é só aproveitar o Debian 12 com GNOME. 🍻❤️

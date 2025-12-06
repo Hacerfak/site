@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'pt-BR' }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+
+    {% seo %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    {% include google-analytics.html %}
+
+    {% include custom-head.html %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">🐧 {{ site.title }}</a>
+            <nav>
+                <a href="/blog/">Posts</a>
+                <a href="/sobre/">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {{ content }}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+
+            <div class="social-links">
+
+                {% if site.social.github %}
+                <a href="{{ site.social.github }}" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                {% endif %}
+
+                {% if site.social.youtube %}
+                <a href="{{ site.social.youtube }}" target="_blank" class="social-btn" aria-label="YouTube"
+                    title="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                {% endif %}
+
+                {% if site.social.spotify %}
+                <a href="{{ site.social.spotify }}" target="_blank" class="social-btn" aria-label="Spotify"
+                    title="Spotify">
+                    <i class="fa-brands fa-spotify"></i>
+                </a>
+                {% endif %}
+
+                {% if site.social.soundcloud %}
+                <a href="{{ site.social.soundcloud }}" target="_blank" class="social-btn" aria-label="SoundCloud"
+                    title="SoundCloud">
+                    <i class="fa-brands fa-soundcloud"></i>
+                </a>
+                {% endif %}
+
+                {% if site.social.steam %}
+                <a href="{{ site.social.steam }}" target="_blank" class="social-btn" aria-label="Steam" title="Steam">
+                    <i class="fa-brands fa-steam"></i>
+                </a>
+                {% endif %}
+
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed">
+                    <i class="fa-solid fa-rss"></i>
+                </a>
+
+            </div>
+
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; {{ site.time | date: '%Y' }} {{ site.title }}
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<article class="post-content">
+    <header style="margin-bottom: 30px;">
+        <h1>{{ page.title }}</h1>
+        <span class="meta">Publicado em: {{ page.date | date: "%d/%m/%Y" }}</span>
+    </header>
+
+    {{ content }}
+
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+    <a href="/">&larr; Voltar para o início</a>
+</article>

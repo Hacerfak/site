@@ -1,125 +1,43 @@
 ---
-permalink: /404.html
 layout: default
+title: 404
+permalink: /404.html
 ---
 
-<style>
-  /* Estilos CSS para a página moderna */
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    background-color: #919292;
-    /* Cinza claro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    height: 100vh;
-    margin: 0;
-    padding: 20px;
-  }
+<div class="error-wrapper">
+  <div class="error-code">404</div>
 
-  .container {
-    max-width: 650px;
-    padding: 50px;
-    background-color: #333;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease-in-out;
-  }
+  <h1 style="font-size: 2rem; margin-bottom: 30px;">Kernel Panic!</h1>
 
-  .container:hover {
-    transform: translateY(-5px);
-  }
+  <div class="terminal-box" style="width: 100%; max-width: 500px;">
+    <div class="terminal-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
 
-  .error-code {
-    font-size: 120px;
-    font-weight: 800;
-    color: #d1d5db;
-    /* Cinza suave */
-    margin: 0;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-    transition: color 0.4s ease;
-  }
+    <div>
+      <span class="cmd-prompt">root@host</span>:<span class="cmd-path">/var/www</span># cd {{ page.url }}
+    </div>
 
-  .container:hover .error-code {
-    color: #9ca3af;
-  }
+    <div style="color: #ff5f56; margin: 10px 0;">
+      bash: cd: {{ page.url }}: No such file or directory
+    </div>
 
-  h2 {
-    font-size: 32px;
-    color: #0164c7;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    font-weight: 600;
-  }
-
-  p {
-    font-size: 18px;
-    color: #bebebe;
-    line-height: 1.6;
-    margin-bottom: 25px;
-  }
-
-  .image-container img {
-    max-width: 80%;
-    height: auto;
-    border-radius: 8px;
-    margin: 20px 0;
-    opacity: 0.9;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: opacity 0.3s ease;
-  }
-
-  .image-container img:hover {
-    opacity: 1;
-  }
-
-  .button {
-    display: inline-block;
-    padding: 14px 30px;
-    background-color: #0164c7;
-    /* Azul primário */
-    color: #d1d5db;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-
-  .button:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-  }
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .container {
-      padding: 30px;
-    }
-
-    .error-code {
-      font-size: 80px;
-    }
-
-    h2 {
-      font-size: 24px;
-    }
-
-    p {
-      font-size: 16px;
-    }
-  }
-</style>
-
-<div class="container">
-  <h1 class="error-code">404</h1>
-  <h2>Oops! Página não encontrada.</h2>
-  <p>A página que você está procurando não existe!</p>
-  <p>Se você veio do futuro, talvez ela já exista lá :D</p>
-  <div class="image-container">
-    <img src="/assets/404.png" alt="Um CD perdido no espaço">
+    <div>
+      <span class="cmd-prompt">root@host</span>:<span class="cmd-path">/var/www</span># <span class="cursor"></span>
+    </div>
   </div>
-  <a href="https://hacerfak.com.br" class="button">Ir para a página inicial</a>
+
+  <p style="color: var(--text-muted); margin-top: 30px;">
+    O que você procura foi movido, deletado ou nunca existiu.
+  </p>
+
+  <p style="color: var(--text-muted); margin-top: 30px;">
+    Se você veio do futuro, talvez ela já exista lá. 😅
+  </p>
+
+  <a href="/" class="btn" style="margin-top: 20px;">
+    sudo reboot (Voltar ao Início)
+  </a>
 </div>

@@ -1,0 +1,32 @@
+---
+layout: default
+title: Todos os Posts
+---
+<section style="margin-top: 20px;">
+    <h2>Todos os Artigos</h2>
+</section>
+
+<div class="cards-grid">
+    {% for post in paginator.posts %}
+    <article class="card">
+        <div class="card-content">
+            <small class="date">{{ post.date | date: "%d/%m/%Y" }}</small>
+            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+            <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+            <a href="{{ post.url | relative_url }}" class="read-more">Ler artigo</a>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | relative_url }}" class="btn">Anterior</a>
+    {% endif %}
+
+    <span>Página {{ paginator.page }} de {{ paginator.total_pages }}</span>
+
+    {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | relative_url }}" class="btn">Próxima</a>
+    {% endif %}
+</div>
