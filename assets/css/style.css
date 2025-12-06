@@ -209,15 +209,93 @@ p {
     border-bottom: 1px solid var(--border-color);
 }
 
+/* --- LISTAS ESTILIZADAS (Novo Design) --- */
+
+/* Remove o estilo padrão chato */
 .post-content ul,
 .post-content ol {
-    margin-left: 25px;
-    margin-bottom: 25px;
-    color: var(--text-muted);
+    padding-left: 0;
+    margin: 25px 0;
+    list-style: none;
+    /* Removemos as bolinhas/números originais */
 }
 
+/* Espaçamento dos itens */
 .post-content li {
-    margin-bottom: 8px;
+    position: relative;
+    padding-left: 30px;
+    /* Espaço para o nosso novo marcador */
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+/* --- Unordered List (UL) - Marcador Chevron › --- */
+.post-content ul li::before {
+    content: "›";
+    /* Símbolo de terminal/seta */
+    position: absolute;
+    left: 0;
+    top: -2px;
+    /* Ajuste fino vertical */
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+/* Efeito Hover na lista (o ícone se move) */
+.post-content ul li:hover::before {
+    transform: translateX(3px);
+    /* Animação sutil para a direita */
+}
+
+/* --- Ordered List (OL) - Números Monospace --- */
+.post-content ol {
+    counter-reset: post-counter;
+    /* Inicia contador CSS */
+}
+
+.post-content ol li {
+    counter-increment: post-counter;
+}
+
+.post-content ol li::before {
+    content: counter(post-counter) ".";
+    /* Gera o número */
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--primary-color);
+    font-family: 'Fira Code', 'Consolas', monospace;
+    /* Fonte de código */
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* --- Listas Aninhadas (Sub-listas) --- */
+.post-content ul ul,
+.post-content ol ol,
+.post-content ul ol,
+.post-content ol ul {
+    margin: 10px 0 10px 20px;
+    /* Recuo para dentro */
+    border-left: 2px solid var(--border-color);
+    /* Linha guia visual */
+    padding-left: 15px;
+}
+
+/* Ajuste para sub-itens não terem marcador duplo ou errado */
+.post-content ul ul li,
+.post-content ol ul li {
+    padding-left: 25px;
+}
+
+.post-content ul ul li::before {
+    content: "•";
+    /* Sub-lista volta a ser bolinha, mas colorida */
+    font-size: 1.2rem;
+    top: -3px;
 }
 
 /* Tratamento de Imagens */
