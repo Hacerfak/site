@@ -1,32 +1,120 @@
 ---
 layout: default
-title: Todos os Posts
+title: Todos os Artigos
 ---
-<section style="margin-top: 20px;">
-    <h2>Todos os Artigos</h2>
-</section>
 
-<div class="cards-grid">
-    {% for post in paginator.posts %}
-    <article class="card">
-        <div class="card-content">
-            <small class="date">{{ post.date | date: "%d/%m/%Y" }}</small>
-            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-            <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-            <a href="{{ post.url | relative_url }}" class="read-more">Ler artigo</a>
+<script src="https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js"></script>
+
+<div class="container" style="max-width: 900px;">
+
+    <h2 style="text-align: center; margin-top: 30px; margin-bottom: 30px;">📚 Artigos 📚</h2>
+
+    <div class="blog-controls">
+
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon-overlay"></i>
+            <input type="text" id="search-input" placeholder="Pesquisar por título, comando...">
         </div>
-    </article>
-    {% endfor %}
-</div>
 
-<div class="pagination">
-    {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path | relative_url }}" class="btn">Anterior</a>
+        <ul class="category-pills">
+            {% for category in site.categories %}
+            <li>
+                <a href="javascript:void(0)" class="category-btn" data-category="{{ category[0] }}">
+                    {{ category[0] | capitalize }} <small>({{ category[1].size }})</small>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <ul id="results-container"></ul>
+
+    <div id="default-grid" class="cards-grid">
+        {% assign posts_to_show = paginator.posts | default: site.posts %}
+        {% for post in posts_to_show limit:10 %}
+        <div class="card">
+            <small class="meta">
+                <i class="fa-regular fa-calendar"></i> {{ post.date | date: "%d/%m/%Y" }}
+                {% if post.categories.size > 0 %}
+                &nbsp;•&nbsp; {{ post.categories | first }}
+                {% endif %}
+            </small>
+            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+            <a href="{{ post.url | relative_url }}">Ler Artigo &rarr;</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if paginator.total_pages > 1 %}
+    <div id="pagination-container" class="pagination">
+        {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path | relative_url }}" class="btn">&larr; Anterior</a>
+        {% else %}
+        <span class="btn" style="opacity:0.5; cursor:not-allowed; background:#ccc;">&larr; Anterior</span>
+        {% endif %}
+
+        <span style="display:inline-block; margin: 0 15px;">
+            Página <strong>{{ paginator.page }}</strong> de <strong>{{ paginator.total_pages }}</strong>
+        </span>
+
+        {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path | relative_url }}" class="btn">Próxima &rarr;</a>
+        {% else %}
+        <span class="btn" style="opacity:0.5; cursor:not-allowed; background:#ccc;">Próxima &rarr;</span>
+        {% endif %}
+    </div>
     {% endif %}
 
-    <span>Página {{ paginator.page }} de {{ paginator.total_pages }}</span>
-
-    {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path | relative_url }}" class="btn">Próxima</a>
-    {% endif %}
 </div>
+
+<script>
+    // 1. Inicializa a Busca
+    var sjs = SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: '{{ "/search.json" | relative_url }}',
+        searchResultTemplate: '<li class="search-result-item"><a href="{url}">{title}</a><span>{date} • {category}</span></li>',
+        noResultsText: '<li style="text-align:center; color:var(--text-muted)">Nenhum artigo encontrado.</li>',
+        limit: 10,
+        fuzzy: false
+    });
+
+    // 2. Elementos da DOM
+    const searchInput = document.getElementById('search-input');
+    const defaultGrid = document.getElementById('default-grid');
+    const pagination = document.getElementById('pagination-container');
+    const categoryButtons = document.querySelectorAll('.category-btn'); // Pega todos os botões
+
+    // 3. Lógica para esconder grid ao digitar
+    searchInput.addEventListener('keyup', handleSearchVisibility);
+    searchInput.addEventListener('input', handleSearchVisibility); // Garante que funcione no mobile/colar
+
+    function handleSearchVisibility() {
+        if (this.value.length > 0) {
+            if (defaultGrid) defaultGrid.style.display = 'none';
+            if (pagination) pagination.style.display = 'none';
+        } else {
+            if (defaultGrid) defaultGrid.style.display = 'grid';
+            if (pagination) pagination.style.display = 'block';
+        }
+    }
+
+    // 4. Lógica dos Botões de Categoria (CORREÇÃO)
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault(); // Evita pular a tela
+
+            const categoryName = this.getAttribute('data-category');
+
+            // Preenche o input
+            searchInput.value = categoryName;
+
+            // Força o disparo dos eventos para a biblioteca de busca acordar
+            searchInput.dispatchEvent(new Event('keyup', { bubbles: true }));
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+            // Foca no input para o usuário continuar digitando se quiser
+            searchInput.focus();
+        });
+    });
+</script>

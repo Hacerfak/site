@@ -50,7 +50,6 @@ title: Home
         <div class="card">
             <small class="meta">{{ post.date | date: "%d/%m/%Y" }}</small>
             <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-            <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
             <a href="{{ post.url | relative_url }}" style="font-weight:bold; margin-top: auto;">Ler Artigo &rarr;</a>
         </div>
         {% endfor %}

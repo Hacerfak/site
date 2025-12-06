@@ -11,7 +11,7 @@
     --text-muted: #666666;
     --border-color: #E1E4E8;
 
-    /* Cores de Fundo do Código (Sempre Escuro para contraste) */
+    /* Cores de Fundo do Código */
     --code-bg: #282C34;
     --code-text: #ABB2BF;
 
@@ -133,7 +133,7 @@ nav a:hover {
 }
 
 /* =========================================
-   4. LAYOUT DE CONTEÚDO
+   4. LAYOUT DE CONTEÚDO (Cards Compactos)
    ========================================= */
 main {
     flex: 1;
@@ -157,19 +157,24 @@ p {
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
+    gap: 25px;
+    /* Gap um pouco menor */
     margin-top: 30px;
 }
 
+/* Card Ajustado */
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--img-radius);
-    padding: 25px;
+    padding: 20px;
+    /* Padding reduzido */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 160px
 }
 
 .card:hover {
@@ -178,326 +183,67 @@ p {
     border-color: var(--primary-color);
 }
 
+/* Título do Card */
+.card h3 {
+    margin-bottom: 8px;
+    font-size: 1.25rem;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.5em;
+}
+
+/* COR DO TÍTULO (Correção Solicitada) */
 .card h3 a {
-    color: var(--text-main);
+    color: var(--text-main) !important;
+    /* Força cor escura por padrão */
     text-decoration: none;
 }
 
 .card h3 a:hover {
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
+    /* Vermelho só no hover */
 }
 
+/* Metadados */
 .card .meta {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
-    margin-bottom: 10px;
-    display: block;
-}
-
-/* =========================================
-   5. ARTIGOS E IMAGENS
-   ========================================= */
-.post-content {
-    font-size: 1.125rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.post-content h2 {
-    margin-top: 50px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-/* --- LISTAS ESTILIZADAS (Novo Design) --- */
-
-/* Remove o estilo padrão chato */
-.post-content ul,
-.post-content ol {
-    padding-left: 0;
-    margin: 25px 0;
-    list-style: none;
-    /* Removemos as bolinhas/números originais */
-}
-
-/* Espaçamento dos itens */
-.post-content li {
-    position: relative;
-    padding-left: 30px;
-    /* Espaço para o nosso novo marcador */
     margin-bottom: 12px;
-    line-height: 1.6;
-}
-
-/* --- Unordered List (UL) - Marcador Chevron › --- */
-.post-content ul li::before {
-    content: "›";
-    /* Símbolo de terminal/seta */
-    position: absolute;
-    left: 0;
-    top: -2px;
-    /* Ajuste fino vertical */
-    color: var(--primary-color);
-    font-size: 1.5rem;
-    font-weight: bold;
-    line-height: 1;
-    transition: transform 0.2s ease;
-}
-
-/* Efeito Hover na lista (o ícone se move) */
-.post-content ul li:hover::before {
-    transform: translateX(3px);
-    /* Animação sutil para a direita */
-}
-
-/* --- Ordered List (OL) - Números Monospace --- */
-.post-content ol {
-    counter-reset: post-counter;
-    /* Inicia contador CSS */
-}
-
-.post-content ol li {
-    counter-increment: post-counter;
-}
-
-.post-content ol li::before {
-    content: counter(post-counter) ".";
-    /* Gera o número */
-    position: absolute;
-    left: 0;
-    top: 2px;
-    color: var(--primary-color);
-    font-family: 'Fira Code', 'Consolas', monospace;
-    /* Fonte de código */
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-/* --- Listas Aninhadas (Sub-listas) --- */
-.post-content ul ul,
-.post-content ol ol,
-.post-content ul ol,
-.post-content ol ul {
-    margin: 10px 0 10px 20px;
-    /* Recuo para dentro */
-    border-left: 2px solid var(--border-color);
-    /* Linha guia visual */
-    padding-left: 15px;
-}
-
-/* Ajuste para sub-itens não terem marcador duplo ou errado */
-.post-content ul ul li,
-.post-content ol ul li {
-    padding-left: 25px;
-}
-
-.post-content ul ul li::before {
-    content: "•";
-    /* Sub-lista volta a ser bolinha, mas colorida */
-    font-size: 1.2rem;
-    top: -3px;
-}
-
-/* Tratamento de Imagens */
-.post-content img {
-    max-width: 100%;
-    height: auto;
     display: block;
-    margin: 40px auto;
-    border-radius: var(--img-radius);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
-    opacity: 0.95;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    text-transform: capitalize;
 }
 
-.post-content img:hover {
-    transform: scale(1.02);
-    box-shadow: var(--shadow-md);
-    opacity: 1;
-}
-
-/* =========================================
-   6. SYNTAX HIGHLIGHTING (One Dark Style)
-   ========================================= */
-/* Código inline */
-p code,
-li code {
-    font-family: 'Fira Code', 'Consolas', monospace;
-    background: rgba(215, 10, 83, 0.08);
-    color: var(--primary-color);
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
-
-/* Bloco Principal */
-div.highlight {
-    margin: 30px 0;
-    border-radius: var(--img-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    background: var(--code-bg);
-}
-
-pre.highlight {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: 20px;
-    overflow-x: auto;
-    font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* Cores de Sintaxe (RESTAURADAS) */
-.highlight .c {
-    color: #5c6370;
-    font-style: italic;
-}
-
-/* Comentário (Cinza) */
-.highlight .k {
-    color: #c678dd;
-    font-weight: bold;
-}
-
-/* Keyword (Roxo) */
-.highlight .s {
-    color: #98c379;
-}
-
-/* String (Verde) */
-.highlight .na {
-    color: #e06c75;
-}
-
-/* Atributo (Vermelho) */
-.highlight .nb {
-    color: #e5c07b;
-}
-
-/* Built-in (Amarelo) */
-.highlight .nc {
-    color: #e5c07b;
-    text-decoration: underline;
-}
-
-/* Class (Amarelo) */
-.highlight .no {
-    color: #d19a66;
-}
-
-/* Constant (Laranja) */
-.highlight .nf {
-    color: #61afef;
-}
-
-/* Function (Azul) */
-.highlight .nt {
-    color: #e06c75;
-    font-weight: bold;
-}
-
-/* Tag (Vermelho) */
-.highlight .nv {
-    color: #e06c75;
-}
-
-/* Variable (Vermelho) */
-.highlight .ow {
-    color: #c678dd;
-    font-weight: bold;
-}
-
-/* Operator Word */
-.highlight .m {
-    color: #d19a66;
-}
-
-/* Number (Laranja) */
-.highlight .o {
-    color: #56b6c2;
-}
-
-/* Operator (Ciano) */
-.highlight .gd {
-    color: #e06c75;
-}
-
-/* Diff Delete */
-.highlight .gi {
-    color: #98c379;
-}
-
-/* Diff Insert */
-
-/* =========================================
-   7. RODAPÉ E PAGINAÇÃO (Atualizado com Ícones)
-   ========================================= */
-.pagination {
-    margin-top: 60px;
-    /* Garante 60px de distância dos cards */
-    margin-bottom: 60px;
-    text-align: center;
-    /* Centraliza os botões */
-    width: 100%;
-    /* Ocupa a largura total da tela */
-    display: block;
-    /* Garante quebra de linha */
-    clear: both;
-    /* Evita conflito com elementos flutuantes */
-}
-
-.pagination span {
-    margin: 0 15px;
+/* Resumo */
+.card p {
+    font-size: 0.9rem;
     color: var(--text-muted);
-    font-weight: bold;
-}
-
-.site-footer {
-    background: var(--bg-card);
-    border-top: 1px solid var(--border-color);
-    padding: 40px 0;
-    text-align: center;
-    margin-top: auto;
-    color: var(--text-muted);
-}
-
-/* Container dos ícones */
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    /* Espaço entre os ícones */
     margin-bottom: 15px;
+    flex-grow: 1;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-/* Estilo dos Links/Ícones */
-.social-links a {
-    color: var(--text-muted);
-    /* Cor padrão cinza */
-    font-size: 1.5rem;
-    /* Tamanho do ícone */
-    transition: all 0.3s ease;
+/* Botão "Ler Artigo" */
+.card a:last-child {
+    margin-top: auto;
+    font-weight: bold;
     display: inline-block;
-    margin: 0;
-    /* Remove margem lateral antiga pois usamos gap */
-}
-
-/* Efeito Hover (Fica vermelho e sobe um pouquinho) */
-.social-links a:hover {
     color: var(--primary-color);
-    transform: translateY(-3px);
+    font-size: 0.95rem;
 }
 
-/* BOTÕES */
+/* =========================================
+   5. COMPONENTES VISUAIS
+   ========================================= */
 .btn {
     background-color: var(--primary-color);
     color: #fff !important;
-    /* Força texto branco */
-    padding: 12px 24px;
+    padding: 10px 20px;
+    /* Botões levemente mais compactos */
     border-radius: 6px;
     font-weight: bold;
     display: inline-block;
@@ -505,6 +251,7 @@ pre.highlight {
     transition: opacity 0.2s, transform 0.2s;
     border: none;
     text-decoration: none !important;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -512,15 +259,10 @@ pre.highlight {
     transform: translateY(-2px);
 }
 
-/* =========================================
-   8. COMPONENTES DE TERMINAL & 404
-   ========================================= */
-
-/* Estilo Genérico do Terminal (Para Index, Sobre e 404) */
+/* Terminal Box */
 .terminal-box {
     background: var(--code-bg);
     color: var(--code-text);
-    /* Cor padrão do texto */
     padding: 20px 25px;
     border-radius: 8px;
     font-family: 'Fira Code', 'Consolas', monospace;
@@ -529,11 +271,8 @@ pre.highlight {
     margin: 20px auto;
     max-width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
 }
 
-/* Barra de título do terminal (opcional, estilo janela) */
 .terminal-header {
     display: flex;
     gap: 8px;
@@ -561,27 +300,16 @@ pre.highlight {
     background-color: #27c93f;
 }
 
-/* Cores de destaque dentro do terminal */
 .cmd-prompt {
     color: #98c379;
     font-weight: bold;
 }
 
-/* Verde para usuario@host */
 .cmd-path {
     color: #61afef;
     font-weight: bold;
 }
 
-/* Azul para a pasta */
-.cmd-output {
-    color: #abb2bf;
-    display: block;
-    margin-top: 5px;
-    margin-bottom: 15px;
-}
-
-/* Cursor piscante */
 .cursor::after {
     content: "▋";
     animation: blink 1s infinite;
@@ -601,7 +329,252 @@ pre.highlight {
     }
 }
 
-/* Layout Específico da Página 404 */
+/* =========================================
+   6. ARTIGOS, IMAGENS E LISTAS
+   ========================================= */
+.post-content {
+    font-size: 1.125rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.post-content h2 {
+    margin-top: 50px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 40px auto;
+    border-radius: var(--img-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    opacity: 0.95;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-content img:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-md);
+    opacity: 1;
+}
+
+.post-content ul,
+.post-content ol {
+    padding-left: 0;
+    margin: 25px 0;
+    list-style: none;
+}
+
+.post-content li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+}
+
+.post-content ul li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    top: -2px;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.post-content ul li:hover::before {
+    transform: translateX(3px);
+}
+
+.post-content ol {
+    counter-reset: post-counter;
+}
+
+.post-content ol li {
+    counter-increment: post-counter;
+}
+
+.post-content ol li::before {
+    content: counter(post-counter) ".";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--primary-color);
+    font-family: 'Fira Code', monospace;
+    font-weight: bold;
+}
+
+.post-content ul ul,
+.post-content ol ol,
+.post-content ul ol,
+.post-content ol ul {
+    margin: 10px 0 10px 20px;
+    border-left: 2px solid var(--border-color);
+    padding-left: 15px;
+}
+
+/* =========================================
+   7. SYNTAX HIGHLIGHTING (One Dark)
+   ========================================= */
+div.highlight {
+    margin: 30px 0;
+    border-radius: var(--img-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    background: var(--code-bg);
+}
+
+pre.highlight {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+p code,
+li code {
+    font-family: 'Fira Code', monospace;
+    background: rgba(215, 10, 83, 0.08);
+    color: var(--primary-color);
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.highlight .c {
+    color: #5c6370;
+    font-style: italic;
+}
+
+.highlight .k {
+    color: #c678dd;
+    font-weight: bold;
+}
+
+.highlight .s {
+    color: #98c379;
+}
+
+.highlight .na {
+    color: #e06c75;
+}
+
+.highlight .nb {
+    color: #e5c07b;
+}
+
+.highlight .nc {
+    color: #e5c07b;
+    text-decoration: underline;
+}
+
+.highlight .no {
+    color: #d19a66;
+}
+
+.highlight .nf {
+    color: #61afef;
+}
+
+.highlight .nt {
+    color: #e06c75;
+    font-weight: bold;
+}
+
+.highlight .nv {
+    color: #e06c75;
+}
+
+.highlight .ow {
+    color: #c678dd;
+    font-weight: bold;
+}
+
+.highlight .m {
+    color: #d19a66;
+}
+
+.highlight .o {
+    color: #56b6c2;
+}
+
+.highlight .gd {
+    color: #e06c75;
+}
+
+.highlight .gi {
+    color: #98c379;
+}
+
+/* =========================================
+   8. RODAPÉ (Font Awesome)
+   ========================================= */
+.site-footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: 40px 0;
+    text-align: center;
+    margin-top: auto;
+    color: var(--text-muted);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--bg-body);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    text-decoration: none !important;
+}
+
+.social-btn:hover {
+    background: var(--primary-color);
+    color: white !important;
+    transform: translateY(-3px);
+    border-color: var(--primary-color);
+}
+
+.pagination {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    text-align: center;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+
+.pagination span {
+    margin: 0 15px;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+/* =========================================
+   9. PÁGINA 404
+   ========================================= */
 .error-wrapper {
     text-align: center;
     padding: 40px 20px;
@@ -622,24 +595,102 @@ pre.highlight {
 }
 
 /* =========================================
-   9. RESPONSIVIDADE
+   10. BUSCA E FILTROS
    ========================================= */
-@media (max-width: 768px) {
-    .site-header {
-        height: auto;
-        padding: 15px 0;
-    }
+.blog-controls {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px dashed var(--border-color);
+    text-align: center;
+}
 
-    .site-header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
+.search-wrapper {
+    max-width: 500px;
+    margin: 0 auto 25px auto;
+    position: relative;
+}
 
-    .cards-grid {
-        grid-template-columns: 1fr;
-    }
+#search-input {
+    width: 100%;
+    padding: 15px 20px;
+    padding-left: 45px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-main);
+    border-radius: 30px;
+    font-size: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
 
-    .post-content {
-        font-size: 1rem;
-    }
+#search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(215, 10, 83, 0.1);
+}
+
+.search-icon-overlay {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.category-pills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-pills li a {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: var(--bg-body);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.category-pills li a:hover,
+.category-pills li a.active {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+#results-container {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.search-result-item {
+    background: var(--bg-card);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-result-item a {
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.search-result-item span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
