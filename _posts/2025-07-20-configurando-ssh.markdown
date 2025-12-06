@@ -2,7 +2,7 @@
 layout: post
 title:  "Configuração básica do server SSH"
 date:   2025-07-20 20:05:00 -0300
-categories: debian
+categories: [SSH, Infraestrutura, Tutorial]
 ---
 # Sobre o conteúdo
 

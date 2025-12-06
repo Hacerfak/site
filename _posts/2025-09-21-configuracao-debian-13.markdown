@@ -2,7 +2,7 @@
 layout: post
 title:  "Configurações pós instalação do Debian 13"
 date:   2025-09-21 18:15:00 -0300
-categories: debian
+categories: [Debian, Linux, Tutorial]
 featured: true
 ---
 

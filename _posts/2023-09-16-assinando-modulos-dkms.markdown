@@ -2,7 +2,7 @@
 layout: post
 title:  "SecureBoot - Assinando módulos com DKMS"
 date:   2023-09-16 15:00:00 -0300
-categories: debian
+categories: [Debian, Linux, Tutorial, DKMS, SecureBoot]
 featured: true
 ---
 # Sobre o conteúdo
