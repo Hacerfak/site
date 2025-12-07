@@ -2,7 +2,7 @@
 layout: post
 title:  "Como criar uma infra com PiHole e WireGuard VPN"
 date:   2023-11-02 09:50:00 -0300
-categories: Infraestrutura
+categories: [VPN, Pihole, WireGuard]
 ---
 
 ## Sobre o conteúdo

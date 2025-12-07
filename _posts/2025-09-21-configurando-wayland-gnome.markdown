@@ -2,7 +2,7 @@
 layout: post
 title: "Configuração do Wayland no Gnome 48 com NVIDIA no Debian 12/13"
 date: 2025-09-21 19:25:00 -0300
-categories: [Debian, Linux, Tutorial, NVIDIA, Wayland, Gnome]
+categories: [Debian, NVIDIA, Wayland, GNOME]
 featured: true
 ---
 # Sobre o conteúdo
