@@ -31,14 +31,14 @@ sudo nano /etc/ssh/sshd_config
 
 Nesse arquivos vamos editar os seguintes parâmetros:
 
-```Markdown
+~~~conf
 # Se quiser alterar a porta padrão do SSH, o padrão é a 22
 Port 22 
 # Tempo que o usuario tem para fazer login, no caso defini para 10 segundos
 LoginGraceTime 10 
 # Não permita que o usuário root se conecte diretamente
 PermitRootLogin no
-```
+~~~
 
 Salve o arquivo e então reinicie o serviço do SSH.
 

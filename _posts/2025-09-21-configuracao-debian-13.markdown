@@ -27,20 +27,30 @@ Quanto a instalação do Debian, ela é feita a partir de uma mídia de instala�
 
 Basicamente ao finalizar a instalação eu tenho um sistema com **222** pacotes instalados.
 
-Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: `apt list –-installed | wc -l` ou `sudo apt list –-installed | wc -l` caso não seja superusuário.
+Você pode visualizar a quantidade de pacotes instalados ao rodar o comando: 
+~~~bash
+apt list –-installed | wc -l
+sudo apt list –-installed | wc -l # caso não seja superusuário.
+~~~
 
 # O pacote SUDO e o auto complete do BASH
 
 Como primeiro passo eu instalo o pacote [sudo](https://wiki.debian.org/sudo) para conseguir executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no usuário _root_. Depois é só executar os comandos:
 
-1. `apt install sudo` - para instalar o pacote.
-2. `adduser usuário sudo` - para adicionar o usuário ao grupo _sudo_, e assim ter acesso aos recursos. Onde "usuário" é o seu login.
+~~~bash
+apt install sudo
+adduser usuário sudo 
+~~~
+
+Onde no segundo comando, substitua _usuário_ pelo nome do seu usuário comum.
 
 Após é só deslogar de root com o comando _exit_
 
-Agora podemos logar no usuário comum, e assim já podemos testar o funcionamento do sudo instalando o pacote **bash-completion** que ajuda com opções de auto completar usando tab.
+Agora podemos logar no usuário comum, e assim já podemos testar o funcionamento do sudo instalando o pacote `bash-completion` que ajuda com opções de auto completar usando tab.
 
-`sudo apt install bash-completion`
+~~~bash
+sudo apt install bash-completion
+~~~
 
 Será solicitada a senha do usuário para finalizar a execução do comando.
 
@@ -68,10 +78,13 @@ Para editá-lo, devemos usar o comando sudo para ter privilégios de superusuár
 
 Como editor de texto, eu gosto de utilizar o [nano](https://packages.debian.org/bookworm/nano). Então para editar o arquivo, usamos:
 
-`sudo nano /etc/apt/sources.list.d/debian.sources`
+~~~bash
+sudo nano /etc/apt/sources.list.d/debian.sources
+~~~
 
 A sintaxe para configuração os repositórios basicamente é:
-  ~~~ENV
+
+  ~~~conf
   Types: deb deb-src
   URIs: http://deb.debian.org/debian/
   Suites: stable stable-backports

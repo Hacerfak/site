@@ -63,7 +63,7 @@ Com a partição ESP montada na letra "Z", agora podemos utilizar o comando `bcd
 O comando `bcdboot` copia os arquivos de boot do Windows para a partição ESP e recria a entrada de boot.
 
 Utilize o seguinte comando para restaurar a entrada de boot do Windows:
-~~~shell
+~~~msshell
 bcdboot C:\Windows /s Z: /f UEFI
 ~~~
 

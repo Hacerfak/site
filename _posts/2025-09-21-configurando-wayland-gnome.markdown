@@ -112,7 +112,7 @@ No debian 12/13, o módulo `nvidia-drm` não é carregado por padrão, e ele é 
 Para incializar o módulo `nvidia-drm` durante a inicialização do sistema, podemos editar o editar o arquivo do gerenciador de inicialização.
 
 No meu caso eu utilizo o GRUB, então edito o arquivo `/etc/default/grub` e adiciono a seguinte linha:
-~~~shell
+~~~conf
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash ... nvidia-drm.modeset=1"
 ~~~
 
@@ -131,7 +131,7 @@ Esses serviços são: `nvidia-hibernate.service`, `nvidia-resume.service` e `nvi
 
 Para verificar o status desses serviços, rode o comando:
 ~~~shell
-systemctl status nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
+sudo systemctl status nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
 ~~~
 Se eles não estiverem habilitados, você pode habilitá-los com o comando:
 ~~~shell
@@ -141,7 +141,7 @@ sudo systemctl enable nvidia-hibernate.service nvidia-resume.service nvidia-susp
 Além disso, você precisará verificar se o parâmetro `PreserveVideoMemoryAllocations` do módulo NVIDIA está ativado.
 Para isso, rode o seguinte comando:
 ~~~shell
-echo 'options nvidia NVreg_PreserveVideoMemoryAllocations=1' > /etc/modprobe.d/nvidia-power-management.conf
+sudo echo 'options nvidia NVreg_PreserveVideoMemoryAllocations=1' > /etc/modprobe.d/nvidia-power-management.conf
 ~~~
 
 Esses serviços são importantes para o gerenciamento de energia e para evitar problemas de tela preta ao suspender ou hibernar o sistema. E caso não estejam habilitados, o GDM não irá habilitar a opção de usar o Wayland no Gnome.
