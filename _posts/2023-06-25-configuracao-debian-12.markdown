@@ -67,8 +67,10 @@ Como editor de texto, eu gosto de utilizar o [nano](https://packages.debian.org/
 
 A sintaxe para configuração os repositórios basicamente é:
 
+  ~~~sourceslist
     deb http://site.example.com/debian distribution component1 component2 component3
     deb-src http://site.example.com/debian distribution component1 component2 component3
+  ~~~
 
 Onde temos as seguintes seções:
 
