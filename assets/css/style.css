@@ -613,6 +613,51 @@ td code {
     color: #d19a66;
 }
 
+/* --- SOURCES.LIST CLÁSSICO (.list) --- */
+.language-sourceslist .highlight .k {
+    color: #c678dd;
+    font-weight: bold;
+}
+
+.language-sourceslist .highlight .s,
+.language-sourceslist .highlight .nn {
+    color: #98c379;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.language-sourceslist .highlight .nl,
+.language-sourceslist .highlight .vi {
+    color: #61afef;
+    font-weight: bold;
+}
+
+.language-sourceslist .highlight .na,
+.language-sourceslist .highlight .nb {
+    color: #e5c07b;
+}
+
+/* --- NOVO PADRÃO DEB822 (.sources) --- */
+.language-yaml .highlight .na,
+.language-yaml .highlight .nt {
+    color: #e06c75;
+    font-weight: bold;
+}
+
+/* Valores (URLs, nomes) -> Verde */
+.language-yaml .highlight .s,
+.language-yaml .highlight .s1,
+.language-yaml .highlight .s2 {
+    color: #98c379;
+}
+
+/* Booleanos e Arquiteturas (Ex: yes, amd64) -> Laranja */
+.language-yaml .highlight .kc,
+.language-yaml .highlight .m {
+    color: #d19a66;
+}
+
 /* --- SUPORTE ESPECÍFICO --- */
 
 /* Diff (Git) - Adições e Remoções */

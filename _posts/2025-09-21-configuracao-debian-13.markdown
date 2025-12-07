@@ -84,7 +84,7 @@ sudo nano /etc/apt/sources.list.d/debian.sources
 
 A sintaxe para configuração os repositórios basicamente é:
 
-  ~~~conf
+  ~~~yaml
   Types: deb deb-src
   URIs: http://deb.debian.org/debian/
   Suites: stable stable-backports
