@@ -118,17 +118,24 @@ $SERVER["socket"] == ":443" {
 }
 ~~~
 
-Substitua `your-domain.com.br` pelo seu domínio real. Salve e feche o arquivo.
+Substitua `your-domain.com.br` pelo seu domínio real. 
+
+Vamos também configurar o Lighttpd para redirecionar todo o tráfego HTTP para HTTPS. Adicione as seguintes linhas ao arquivo de configuração:
+~~~conf
+$HTTP["scheme"] == "http" {
+    url.redirect = ("" => "https://${url.authority}${url.path}${qsa}")
+}
+~~~
+
+Salve e feche o arquivo.
+
 Agora, reinicie o Lighttpd para aplicar as mudanças:
 ~~~bash
 sudo systemctl restart lighttpd
 ~~~
 
 ## Passo 5: Testar a configuração
-Agora, você deve ser capaz de acessar seu site via HTTPS. Abra o navegador e vá para:
-~~~url
-https://your-domain.com.br
-~~~
+Agora, você deve ser capaz de acessar seu site via HTTPS. Abra o navegador e vá para o seu domínio.
 
 Você deve ver o site carregando com um cadeado indicando que a conexão é segura.
 

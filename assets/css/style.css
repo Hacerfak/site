@@ -419,100 +419,266 @@ p {
 }
 
 /* =========================================
-   7. SYNTAX HIGHLIGHTING (One Dark)
+   7. SYNTAX HIGHLIGHTING (One Dark - COMPLETO)
    ========================================= */
+
+/* Bloco Principal de Código */
 div.highlight {
     margin: 30px 0;
     border-radius: var(--img-radius);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     background: var(--code-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Área de Texto Pré-formatado */
 pre.highlight {
     background: var(--code-bg);
     color: var(--code-text);
     padding: 20px;
     overflow-x: auto;
-    font-family: 'Fira Code', 'Consolas', monospace;
+    /* Scroll horizontal se a linha for longa */
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
     font-size: 0.95rem;
     line-height: 1.5;
     margin: 0;
+    white-space: pre;
+    /* Garante que espaços e quebras sejam respeitados */
 }
 
+/* Código Inline (ex: `apt update`) */
 p code,
-li code {
+li code,
+td code {
     font-family: 'Fira Code', monospace;
     background: rgba(215, 10, 83, 0.08);
+    /* Fundo avermelhado bem leve */
     color: var(--primary-color);
-    padding: 3px 6px;
+    padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.9em;
+    border: 1px solid rgba(215, 10, 83, 0.1);
 }
 
-.highlight .c {
+/* --- PALETA DE CORES (One Dark Pro) --- */
+
+/* 1. Comentários (Cinza Itálico) */
+.highlight .c,
+/* Comment */
+.highlight .cm,
+/* Comment.Multiline */
+.highlight .cp,
+/* Comment.Preproc */
+.highlight .c1,
+/* Comment.Single */
+.highlight .cs
+
+/* Comment.Special */
+    {
     color: #5c6370;
     font-style: italic;
 }
 
-.highlight .k {
+/* 2. Palavras-Chave e Operadores (Roxo) */
+.highlight .k,
+/* Keyword */
+.highlight .kc,
+/* Keyword.Constant */
+.highlight .kd,
+/* Keyword.Declaration */
+.highlight .kp,
+/* Keyword.Pseudo */
+.highlight .kr,
+/* Keyword.Reserved */
+.highlight .kt,
+/* Keyword.Type */
+.highlight .ow
+
+/* Operator.Word */
+    {
     color: #c678dd;
     font-weight: bold;
 }
 
-.highlight .s {
-    color: #98c379;
-}
+/* 3. Operadores Matemáticos/Símbolos (Ciano) */
+.highlight .o,
+/* Operator */
+.highlight .p
 
-.highlight .na {
-    color: #e06c75;
-}
-
-.highlight .nb {
-    color: #e5c07b;
-}
-
-.highlight .nc {
-    color: #e5c07b;
-    text-decoration: underline;
-}
-
-.highlight .no {
-    color: #d19a66;
-}
-
-.highlight .nf {
-    color: #61afef;
-}
-
-.highlight .nt {
-    color: #e06c75;
-    font-weight: bold;
-}
-
-.highlight .nv {
-    color: #e06c75;
-}
-
-.highlight .ow {
-    color: #c678dd;
-    font-weight: bold;
-}
-
-.highlight .m {
-    color: #d19a66;
-}
-
-.highlight .o {
+/* Punctuation */
+    {
     color: #56b6c2;
 }
 
-.highlight .gd {
+/* 4. Strings e Textos (Verde) */
+.highlight .s,
+/* String */
+.highlight .sa,
+/* String.Affix */
+.highlight .sb,
+/* String.Backtick */
+.highlight .sc,
+/* String.Char */
+.highlight .dl,
+/* String.Delimiter */
+.highlight .sd,
+/* String.Doc */
+.highlight .s2,
+/* String.Double */
+.highlight .se,
+/* String.Escape */
+.highlight .sh,
+/* String.Heredoc */
+.highlight .si,
+/* String.Interpol */
+.highlight .sx,
+/* String.Other */
+.highlight .sr,
+/* String.Regex */
+.highlight .s1,
+/* String.Single */
+.highlight .ss
+
+/* String.Symbol */
+    {
+    color: #98c379;
+}
+
+/* 5. Funções e Métodos (Azul) */
+.highlight .f,
+/* Function */
+.highlight .fm,
+/* Function.Magic */
+.highlight .nf
+
+/* Name.Function */
+    {
+    color: #61afef;
+}
+
+/* 6. Classes, Tipos e Built-ins (Amarelo/Dourado) */
+.highlight .nb,
+/* Name.Builtin */
+.highlight .nc,
+/* Name.Class */
+.highlight .no,
+/* Name.Constant */
+.highlight .nn
+
+/* Name.Namespace (ex: [Section] em INI) */
+    {
+    color: #e5c07b;
+}
+
+/* 7. Variáveis, Tags e Atributos (Vermelho/Coral) */
+.highlight .nt,
+/* Name.Tag (HTML tags) */
+.highlight .nv,
+/* Name.Variable */
+.highlight .vc,
+/* Name.Variable.Class */
+.highlight .vg,
+/* Name.Variable.Global */
+.highlight .vi,
+/* Name.Variable.Instance */
+.highlight .na,
+/* Name.Attribute (HTML attrs, JSON keys) */
+.highlight .py,
+/* Name.Property */
+.highlight .nl
+
+/* Name.Label */
+    {
     color: #e06c75;
 }
 
+/* 8. Números e Constantes (Laranja) */
+.highlight .m,
+/* Number */
+.highlight .mb,
+/* Number.Bin */
+.highlight .mf,
+/* Number.Float */
+.highlight .mh,
+/* Number.Hex */
+.highlight .mi,
+/* Number.Integer */
+.highlight .il,
+/* Literal.Number.Integer.Long */
+.highlight .mo
+
+/* Number.Oct */
+    {
+    color: #d19a66;
+}
+
+/* --- SUPORTE ESPECÍFICO --- */
+
+/* Diff (Git) - Adições e Remoções */
+.highlight .gd {
+    color: #e06c75;
+    background-color: rgba(224, 108, 117, 0.15);
+    display: block;
+    margin: 0 -20px;
+    padding: 0 20px;
+}
+
+/* Generic.Deleted (-) */
 .highlight .gi {
     color: #98c379;
+    background-color: rgba(152, 195, 121, 0.15);
+    display: block;
+    margin: 0 -20px;
+    padding: 0 20px;
+}
+
+/* Generic.Inserted (+) */
+.highlight .gu {
+    color: #56b6c2;
+}
+
+/* Generic.Subheading (@@ ... @@) */
+
+/* JSON Keys (Geralmente aparecem como Attribute ou String) */
+.language-json .highlight .nt,
+.language-json .highlight .na {
+    color: #e06c75;
+}
+
+/* Chaves em vermelho */
+.language-json .highlight .s2 {
+    color: #98c379;
+}
+
+/* Valores string em verde */
+
+/* CSS */
+.language-css .highlight .nt {
+    color: #e06c75;
+}
+
+/* Seletores */
+.language-css .highlight .nc {
+    color: #e5c07b;
+}
+
+/* Classes */
+.language-css .highlight .id {
+    color: #61afef;
+}
+
+/* IDs */
+.language-css .highlight .na {
+    color: #d19a66;
+}
+
+/* Propriedades */
+
+/* Erros */
+.highlight .err {
+    color: #f44747;
+    background-color: rgba(244, 71, 71, 0.1);
 }
 
 /* =========================================
