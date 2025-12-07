@@ -146,7 +146,7 @@ sudo crontab -e
 ~~~
 
 Adicione a seguinte linha ao final do arquivo:
-~~~cron
+~~~conf
 0 3 * * * /usr/bin/certbot renew --quiet
 ~~~
 
