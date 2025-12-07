@@ -99,6 +99,10 @@ sudo certbot certonly --standalone -d your-domain.com.br
 ~~~
 Siga as instruções na tela para completar o processo de obtenção do certificado. O Certbot irá verificar se você possui o domínio e, se tudo estiver correto, emitirá o certificado.
 
+Você pode encontrar os certificados emitidos em:
+- `/etc/letsencrypt/live/your-domain.com.br/fullchain.pem` (certificado completo)
+- `/etc/letsencrypt/live/your-domain.com.br/privkey.pem` (chave privada)
+
 ## Passo 4: Configurar o Lighttpd para usar o certificado SSL
 Agora que temos o certificado SSL, precisamos configurar o Lighttpd para usá-lo. Edite o arquivo de configuração do Lighttpd novamente:
 ~~~bash
