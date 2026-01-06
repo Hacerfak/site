@@ -1,8 +1,16 @@
 ---
+title: "Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro"
+excerpt: "Passo a passo completo para configurar o Debian 13 Trixie após a instalação. Aprenda a configurar repositórios, sudo, drivers e otimização do sistema."
+description: "Dicas essenciais para deixar seu Debian 13 Trixie pronto para o uso diário, incluindo configuração de fontes, non-free-firmware e personalização."
+date: 2025-09-21 10:00:00 -0300
+last_modified_at: 2025-10-05 15:00:00 -0300
 layout: post
-title:  "Configurações pós instalação do Debian 13"
-date:   2025-09-21 18:15:00 -0300
-categories: [Debian]
+categories: [Linux, Debian]
+tags: [Debian 13, Trixie, Pós-instalação, Linux Desktop]
+image: 
+  path: /assets/debian/debian13.png
+  alt: "Logo do Debian 13 estilizado"
+author: Eder Gross Cichelero
 featured: true
 ---
 
