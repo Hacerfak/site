@@ -38,7 +38,7 @@ social:
   soundcloud: https://soundcloud.com/hacerfak-music
   steam: https://steamcommunity.com/id/hacerfak
 
-
+enforce_ssl: true
 exclude:
   - .sass-cache/
   - .jekyll-cache/
