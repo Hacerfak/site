@@ -1,8 +1,16 @@
 ---
 layout: post
-title: "Como configurar o Lighttpd com Let's Encrypt no Debian"
-date: 2025-11-30 22:30:00 -0300
-categories: [Lighttpd, Debian, Let's Encrypt]
+title: "SSL Grátis no Lighttpd com Let's Encrypt e Certbot"
+excerpt: "Proteja o seu site com HTTPS utilizando certificados Let's Encrypt no servidor web Lighttpd de forma automatizada."
+description: "Passo a passo para instalar o Certbot, gerar certificados SSL para o Lighttpd e configurar a renovação automática no Debian."
+date: 2025-11-30 10:00:00 -0300
+last_modified_at: 2025-12-02 14:00:00 -0300
+categories: [Servidores, SSL]
+tags: [Lighttpd, Let's Encrypt, Certbot, HTTPS, Debian]
+image: 
+  path: /assets/ssl/light-ssl.png
+  alt: "Logo do Lighttpd com SSL"
+author: Eder Gross Cichelero
 featured: true
 ---
 # Sobre o conteúdo

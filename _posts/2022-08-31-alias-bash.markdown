@@ -1,8 +1,13 @@
 ---
 layout: post
-title:  "Como criar um alias no bash"
-date:   2022-08-31 22:30:00 -0300
-categories: [Bash]
+title: "Como criar Alias no Bash: Produtividade no Terminal Linux"
+excerpt: "Aprenda a criar atalhos personalizados (alias) no Linux para simplificar comandos longos e aumentar a sua produtividade no dia a dia."
+description: "Guia prático sobre como configurar alias no .bashrc, tornar atalhos permanentes e exemplos úteis para utilizadores Debian e Ubuntu."
+date: 2022-08-31 10:00:00 -0300
+last_modified_at: 2022-09-09 14:00:00 -0300
+categories: [Linux, Produtividade]
+tags: [Bash, Terminal, Atalhos, Debian]
+author: Eder Gross Cichelero
 ---
 
 Para criar um alias no bash, você pode utilizar o arquivo `.bashrc` do usuário root ou do usuário local.

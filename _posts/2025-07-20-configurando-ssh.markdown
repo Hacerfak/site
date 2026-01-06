@@ -1,9 +1,18 @@
 ---
 layout: post
-title:  "Configuração básica do server SSH"
-date:   2025-07-20 20:05:00 -0300
-categories: [SSH]
+title: "Guia de Segurança SSH: Como Proteger o seu Servidor Linux"
+excerpt: "Aumente a segurança do seu servidor Debian configurando chaves SSH, alterando portas e desativando o login de root."
+description: "Melhores práticas de segurança para o OpenSSH: autenticação por chave pública, configuração do sshd_config e proteção contra ataques de força bruta."
+date: 2025-07-20 10:00:00 -0300
+last_modified_at: 2025-08-15 08:47:00 -0300
+categories: [Segurança, Servidores]
+tags: [SSH, Hardening, Debian, Segurança Digital]
+image: 
+  path: /assets/ssh/ssh.png
+  alt: "Ilustração de acesso seguro via SSH"
+author: Eder Gross Cichelero
 ---
+
 # Sobre o conteúdo
 
 Nesse post, vou mostrar como é fácil instalar e configurar o servidor SSH para seu PC, dado assim a opção de acessá-lo remotamente pela rede LAN ou até mesmo pela WAN.

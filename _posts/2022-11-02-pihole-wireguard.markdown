@@ -1,8 +1,16 @@
 ---
 layout: post
-title:  "Como criar uma infra com PiHole e WireGuard VPN"
-date:   2023-11-02 09:50:00 -0300
-categories: [VPN, Pihole, WireGuard]
+title: "Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios"
+excerpt: "Combine o poder do Pi-hole com a velocidade do Wireguard para navegar de forma segura e sem anúncios em qualquer lugar."
+description: "Tutorial passo a passo para instalar e integrar Pi-hole com Wireguard no Linux, garantindo DNS seguro e privacidade móvel."
+date: 2022-11-02 10:00:00 -0300
+last_modified_at: 2024-06-10 12:00:00 -0300
+categories: [Segurança, Redes]
+tags: [Pi-hole, Wireguard, VPN, Debian, Docker]
+image: 
+  path: /assets/dns_vpn/pi-wire.png
+  alt: "Capa de rede com Pi-hole e Wireguard"
+author: Eder Gross Cichelero
 ---
 
 ## Sobre o conteúdo

@@ -3,7 +3,7 @@ title: "Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro"
 excerpt: "Passo a passo completo para configurar o Debian 13 Trixie após a instalação. Aprenda a configurar repositórios, sudo, drivers e otimização do sistema."
 description: "Dicas essenciais para deixar seu Debian 13 Trixie pronto para o uso diário, incluindo configuração de fontes, non-free-firmware e personalização."
 date: 2025-09-21 10:00:00 -0300
-last_modified_at: 2025-10-05 15:00:00 -0300
+last_modified_at: 2026-01-06 18:50:00 -0300
 layout: post
 categories: [Linux, Debian]
 tags: [Debian 13, Trixie, Pós-instalação, Linux Desktop]
@@ -16,6 +16,14 @@ featured: true
 
 Nesse post, vou mostrar quais são as configurações que faço após realizar a instalação do debian.
 
+## Sumário
+* [A Máquina de Testes](#a-maquina)
+* [1. O Pacote SUDO e o Auto Complete do BASH](#sudo)
+* [2. Como configurar os repositórios (Sources List)](#repositorios)
+* [3. Instalando Drivers, Firmware e otimizando](#drivers)
+* [4. Otimização de Performance e Interface (GNOME)](#gnome)
+
+<a name="a-maquina"></a>
 # A máquina 🖥️
 
 Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes configurações:
@@ -41,6 +49,7 @@ apt list –-installed | wc -l
 sudo apt list –-installed | wc -l # caso não seja superusuário.
 ~~~
 
+<a name="sudo"></a>
 # O pacote SUDO e o auto complete do BASH
 
 Como primeiro passo eu instalo o pacote [sudo](https://wiki.debian.org/sudo) para conseguir executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no usuário _root_. Depois é só executar os comandos:
@@ -64,6 +73,7 @@ Será solicitada a senha do usuário para finalizar a execução do comando.
 
 Pronto! Agora começamos com a configuração dos repositórios.
 
+<a name="repositorios"></a>
 # Espelhos
 
 Antes de começar qualquer tipo de instalação é necessário configurar os espelhos dos repositórios, para que tenhamos uma conexão mais estável e rápida.
@@ -72,7 +82,7 @@ Geralmente o espelho central (deb.debian.org) tem uma boa conexão, mas a fim de
 
 Para ver a lista completa de espelhos de repositórios do debian, [acesse essa página](https://www.debian.org/mirror/list).
 
-# A configuração dos repositórios
+## A configuração dos repositórios
 
 No debian 13 (Trixie), a configuração dos repositórios mudou um pouco, o novo formato de configuração dos espelho usa a referẽncia deb822, que é um formato mais flexível e que permite a configuração de múltiplos repositórios em um único arquivo.
 
@@ -124,6 +134,7 @@ Após editar o arquivos, devemos atualizar o cache do APT usando o comando `sudo
 
 Após finalizar a atualização, temos o debian na distribuição **unstable** ou **sid**.
 
+<a name="drivers"></a>
 # Firmwares
 
 Por padrão, agora o debian inclui os firmwares na mídia de instalação, realizando a instalação dos mesmos durante o processo de instalação. Melhorando assim a compatibilidade do sistema com o hardware da máquina e facilitando a vida do usuário. Porém isso vale a partir de agora na versão 12 do debian, versões anteriores é necessário realizar a instalação dos firmwares manualmente após a instalação do sistema.
@@ -208,6 +219,7 @@ E ao rodar o comando  `cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver` 
 
 Nesse ponto, temos o básico configurado, então vamos partir para o ambiente desktop.
 
+<a name="gnome"></a>
 # GNOME
 
 O meu ambiente desktop preferido é de longe o gnome, acho ele muito limpo e fácil de usar. Além de ser muito versátil e bonito.
@@ -221,5 +233,7 @@ Após o download e a instalação é só reiniciar a máquina e a mágica aconte
 **OBS:** Se por acaso o icone de rede não identificar sua rede cabeada, edite o arquivo `sudo nano /etc/NetworkManager/NetWorkManager.conf`
 
 Na seção [ifupdown] altere a opção `managed` para `true`, salve e reinicie a máquina.
+
+Para usuários de placa de vídeo NVIDIA, recomendo ver meu post específico sobre [como configurar Wayland no GNOME com NVIDIA](https://hacerfak.com.br/2025/09/21/configurando-wayland-gnome/).
 
 Está feito! Agora é só aproveitar o Debian 13 com GNOME. 🍻❤️

@@ -1,8 +1,16 @@
 ---
 layout: post
-title: "Gerenciar Boot UEFI no Debian"
-date: 2025-12-06 21:30:00 -0300
-categories: [UEFI, Debian, Boot]
+title: "Como Gerenciar Entradas de Boot UEFI no Linux com efibootmgr"
+excerpt: "Aprenda a organizar, criar e eliminar entradas no menu de boot da sua motherboard diretamente pelo terminal Linux."
+description: "Guia completo sobre o comando efibootmgr: como corrigir o dual boot, alterar a ordem de inicialização e limpar entradas órfãs na UEFI."
+date: 2025-12-06 10:00:00 -0300
+last_modified_at: 2025-12-06 10:00:00 -0300
+categories: [Linux, Hardware]
+tags: [UEFI, efibootmgr, Bootloader, Dual Boot, Debian]
+image: 
+  path: /assets/uefi/efibootmgr.png
+  alt: "Terminal exibindo entradas de boot UEFI"
+author: Eder Gross Cichelero
 featured: true
 ---
 # Sobre o conteúdo

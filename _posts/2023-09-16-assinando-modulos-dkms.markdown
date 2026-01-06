@@ -1,8 +1,16 @@
 ---
 layout: post
-title:  "SecureBoot - Assinando módulos com DKMS"
-date:   2023-09-16 15:00:00 -0300
-categories: [DKMS, SecureBoot]
+title: "Como Assinar Módulos DKMS para Secure Boot no Debian"
+excerpt: "Resolva problemas de módulos de kernel não carregados (como VirtualBox ou NVIDIA) ao usar Secure Boot no Debian."
+description: "Guia técnico sobre MOK (Machine Owner Key) e assinatura de módulos DKMS para garantir a compatibilidade do hardware com Secure Boot ativo."
+date: 2023-09-16 10:00:00 -0300
+last_modified_at: 2024-07-19 20:00:00 -0300
+categories: [Linux, Kernel]
+tags: [DKMS, Secure Boot, Debian, MOK, UEFI]
+image: 
+  path: /assets/dkms/shim.png
+  alt: "Gerenciador de chaves MOK Shim UEFI"
+author: Eder Gross Cichelero
 featured: true
 ---
 # Sobre o conteúdo

@@ -1,8 +1,16 @@
 ---
 layout: post
-title: "Configuração do Wayland no Gnome 48 com NVIDIA no Debian 12/13"
-date: 2025-09-21 19:25:00 -0300
-categories: [Debian, NVIDIA, Wayland, GNOME]
+title: "Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA"
+excerpt: "Melhore a fluidez da sua interface e o suporte a múltiplos monitores ativando o protocolo Wayland no seu ambiente GNOME utilizando placa de vídeo NVIDIA."
+description: "Tutorial para utilizadores Debian sobre como migrar do X11 para o Wayland no GNOME, incluindo dicas de compatibilidade e performance com placas de vídeo NVIDIA."
+date: 2025-09-21 10:00:00 -0300
+last_modified_at: 2025-09-27 17:25:00 -0300
+categories: [Linux, Desktop]
+tags: [Wayland, GNOME, Debian, Interface Gráfica, NVIDIA]
+image: 
+  path: /assets/nvidia_driver/nvidia-wayland.png
+  alt: "Ambiente de desktop GNOME rodando sobre Wayland com placa NVIDIA"
+author: Eder Gross Cichelero
 featured: true
 ---
 # Sobre o conteúdo
