@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro | Hacerfak</title>
+    <meta name="generator" content="Jekyll v4.4.1" />
+    <meta property="og:title" content="Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Dicas essenciais para deixar seu Debian 13 Trixie pronto para o uso diário, incluindo configuração de fontes, non-free-firmware e personalização." />
+    <meta property="og:description"
+        content="Dicas essenciais para deixar seu Debian 13 Trixie pronto para o uso diário, incluindo configuração de fontes, non-free-firmware e personalização." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/configuracao-debian-13.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/configuracao-debian-13.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:image" content="https://hacerfak.com.br/assets/debian/debian13.avif" />
+    <meta property="og:image:alt" content="Logo do Debian 13 estilizado" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2025-09-21T10:00:00-03:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://hacerfak.com.br/assets/debian/debian13.avif" />
+    <meta name="twitter:image:alt" content="Logo do Debian 13 estilizado" />
+    <meta property="twitter:title" content="Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro" />
+    <meta name="google-site-verification" content="78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk" />
+    <meta name="msvalidate.01" content="44A86B1888654478DBDFD35ED2111049" />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eder Gross Cichelero"},"dateModified":"2026-01-06T18:50:00-03:00","datePublished":"2025-09-21T10:00:00-03:00","description":"Dicas essenciais para deixar seu Debian 13 Trixie pronto para o uso diário, incluindo configuração de fontes, non-free-firmware e personalização.","headline":"Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro","image":{"alt":"Logo do Debian 13 estilizado","url":"https://hacerfak.com.br/assets/debian/debian13.avif","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://hacerfak.com.br/2025/09/21/configuracao-debian-13/"},"url":"https://hacerfak.com.br/2025/09/21/configuracao-debian-13/"}</script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="post-content">
+
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro</h1>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 21/09/2025
+
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Linux
+
+                </div>
+            </header>
+
+            <p>Nesse post, vou mostrar quais são as configurações que faço após realizar a instalação do debian.</p>
+
+            <h2 id="sumário">Sumário</h2>
+            <ul>
+                <li><a href="#a-maquina">A Máquina de Testes</a></li>
+                <li><a href="#sudo">1. O Pacote SUDO e o Auto Complete do BASH</a></li>
+                <li><a href="#repositorios">2. Como configurar os repositórios (Sources List)</a></li>
+                <li><a href="#drivers">3. Instalando Drivers, Firmware e otimizando</a></li>
+                <li><a href="#gnome">4. Otimização de Performance e Interface (GNOME)</a></li>
+            </ul>
+
+            <p><a name="a-maquina"></a></p>
+            <h1 id="a-máquina-️">A máquina 🖥️</h1>
+
+            <p>Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes
+                configurações:</p>
+
+            <ul>
+                <li><strong>CPU:</strong> Ryzen 5 5600x</li>
+                <li><strong>MB:</strong> Asus TUF Gaming X570-PLUS/BR
+                    <ul>
+                        <li><em>Áudio:</em> ALC S1200A (ALC1200)</li>
+                        <li><em>LAN:</em> Realtek L8200A (RTL8111/8168/8411)</li>
+                    </ul>
+                </li>
+                <li><strong>GPU:</strong> RTX 3070</li>
+                <li><strong>Wi-Fi/BT:</strong> Intel Wi-Fi 6 (AX210/AX211/AX411) 160MHz</li>
+            </ul>
+
+            <p><strong>OBS:</strong> O SecureBoot está desativado para essa instalação.</p>
+
+            <p>Dito isso é importante lembrar que pode ser que algumas das configurações não se apliquem a qualquer
+                instalação do Debian, pois isso varia muito conforme o hardware onde o sistema foi instalado.</p>
+
+            <p>Quanto a instalação do Debian, ela é feita a partir de uma mídia de instalação do tipo <a
+                    href="https://www.debian.org/CD/netinst/">netinst</a>, ou seja, uma mídia de instalação mínima que
+                depende de uma conexão com a internet para baixar os pacotes do sistema. Além disso a instalação é feita
+                de forma limpa, sem instalar nenhum tipo de pacote ou utilitário adicional pelo <strong>tasksel</strong>
+                que é executado durante a instalação.</p>
+
+            <p>Basicamente ao finalizar a instalação eu tenho um sistema com <strong>222</strong> pacotes instalados.
+            </p>
+
+            <p>Você pode visualizar a quantidade de pacotes instalados ao rodar o comando:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>apt list –-installed | <span class="nb">wc</span> <span class="nt">-l</span>
+<span class="nb">sudo </span>apt list –-installed | <span class="nb">wc</span> <span class="nt">-l</span> <span class="c"># caso não seja superusuário.</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p><a name="sudo"></a></p>
+            <h1 id="o-pacote-sudo-e-o-auto-complete-do-bash">O pacote SUDO e o auto complete do BASH</h1>
+
+            <p>Como primeiro passo eu instalo o pacote <a href="https://wiki.debian.org/sudo">sudo</a> para conseguir
+                executar comandos de superusuário a partir do meu usuário comum. Para isso preciso logar primeiro no
+                usuário <em>root</em>. Depois é só executar os comandos:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>apt <span class="nb">install sudo
+</span>adduser usuário <span class="nb">sudo</span> 
+</code></pre>
+                </div>
+            </div>
+
+            <p>Onde no segundo comando, substitua <em>usuário</em> pelo nome do seu usuário comum.</p>
+
+            <p>Após é só deslogar de root com o comando <em>exit</em></p>
+
+            <p>Agora podemos logar no usuário comum, e assim já podemos testar o funcionamento do sudo instalando o
+                pacote <code class="language-plaintext highlighter-rouge">bash-completion</code> que ajuda com opções de
+                auto completar usando tab.</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>bash-completion
+</code></pre>
+                </div>
+            </div>
+
+            <p>Será solicitada a senha do usuário para finalizar a execução do comando.</p>
+
+            <p>Pronto! Agora começamos com a configuração dos repositórios.</p>
+
+            <p><a name="repositorios"></a></p>
+            <h1 id="espelhos">Espelhos</h1>
+
+            <p>Antes de começar qualquer tipo de instalação é necessário configurar os espelhos dos repositórios, para
+                que tenhamos uma conexão mais estável e rápida.</p>
+
+            <p>Geralmente o espelho central (deb.debian.org) tem uma boa conexão, mas a fim de desafogar o tráfego para
+                este servidor, é preferível que configuremos repositórios mais próximos de nossa localização.</p>
+
+            <p>Para ver a lista completa de espelhos de repositórios do debian, <a
+                    href="https://www.debian.org/mirror/list">acesse essa página</a>.</p>
+
+            <h2 id="a-configuração-dos-repositórios">A configuração dos repositórios</h2>
+
+            <p>No debian 13 (Trixie), a configuração dos repositórios mudou um pouco, o novo formato de configuração dos
+                espelho usa a referẽncia deb822, que é um formato mais flexível e que permite a configuração de
+                múltiplos repositórios em um único arquivo.</p>
+
+            <p>Veja mais sobre esse novo formato no <a
+                    href="https://www.debian.org/doc/manuals/debian-reference/ch02#_debian_archive_basics">manual do
+                    debian</a> e na <a href="https://wiki.debian.org/SourcesList">wiki do debian</a>.</p>
+
+            <p>Para configurar os repositórios no debian, vamos editar o arquivo <strong>debian.sources</strong>, este
+                por sua vez pode ser acessado em <strong>/etc/apt/sources.list.d</strong></p>
+
+            <p>Para visualizar seu conteúdo, podemos usar o comando <code
+                    class="language-plaintext highlighter-rouge">cat /etc/apt/sources.list.d/debian.sources</code></p>
+
+            <p>Para editá-lo, devemos usar o comando sudo para ter privilégios de superusuário e assim poder salvar o
+                arquivo depois, senão temos apenas o acesso a leitura.</p>
+
+            <p>Como editor de texto, eu gosto de utilizar o <a
+                    href="https://packages.debian.org/bookworm/nano">nano</a>. Então para editar o arquivo, usamos:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/apt/sources.list.d/debian.sources
+</code></pre>
+                </div>
+            </div>
+
+            <p>A sintaxe para configuração os repositórios basicamente é:</p>
+
+            <div class="language-yaml highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>  <span class="na">Types</span><span class="pi">:</span> <span class="s">deb deb-src</span>
+  <span class="na">URIs</span><span class="pi">:</span> <span class="s">http://deb.debian.org/debian/</span>
+  <span class="na">Suites</span><span class="pi">:</span> <span class="s">stable stable-backports</span>
+  <span class="na">Components</span><span class="pi">:</span> <span class="s">main non-free-firmware contrib non-free</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Onde temos as seguintes seções:</p>
+
+            <ul>
+                <li><strong>Types</strong> - Aqui é o início da sintaxe, onde podemos ter <strong>deb</strong> para
+                    arquivos binários ou <strong>deb-src</strong> para o código fonte.</li>
+                <li><strong>URIs</strong> - Aqui é onde se informa a URL do espelho junto com seu protocolo.</li>
+                <li><strong>Suites</strong> - Nesse ponto é onde especificamos qual é a distruição que queremos utilizar
+                    ao pegar os pacotes ou códigos no repositório, no nosso caso o padrão vem como
+                    <strong>trixie</strong>, onde esse é o nome da distribuição do debian 13. Os nomes das distribuições
+                    do debian são inspiradas no filme <em>Toy Story</em>.
+                </li>
+                <li><strong>Components</strong> - No final da configuração, atribuímos os componentes que vamos utilizar
+                    daquele repositório, onde temos:
+                    <ul>
+                        <li><strong>main</strong> - Sendo o componente principal da distribuição, é nele onde estão os
+                            kerneis linux, por exemplo. Consiste em pacotes <a
+                                href="https://www.debian.org/social_contract.pt.html">DFSG</a>-compliant, que não
+                            dependem de software fora desta área para operar. Estes são os únicos pacotes considerados
+                            parte da distribuição Debian.</li>
+                        <li><strong>contrib</strong> - Pacotes contêm software compatível com DFSG, mas têm dependências
+                            não principais (possivelmente empacotado para Debian em non-free).</li>
+                        <li><strong>non-free</strong> - Contém software que não está em conformidade com o DFSG.</li>
+                        <li><strong>non-free-firmware</strong> - Contém firmwares/drivers que não estão em conformidade
+                            com o DFSG.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p>Nessa instalação, vou utilizar a distribuição <strong>unstable</strong> ou <strong>sid</strong> para
+                obter os pacotes mais recentes que ainda estão em fase de testes. Você pode obter mais informações sobre
+                essa distribuição acessando <a href="https://www.debian.org/releases/sid/">aqui</a>.</p>
+
+            <p>A cópia do meu <strong>sources.list</strong> pode ser obtida <a
+                    href="/assets/debian/sources_debian_13.txt">aqui</a>.</p>
+
+            <p>Recomendo utilizar todos os espelhos do Brasil, mas também é possível utilizar apenas um deles, ai vai
+                conforme sua necessidade. Também é importante testar qual deles é mais rápido na sua região.</p>
+
+            <p>Você pode obter mais informações sobre a configuração dos repositórios <a
+                    href="https://wiki.debian.org/pt_BR/SourcesList">aqui</a> e sobre as distribuições <a
+                    href="https://www.debian.org/releases/">aqui</a>.</p>
+
+            <p>Ao editar o arquivo através do nano, basta pressionar <strong>Ctrl + O</strong> ou <strong>Ctrl +
+                    S</strong> para salvar e <strong>Ctrl + X</strong> para sair do modo de edição do arquivo.</p>
+
+            <p>Após editar o arquivos, devemos atualizar o cache do APT usando o comando <code
+                    class="language-plaintext highlighter-rouge">sudo apt update</code> e após a atualização, podemos
+                atualizar o sistema da distribuição <em>trixie</em> para <em>sid</em> usando o comando <code
+                    class="language-plaintext highlighter-rouge">sudo apt full-upgrade</code></p>
+
+            <p>Após finalizar a atualização, temos o debian na distribuição <strong>unstable</strong> ou
+                <strong>sid</strong>.
+            </p>
+
+            <p><a name="drivers"></a></p>
+            <h1 id="firmwares">Firmwares</h1>
+
+            <p>Por padrão, agora o debian inclui os firmwares na mídia de instalação, realizando a instalação dos mesmos
+                durante o processo de instalação. Melhorando assim a compatibilidade do sistema com o hardware da
+                máquina e facilitando a vida do usuário. Porém isso vale a partir de agora na versão 12 do debian,
+                versões anteriores é necessário realizar a instalação dos firmwares manualmente após a instalação do
+                sistema.</p>
+
+            <p>Entretanto para essa máquina o adaptador de rede LAN é uma Realtek R8168, porém no firmware padrão
+                contido no pacote <em>firmware-realtek</em> dos repositórios, não oferece um suporte 100% para esse
+                adaptador, fazendo com que tenhamos uma utilização mínima do adaptador, frente ao seu potencial.</p>
+
+            <p>Por este motivo, que irei realizar a instalção de outro firmware, mantido pela comunidade e que utiliza o
+                DKMS para recompilar o firmware a cada novo kernel instalado no sistema, isso garante que ele funcione
+                mesmo após a atualização do kernel para um mais recente.</p>
+
+            <p>Para instalar esse novo firmware, então rodo o comando <code
+                    class="language-plaintext highlighter-rouge">apt install r8168-dkms</code></p>
+
+            <p>Ele irá instalar vários outros pacotes como dependência e irá desabilitar o módulo r8169 do firmware
+                padrão do pacote <em>firmware-realtek</em> na próxima vez que reiniciarmos a máquina.</p>
+
+            <p>Para verificar os firmawares e módulos carregados na inicialização, podemos rodar o comando <code
+                    class="language-plaintext highlighter-rouge">dmesg</code> para ver o log da última inicialização do
+                sistema.
+                Para procurar por algo específico, podemos complementar o comnado adicionando o comando <code
+                    class="language-plaintext highlighter-rouge">grep</code>, ficando dessa forma: <code
+                    class="language-plaintext highlighter-rouge">dmesg | grep r8169</code> para verificar o módulo
+                carregado nesse momento. Após reiniciarmos a máquina podemos pesquisar <strong>r8168</strong> no lugar
+                de r8169.</p>
+
+            <p>Agora vamos realizar a instalação do driver de vídeo da NVIDIA. No meu caso eu tenho uma RTX 3070 e ela
+                já possui os módulos de kernel open source que a NVIDIA liberou para a comunidade, porém no meu caso vou
+                continuar utilizando os drivers proprietários.</p>
+
+            <p>Nesse caso a instalação em um desktop é muito simples, visto que eu só tenho essa fonte de vídeo no
+                sistema (pois o 5600x nao possui vídeo integrado, por exemplo). Para quem tem um notebook com vídeo
+                hibrido, essa configuração geralmente nao se aplica, sendo necessário verificar se há alguma alternativa
+                e/ou solução.</p>
+
+            <p>Para a minha placa, basicamente é só instalar o meta-pacote <code
+                    class="language-plaintext highlighter-rouge">nvidia-driver</code>, assim ele instalará todos os
+                pacotes necessários para o driver.</p>
+
+            <p>Da mesma forma como ocorre para o driver de rede, a instalação padrão do debian instala os drivers open
+                source da nouveau. Mas realizando a instalação dos drivers da NVIDIA esse drivers são colocados em uma
+                lista negra para não serem carregados com a incialização do sistema, deixando apenas os drivers
+                proprietários serem carregados.</p>
+
+            <p>Além disso, os drivers da NVIDIA também usam DKMS para compilar os módulos do kernel para cada kernel
+                instalado no sistema e consequentemente para qualquer kernel novo a ser instalado.</p>
+
+            <p>Mas se você deseja instalar o driver manualmente, você pode seguir os passos do meu post sobre <a
+                    href="/posts/configurando-wayland-gnome.html">como instalar o driver NVIDIA manualmente no Debian
+                    12/13</a>.</p>
+
+            <h1 id="microcode-e-cpu-frequency-scaling">Microcode e CPU Frequency Scaling</h1>
+
+            <p>Ao trabalhar com Linux, é interessante instalarmos os microcodes para nosso processador, eles são patchs
+                de segurança e também correções para que o funcionamento e o comportamento do processador sejam conforme
+                as especificações do fabricante.</p>
+
+            <p>Ele atua como um “driver” do processador no kernel linux e deve ser carregado na inicialização do
+                sistema.</p>
+
+            <p>No debian 12, o microcode também já é instalado por padrão durante a instalação do sistema, assim como os
+                demais drivers.</p>
+
+            <p>A única coisa que fica de fora é o driver ACPI para controle de frequencia do processador. O debian ainda
+                usa o legado acpi-cpufreq, mas tando a AMD como a Intel, possuem controladores próprios que aproveitam
+                muito mais a performance e a eficiencia que o processador pode proporcionar.</p>
+
+            <p>No meu caso eu vou instalar o driver da AMD, o <code
+                    class="language-plaintext highlighter-rouge">amd-pstate</code> que é uma módulo de kernel e também
+                precisa ser carregado na inicialização do sistema. Esse driver se aproveita do recursos AMD CPPC
+                (Collaborative Processor Performance Control) disponível nos processadores mais recentes da AMD, porém
+                para habilitar ele no kernel é importante que o recurso esteja habilitado na BIOS da placa mãe.</p>
+
+            <p>Geralmente essas opções ficam no automático, mas podem ser encontradas na BIOS em AMD CBS &gt; NBIO &gt;
+                AMD CPPC</p>
+
+            <p>Para habilitar esse módulo do kernel na incialização o modo mais fácil é indicarmos ele nos argumentos de
+                inicialização do GRUB</p>
+
+            <p>Para isso vamos editar o arquivo <code
+                    class="language-plaintext highlighter-rouge">/etc/default/grub</code></p>
+
+            <ol>
+                <li><code class="language-plaintext highlighter-rouge">nano /etc/default/grub</code></li>
+                <li>Na opção <strong>GRUB_CMDLINE_LINUX_DEFAULT</strong> adicionamos o comando <code
+                        class="language-plaintext highlighter-rouge">amd_pstate=active</code> no final para que ele seja
+                    carregado na inicialização do kernel.</li>
+            </ol>
+
+            <p>Exemplo de como fica preenchido: GRUB_CMDLINE_LINUX_DEFAULT=”quiet amd_pstate=active”</p>
+
+            <p>Aproveitando que estamos editando o arquivo do GRUB, vamos rever algumas opções</p>
+
+            <h1 id="grub">GRUB</h1>
+
+            <p>O grub é nosso gerenciador de incialização padrão do debian. Existem outros sistemas de inicialização mas
+                o GRUB é o mais popular até então.</p>
+
+            <p>Além da adição do módulo da amd-pstate, há outras duas configurações que gosto de realizar.</p>
+
+            <p>descomentar a linha <strong>GRUB_DISABLE_OS_PROBER=false</strong>, para fazer com que o grub reconheça
+                qualquer outro sistema instalado na máquina, e como eu utilizo um Windows 11 em outro SSD, ele será
+                reconhecido e uma ,inha de inicialização será criada para ele ao atualizarmos o arquivo de configuração
+                posteriormente.</p>
+
+            <p>Além dessa, tem também a linha <strong>GRUB_GFXMODE</strong> onde podemos descomentá-la e aplicar a
+                resolução que quermos que a tela de inicialização do grub tenha. Note porém, que essa resolução nem
+                sempre é a mesma que vamos utilizar nativamente no monitor, isso depende do driver VBE da placa de
+                vídeo.</p>
+
+            <p>No meu caso o driver tem suporte a resolução 4k, porém eu uso a resolução Full HD no grub, para as
+                informações não ficarem tão pequenas kkkk.</p>
+
+            <p>Para isso apenas configuro a linha como GRUB_GFXMODE=1920x1080</p>
+
+            <p>Após essas edições, salvo o arquivo com Ctrl + O e depois fecho com Ctrl + X</p>
+
+            <p>Então para atualizar o arquivo de configuração do grub, rodo o comando <code
+                    class="language-plaintext highlighter-rouge">update-grub</code></p>
+
+            <p>E assim vemos a atualização do arquivo ocorrendo.</p>
+
+            <p>Nesse ponto podemos reiniciar a máquina para ver os efeitos das configuraçãoes.</p>
+
+            <h1 id="primeira-reinicialização">Primeira reinicialização</h1>
+
+            <p>Após reinicar a máquina já podemos notar a primeira diferença, que é a resolução do terminal, aqui temos
+                o driver na NVIDIA em ação.</p>
+
+            <p>Ao rodarmos os comando <code class="language-plaintext highlighter-rouge">dmesg | grep r8168</code> vemos
+                o firmware da placa de rede carregado e configurado.</p>
+
+            <p>E ao rodar o comando <code
+                    class="language-plaintext highlighter-rouge">cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver</code>
+                podemos ver que o driver do CPU frequency scalling carregado é o <strong>amd_pstate_epp</strong></p>
+
+            <p>Nesse ponto, temos o básico configurado, então vamos partir para o ambiente desktop.</p>
+
+            <p><a name="gnome"></a></p>
+            <h1 id="gnome">GNOME</h1>
+
+            <p>O meu ambiente desktop preferido é de longe o gnome, acho ele muito limpo e fácil de usar. Além de ser
+                muito versátil e bonito.</p>
+
+            <p>Eu gosto de instalar o pacote <code class="language-plaintext highlighter-rouge">gnome-core</code> pois
+                ele vem apenas com os pacotes essenciais, e conforme a demanda vou instalando o que necessito.</p>
+
+            <p>Para instalar, basicamente é só rodar o comando <code
+                    class="language-plaintext highlighter-rouge">apt install gnome-core</code> e praticamente será feito
+                um download de ~500MB</p>
+
+            <p>Após o download e a instalação é só reiniciar a máquina e a mágica acontece.</p>
+
+            <p><strong>OBS:</strong> Se por acaso o icone de rede não identificar sua rede cabeada, edite o arquivo
+                <code
+                    class="language-plaintext highlighter-rouge">sudo nano /etc/NetworkManager/NetWorkManager.conf</code>
+            </p>
+
+            <p>Na seção [ifupdown] altere a opção <code class="language-plaintext highlighter-rouge">managed</code> para
+                <code class="language-plaintext highlighter-rouge">true</code>, salve e reinicie a máquina.
+            </p>
+
+            <p>Para usuários de placa de vídeo NVIDIA, recomendo ver meu post específico sobre <a
+                    href="/posts/configurando-wayland-gnome.html">como configurar Wayland no
+                    GNOME com NVIDIA</a>.</p>
+
+            <p>Está feito! Agora é só aproveitar o Debian 13 com GNOME. 🍻❤️</p>
+
+
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">
+                    Voltar para o Blog
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; 2026 Hacerfak
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="pt-BR">
+    <generator>Manual</generator>
+    <link href="https://hacerfak.com.br/feed.xml" rel="self" type="application/atom+xml" />
+    <link href="https://hacerfak.com.br/" rel="alternate" type="text/html" hreflang="pt-BR" />
+    <updated>2026-03-01T12:00:00-03:00</updated>
+    <id>https://hacerfak.com.br/feed.xml</id>
+    <title type="html">Hacerfak</title>
+    <subtitle>Dicas avançadas de Linux e tutoriais de Debian | Um blog dedicado ao conhecimento.</subtitle>
+    <author>
+        <name>Eder Gross Cichelero</name>
+        <email>hacerfak4@gmail.com</email>
+    </author>
+
+    <entry>
+        <title type="html">Como Gerenciar Entradas de Boot UEFI no Linux com efibootmgr</title>
+        <link href="https://hacerfak.com.br/posts/gerenciar-uefi-entrys.html" rel="alternate"
+            type="text/html" />
+        <published>2025-12-06T10:00:00-03:00</published>
+        <updated>2025-12-06T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/gerenciar-uefi-entrys.html</id>
+        <summary type="html"><![CDATA[Guia completo sobre o comando efibootmgr: como corrigir o dual boot, alterar a ordem de inicialização e limpar entradas órfãs na UEFI.]]></summary>
+        <category term="Linux" />
+        <category term="Hardware" />
+    </entry>
+
+    <entry>
+        <title type="html">SSL Grátis no Lighttpd com Let's Encrypt e Certbot</title>
+        <link href="https://hacerfak.com.br/posts/lighttpd-letsencrypt.html" rel="alternate"
+            type="text/html" />
+        <published>2025-11-30T10:00:00-03:00</published>
+        <updated>2025-11-30T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/lighttpd-letsencrypt.html</id>
+        <summary type="html"><![CDATA[Passo a passo para instalar o Certbot, gerar certificados SSL para o Lighttpd e configurar a renovação automática no Debian.]]></summary>
+        <category term="Servidores" />
+        <category term="SSL" />
+    </entry>
+
+    <entry>
+        <title type="html">Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA</title>
+        <link href="https://hacerfak.com.br/posts/configurando-wayland-gnome.html" rel="alternate"
+            type="text/html" />
+        <published>2025-09-21T10:00:00-03:00</published>
+        <updated>2025-09-21T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/configurando-wayland-gnome.html</id>
+        <summary type="html"><![CDATA[Tutorial para utilizadores Debian sobre como migrar do X11 para o Wayland no GNOME, incluindo dicas de compatibilidade e performance com placas de vídeo NVIDIA.]]></summary>
+        <category term="Linux" />
+        <category term="Desktop" />
+    </entry>
+
+    <entry>
+        <title type="html">Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro</title>
+        <link href="https://hacerfak.com.br/posts/configuracao-debian-13.html" rel="alternate"
+            type="text/html" />
+        <published>2025-09-21T10:00:00-03:00</published>
+        <updated>2025-09-21T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/configuracao-debian-13.html</id>
+        <summary type="html"><![CDATA[Dicas essenciais para deixar seu Debian 13 Trixie pronto para o uso diário, incluindo configuração de fontes, non-free-firmware e personalização.]]></summary>
+        <category term="Linux" />
+        <category term="Debian" />
+    </entry>
+
+    <entry>
+        <title type="html">Guia de Segurança SSH: Como Proteger o seu Servidor Linux</title>
+        <link href="https://hacerfak.com.br/posts/configuracao-ssh.html" rel="alternate"
+            type="text/html" />
+        <published>2025-07-20T10:00:00-03:00</published>
+        <updated>2025-07-20T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/configuracao-ssh.html</id>
+        <summary type="html"><![CDATA[Melhores práticas de segurança para o OpenSSH: autenticação por chave pública, configuração do sshd_config e proteção contra ataques de força bruta.]]></summary>
+        <category term="Segurança" />
+        <category term="Servidores" />
+    </entry>
+
+    <entry>
+        <title type="html">Como Assinar Módulos DKMS para Secure Boot no Debian</title>
+        <link href="https://hacerfak.com.br/posts/assinando-modulos-dkms.html" rel="alternate"
+            type="text/html" />
+        <published>2023-09-16T10:00:00-03:00</published>
+        <updated>2023-09-16T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/assinando-modulos-dkms.html</id>
+        <summary type="html"><![CDATA[Guia técnico sobre MOK (Machine Owner Key) e assinatura de módulos DKMS para garantir a compatibilidade do hardware com Secure Boot ativo.]]></summary>
+        <category term="Linux" />
+        <category term="Kernel" />
+    </entry>
+
+    <entry>
+        <title type="html">Configurações pós instalação do Debian 12</title>
+        <link href="https://hacerfak.com.br/posts/configuracao-debian-12.html" rel="alternate"
+            type="text/html" />
+        <published>2023-06-25T10:00:00-03:00</published>
+        <updated>2023-06-25T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/configuracao-debian-12.html</id>
+        <summary type="html"><![CDATA[Nesse post, vou mostrar quais são as configurações que faço após realizar a instalação do debian.]]></summary>
+        <category term="Debian" />
+    </entry>
+
+    <entry>
+        <title type="html">Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios</title>
+        <link href="https://hacerfak.com.br/posts/pihole_wireguard.html" rel="alternate"
+            type="text/html" />
+        <published>2022-11-02T10:00:00-03:00</published>
+        <updated>2022-11-02T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/pihole_wireguard.html</id>
+        <summary type="html"><![CDATA[Tutorial passo a passo para instalar e integrar Pi-hole com Wireguard no Linux, garantindo DNS seguro e privacidade móvel.]]></summary>
+        <category term="Segurança" />
+        <category term="Redes" />
+    </entry>
+
+    <entry>
+        <title type="html">Como criar Alias no Bash: Produtividade no Terminal Linux</title>
+        <link href="https://hacerfak.com.br/posts/alias-bash.html" rel="alternate" type="text/html" />
+        <published>2022-08-31T10:00:00-03:00</published>
+        <updated>2022-08-31T10:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/alias-bash.html</id>
+        <summary type="html"><![CDATA[Guia prático sobre como configurar alias no .bashrc, tornar atalhos permanentes e exemplos úteis para utilizadores Debian e Ubuntu.]]></summary>
+        <category term="Linux" />
+        <category term="Produtividade" />
+    </entry>
+</feed>

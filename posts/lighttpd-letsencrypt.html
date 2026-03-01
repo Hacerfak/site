@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>SSL Grátis no Lighttpd com Let’s Encrypt e Certbot | Hacerfak</title>
+    <meta name="generator" content="Jekyll v4.4.1" />
+    <meta property="og:title" content="SSL Grátis no Lighttpd com Let’s Encrypt e Certbot" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Passo a passo para instalar o Certbot, gerar certificados SSL para o Lighttpd e configurar a renovação automática no Debian." />
+    <meta property="og:description"
+        content="Passo a passo para instalar o Certbot, gerar certificados SSL para o Lighttpd e configurar a renovação automática no Debian." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/lighttpd-letsencrypt.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/lighttpd-letsencrypt.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:image" content="https://hacerfak.com.br/assets/ssl/light-ssl.avif" />
+    <meta property="og:image:alt" content="Logo do Lighttpd com SSL" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2025-11-30T10:00:00-03:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://hacerfak.com.br/assets/ssl/light-ssl.avif" />
+    <meta name="twitter:image:alt" content="Logo do Lighttpd com SSL" />
+    <meta property="twitter:title" content="SSL Grátis no Lighttpd com Let’s Encrypt e Certbot" />
+    <meta name="google-site-verification" content="78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk" />
+    <meta name="msvalidate.01" content="44A86B1888654478DBDFD35ED2111049" />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eder Gross Cichelero"},"dateModified":"2025-12-02T14:00:00-03:00","datePublished":"2025-11-30T10:00:00-03:00","description":"Passo a passo para instalar o Certbot, gerar certificados SSL para o Lighttpd e configurar a renovação automática no Debian.","headline":"SSL Grátis no Lighttpd com Let’s Encrypt e Certbot","image":{"alt":"Logo do Lighttpd com SSL","url":"https://hacerfak.com.br/assets/ssl/light-ssl.avif","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://hacerfak.com.br/2025/11/30/lighttpd-letsencrypt/"},"url":"https://hacerfak.com.br/2025/11/30/lighttpd-letsencrypt/"}</script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="post-content">
+
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">SSL Grátis no Lighttpd com Let's Encrypt e Certbot</h1>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 30/11/2025
+
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Servidores
+
+                </div>
+            </header>
+
+            <h1 id="sobre-o-conteúdo">Sobre o conteúdo</h1>
+
+            <p>Hoje vamos ver como configurar o Lighttpd para usar certificados SSL gratuitos do Let’s Encrypt no
+                Debian. Isso permitirá que você sirva seu site de forma segura usando HTTPS.</p>
+
+            <h2 id="pré-requisitos">Pré-requisitos</h2>
+            <p>Antes de começar, certifique-se de ter o seguinte:</p>
+            <ul>
+                <li>Um servidor Debian (preferencialmente Debian 12 ou 13).</li>
+                <li>Redirecionamento de portas 80 e 443 no seu firewall e no seu roteador.</li>
+                <li>Acesso root ou privilégios sudo.</li>
+                <li>Um domínio registrado e configurado para apontar para o seu servidor.
+                    <ul>
+                        <li>Você pode usar serviços gratuitos como o Freenom ou No-IP para registrar um domínio
+                            gratuitamente.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2 id="passo-1-instalar-e-configurar-o-lighttpd">Passo 1: Instalar e configurar o Lighttpd</h2>
+            <p>Primeiro, vamos instalar o Lighttpd. Abra o terminal e execute os seguintes comandos:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>lighttpd
+</code></pre>
+                </div>
+            </div>
+
+            <p>Após a instalação, vamos realizar algumas configurações básicas. Edite o arquivo de configuração do
+                Lighttpd:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/lighttpd/lighttpd.conf
+</code></pre>
+                </div>
+            </div>
+
+            <p>Vamos definir o diretório raiz do nosso site. Procure pela linha <code
+                    class="language-plaintext highlighter-rouge">server.document-root</code> e altere para o caminho do
+                seu site, por exemplo:</p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="n">server</span>.<span class="n">document</span>-<span class="n">root</span> = <span class="s2">"/var/www/exemplo.com.br"</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Também vamos definir o usuário e grupo sob os quais o Lighttpd será executado. Procure pelas linhas <code
+                    class="language-plaintext highlighter-rouge">server.username</code> e <code
+                    class="language-plaintext highlighter-rouge">server.groupname</code> e defina como <code
+                    class="language-plaintext highlighter-rouge">www-data</code>, por exemplo:</p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="n">server</span>.<span class="n">username</span> = <span class="s2">"www-data"</span>
+<span class="n">server</span>.<span class="n">groupname</span> = <span class="s2">"www-data"</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>E por fim vamos definir as exclusões de arquivos para evitar que arquivos sensíveis sejam acessados e
+                definir a página de índice padrão do site adicionando ou modificando as seguintes linhas no arquivo de
+                configuração:</p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="n">static</span>-<span class="n">file</span>.<span class="n">exclude</span>-<span class="n">extensions</span> = ( <span class="s2">".php"</span>, <span class="s2">".pl"</span>, <span class="s2">".fcgi"</span>, <span class="s2">".rb"</span>, <span class="s2">".py"</span>, <span class="s2">".cgi"</span>, <span class="s2">"~"</span> )
+<span class="n">index</span>-<span class="n">file</span>.<span class="n">names</span> = ( <span class="s2">"index.html"</span>, <span class="s2">"index.htm"</span> )
+</code></pre>
+                </div>
+            </div>
+
+            <p>Salve e feche o arquivo. Agora, reinicie o Lighttpd para aplicar as mudanças:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl restart lighttpd
+</code></pre>
+                </div>
+            </div>
+
+            <p>Incluindo alguns arquivos de teste no diretório do site:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"&lt;h1&gt;Olá, Lighttpd com Let's Encrypt!&lt;/h1&gt;"</span> | <span class="nb">sudo tee</span> /var/www/exemplo.com.br/index.html
+</code></pre>
+                </div>
+            </div>
+
+            <p>Já podemos acessar o site via HTTP para verificar se está funcionando.</p>
+
+            <h2 id="passo-2-instalar-o-certbot">Passo 2: Instalar o Certbot</h2>
+            <p>O Certbot é a ferramenta recomendada para obter certificados SSL do Let’s Encrypt. Com ele, podemos
+                automatizar o processo de obtenção e renovação dos certificados.</p>
+
+            <p>Existem dois modos de usar o Certbot com o Lighttpd: usando o plugin do Lighttpd ou usando o modo
+                standalone. Vamos usar o modo standalone, que é mais simples. Primeiro, vamos instalar os requisitos
+                necessários. No modo standalone, precisamos parar o Lighttpd temporariamente para que o Certbot possa
+                usar a porta 80.</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl stop lighttpd
+</code></pre>
+                </div>
+            </div>
+
+            <p>Para o Debian, o Certbot pode ser instalado diretamente pelo python3-pip ou pelo snap. Vamos usar o pip
+                para instalar o Certbot. Primeiro os requisitos do sistema:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>python3 python3-dev python3-venv libaugeas-dev gcc
+</code></pre>
+                </div>
+            </div>
+
+            <p>Agora, vamos criar um ambiente virtual para o Certbot e instalar o Certbot nele:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>python3 <span class="nt">-m</span> venv /opt/certbot/
+<span class="nb">sudo</span> /opt/certbot/bin/pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip
+</code></pre>
+                </div>
+            </div>
+
+            <p>Agora, instale o Certbot:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo</span> /opt/certbot/bin/pip <span class="nb">install </span>certbot
+</code></pre>
+                </div>
+            </div>
+
+            <p>Rode o comando abaixo para verificar se o Certbot foi instalado corretamente:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo</span> /opt/certbot/bin/certbot <span class="nt">--version</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>E garanta que o comando ‘certbot’ esteja disponível globalmente:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> /opt/certbot/bin/certbot /usr/bin/certbot
+</code></pre>
+                </div>
+            </div>
+
+            <h2 id="passo-3-obter-o-certificado-ssl">Passo 3: Obter o certificado SSL</h2>
+            <p>Agora, vamos obter o certificado SSL para o nosso domínio. Execute o seguinte comando, substituindo <code
+                    class="language-plaintext highlighter-rouge">exemplo.com.br</code> pelo seu domínio real:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>certbot certonly <span class="nt">--standalone</span> <span class="nt">-d</span> your-domain.com.br
+</code></pre>
+                </div>
+            </div>
+            <p>Siga as instruções na tela para completar o processo de obtenção do certificado. O Certbot irá verificar
+                se você possui o domínio e, se tudo estiver correto, emitirá o certificado.</p>
+
+            <p>Você pode encontrar os certificados emitidos em:</p>
+            <ul>
+                <li><code
+                        class="language-plaintext highlighter-rouge">/etc/letsencrypt/live/your-domain.com.br/fullchain.pem</code>
+                    (certificado completo)</li>
+                <li><code
+                        class="language-plaintext highlighter-rouge">/etc/letsencrypt/live/your-domain.com.br/privkey.pem</code>
+                    (chave privada)</li>
+            </ul>
+
+            <h2 id="passo-4-configurar-o-lighttpd-para-usar-o-certificado-ssl">Passo 4: Configurar o Lighttpd para usar
+                o certificado SSL</h2>
+            <p>Agora que temos o certificado SSL, precisamos configurar o Lighttpd para usá-lo. Edite o arquivo de
+                configuração do Lighttpd novamente:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/lighttpd/lighttpd.conf
+</code></pre>
+                </div>
+            </div>
+
+            <p>Adicione as seguintes linhas ao arquivo para habilitar o SSL:</p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>$<span class="n">SERVER</span>[<span class="s2">"socket"</span>] == <span class="s2">":443"</span> {
+    <span class="n">ssl</span>.<span class="n">engine</span> = <span class="s2">"enable"</span>
+    <span class="n">ssl</span>.<span class="n">pemfile</span> = <span class="s2">"/etc/letsencrypt/live/your-domain.com.br/fullchain.pem"</span>
+    <span class="n">ssl</span>.<span class="n">privkey</span> = <span class="s2">"/etc/letsencrypt/live/your-domain.com.br/privkey.pem"</span>
+}
+</code></pre>
+                </div>
+            </div>
+
+            <p>Substitua <code class="language-plaintext highlighter-rouge">your-domain.com.br</code> pelo seu domínio
+                real.</p>
+
+            <p>Vamos também configurar o Lighttpd para redirecionar todo o tráfego HTTP para HTTPS. Adicione as
+                seguintes linhas ao arquivo de configuração:</p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>$<span class="n">HTTP</span>[<span class="s2">"scheme"</span>] == <span class="s2">"http"</span> {
+    <span class="n">url</span>.<span class="n">redirect</span> = (<span class="s2">""</span> =&gt; <span class="s2">"https://${url.authority}${url.path}${qsa}"</span>)
+}
+</code></pre>
+                </div>
+            </div>
+
+            <p>Salve e feche o arquivo.</p>
+
+            <p>Agora, reinicie o Lighttpd para aplicar as mudanças:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl restart lighttpd
+</code></pre>
+                </div>
+            </div>
+
+            <h2 id="passo-5-testar-a-configuração">Passo 5: Testar a configuração</h2>
+            <p>Agora, você deve ser capaz de acessar seu site via HTTPS. Abra o navegador e vá para o seu domínio.</p>
+
+            <p>Você deve ver o site carregando com um cadeado indicando que a conexão é segura.</p>
+
+            <h2 id="passo-6-configurar-a-renovação-automática-do-certificado">Passo 6: Configurar a renovação automática
+                do certificado</h2>
+            <p>Os certificados do Let’s Encrypt são válidos por 90 dias, então é importante configurar a renovação
+                automática. O Certbot pode cuidar disso para você. Vamos criar um trabalho cron para renovar o
+                certificado automaticamente. Abra o crontab para edição:</p>
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>crontab <span class="nt">-e</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Adicione a seguinte linha ao final do arquivo:</p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="m">0</span> <span class="m">3</span> * * * /<span class="n">usr</span>/<span class="n">bin</span>/<span class="n">certbot</span> <span class="n">renew</span> --<span class="n">quiet</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Isso fará com que o Certbot tente renovar o certificado todos os dias às 3 da manhã. O <code
+                    class="language-plaintext highlighter-rouge">--quiet</code> suprime a saída, a menos que haja um
+                erro.</p>
+
+            <h2 id="finalizando">Finalizando</h2>
+
+            <p>A partir daqui, você deve ser capaz de servir seu site de forma segura usando Lighttpd com certificados
+                SSL do Let’s Encrypt no Debian.</p>
+
+            <p>E é isso galera, espero que esse post tenha ajudado vocês!</p>
+
+            <p>Abraços! ❤️🍻</p>
+
+
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">
+                    Voltar para o Blog
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; 2026 Hacerfak
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

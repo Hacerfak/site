@@ -905,3 +905,144 @@ td code {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
+
+/* =========================================
+   11. CORREÇÕES PARA MOBILE (RESPONSIVIDADE)
+   ========================================= */
+
+/* Impede que o artigo expanda além da tela e quebra links muito longos */
+.post-content {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* Trava a largura dos blocos de código e ativa a rolagem horizontal */
+.highlighter-rouge,
+figure.highlight,
+div.highlight,
+.terminal-box,
+.cmd-output pre {
+    max-width: 100%;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    /* Scroll suave para o touch em iPhones/iOS */
+}
+
+/* Garante que imagens não quebrem o grid em telas minúsculas */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* =========================================
+   12. BOTÃO DE COPIAR CÓDIGO (LADO A LADO)
+   ========================================= */
+
+/* Transforma o contêiner do código num Flexbox (lado a lado) */
+div.highlight,
+figure.highlight {
+    display: flex !important;
+    flex-direction: row;
+    align-items: flex-start;
+    padding-top: 0 !important;
+    /* Limpa o padding superior do teste anterior */
+}
+
+/* O botão fica fixo à esquerda numa "coluna" própria */
+.copy-code-btn {
+    position: sticky;
+    left: 0;
+    top: 0;
+    margin: 15px;
+    /* Dá um respiro em volta do botão */
+    flex-shrink: 0;
+    /* Impede o botão de ser esmagado se o código for grande */
+
+    /* Estilo Visual */
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+}
+
+.copy-code-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.copy-code-btn.copied {
+    background: #27c93f;
+    color: #fff;
+    border-color: #27c93f;
+}
+
+/* A área de código ocupa o resto do espaço ao lado e rola sozinha */
+div.highlight pre,
+figure.highlight pre {
+    flex-grow: 1;
+    min-width: 0;
+    /* ESSENCIAL no Flexbox para a barra de rolagem mobile funcionar */
+    margin: 0;
+    padding: 15px 15px 15px 0 !important;
+    /* Remove o padding da esquerda para encostar no botão */
+    overflow-x: auto;
+}
+
+/* O Terminal Box (decorativo) volta ao normal */
+.terminal-box {
+    padding-top: 20px !important;
+}
+
+/* =========================================
+   13. ESTILIZAÇÃO DA BARRA DE ROLAGEM (CÓDIGO)
+   ========================================= */
+
+/* Estilos para navegadores baseados em WebKit (Chrome, Edge, Safari) */
+div.highlight pre::-webkit-scrollbar,
+figure.highlight pre::-webkit-scrollbar,
+.terminal-box::-webkit-scrollbar {
+    height: 8px;
+    /* Deixa a barra horizontal mais fina */
+    width: 8px;
+}
+
+div.highlight pre::-webkit-scrollbar-track,
+figure.highlight pre::-webkit-scrollbar-track,
+.terminal-box::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    /* Fundo da barra bem discreto */
+    border-radius: 4px;
+}
+
+div.highlight pre::-webkit-scrollbar-thumb,
+figure.highlight pre::-webkit-scrollbar-thumb,
+.terminal-box::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    /* Cor da "pegada" da barra */
+    border-radius: 4px;
+}
+
+div.highlight pre::-webkit-scrollbar-thumb:hover,
+figure.highlight pre::-webkit-scrollbar-thumb:hover,
+.terminal-box::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+    /* Fica mais clara ao passar o mouse */
+}
+
+/* Estilos para o Firefox */
+div.highlight pre,
+figure.highlight pre,
+.terminal-box {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.15);
+}

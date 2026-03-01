@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>Guia de Segurança SSH: Como Proteger o seu Servidor Linux | Hacerfak</title>
+    <meta name="generator" content="Jekyll v4.4.1" />
+    <meta property="og:title" content="Guia de Segurança SSH: Como Proteger o seu Servidor Linux" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Melhores práticas de segurança para o OpenSSH: autenticação por chave pública, configuração do sshd_config e proteção contra ataques de força bruta." />
+    <meta property="og:description"
+        content="Melhores práticas de segurança para o OpenSSH: autenticação por chave pública, configuração do sshd_config e proteção contra ataques de força bruta." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/configuracao-ssh.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/configuracao-ssh.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:image" content="https://hacerfak.com.br/assets/ssh/ssh.avif" />
+    <meta property="og:image:alt" content="Ilustração de acesso seguro via SSH" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2025-07-20T10:00:00-03:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://hacerfak.com.br/assets/ssh/ssh.avif" />
+    <meta name="twitter:image:alt" content="Ilustração de acesso seguro via SSH" />
+    <meta property="twitter:title" content="Guia de Segurança SSH: Como Proteger o seu Servidor Linux" />
+    <meta name="google-site-verification" content="78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk" />
+    <meta name="msvalidate.01" content="44A86B1888654478DBDFD35ED2111049" />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eder Gross Cichelero"},"dateModified":"2025-08-15T08:47:00-03:00","datePublished":"2025-07-20T10:00:00-03:00","description":"Melhores práticas de segurança para o OpenSSH: autenticação por chave pública, configuração do sshd_config e proteção contra ataques de força bruta.","headline":"Guia de Segurança SSH: Como Proteger o seu Servidor Linux","image":{"alt":"Ilustração de acesso seguro via SSH","url":"https://hacerfak.com.br/assets/ssh/ssh.avif","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://hacerfak.com.br/2025/07/20/configurando-ssh/"},"url":"https://hacerfak.com.br/2025/07/20/configurando-ssh/"}</script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="post-content">
+
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">Guia de Segurança SSH: Como Proteger o seu Servidor Linux</h1>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 20/07/2025
+
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Segurança
+
+                </div>
+            </header>
+
+            <h1 id="sobre-o-conteúdo">Sobre o conteúdo</h1>
+
+            <p>Nesse post, vou mostrar como é fácil instalar e configurar o servidor SSH para seu PC, dado assim a opção
+                de acessá-lo remotamente pela rede LAN ou até mesmo pela WAN.</p>
+
+            <h2 id="instalação-do-server-ssh">Instalação do server SSH</h2>
+
+            <p>No momento que escrevo esse post, estou usando Debian 13 (ainda não foi lançado oficialmente, eu sei, mas
+                eu sou entusiasta kkk)</p>
+
+            <p>Aqui assumo que você já tenha feito a instalação e configuração mínima do sistema, caso ainda não tenha
+                feito isso, acompanhe nesse outro post <a href="/posts/configuracao-debian-13.html">aqui</a>.</p>
+
+            <p>Vamos começar instalando o servidor SSH com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>openssh-server
+</code></pre>
+                </div>
+            </div>
+
+            <h2 id="configuração-básica-de-segurança">Configuração básica de segurança</h2>
+
+            <p>Após instalar o servidor, vamos editar algumas configurações básicas de segurança.</p>
+
+            <p>Edite o arquivo <strong>sshd_config</strong> com seu editor de preferência.</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/ssh/sshd_config
+</code></pre>
+                </div>
+            </div>
+
+            <p>Nesse arquivos vamos editar os seguintes parâmetros:</p>
+
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c"># Se quiser alterar a porta padrão do SSH, o padrão é a 22
+</span><span class="n">Port</span> <span class="m">22</span> 
+<span class="c"># Tempo que o usuario tem para fazer login, no caso defini para 10 segundos
+</span><span class="n">LoginGraceTime</span> <span class="m">10</span> 
+<span class="c"># Não permita que o usuário root se conecte diretamente
+</span><span class="n">PermitRootLogin</span> <span class="n">no</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Salve o arquivo e então reinicie o serviço do SSH.</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl restart ssh.service
+</code></pre>
+                </div>
+            </div>
+
+            <p>Pronto!
+                Configurações básicas feitas com sucesso!</p>
+
+            <h2 id="criando-uma-chave-ssl-para-relaizar-o-login-diretamente-ao-host">Criando uma chave SSL para relaizar
+                o login diretamente ao host</h2>
+
+            <p>Aqui á ideia é gerar uma chave SSL em cada cliente que pode se conectar a essa máquina via SSH, gerando
+                as chaves, acessamos o host com a senha e entao subimos a chave pública do cliente para o host, assim em
+                uma nova conexão ele não irá mais solicitar a senha do cliente que está se conectando, pois a
+                autenticação irá ocorrer pelas chave SSL.</p>
+
+            <p>Nas máquinas clientes, o primeiro passo é gerar o par de chaves SSL para autenticação.</p>
+
+            <p>Rode o comando:</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-c</span> <span class="s2">"Seu comentário"</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>No processo de criação especifique onde as chaves serão salvas, por padrão elas ficam em
+                <strong>~/.ssh/</strong>, legal que aqui você pode nomear elas e criar quantas chaves forem necessárias.
+            </p>
+
+            <p><strong>Atenção:</strong> No processo de criação, você pode definir uma senha para as chaves ou não, caso
+                não queira ficar digitando senha, crie as chaves sem senha, apenas pulando a etapa da senha com
+                <strong>Enter</strong>
+            </p>
+
+            <p>Com as chaves geradas, agora faça o upload chave pública no host que deseja:</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>scp <span class="nt">-P</span> 22  sua_chave.pub user@192.168.0.99:/home/user/.ssh/authorized_keys
+</code></pre>
+                </div>
+            </div>
+            <p>Com esse comando você irá se conectar ao host <strong>user@192.168.0.99</strong> e carregar
+                <strong>sua_chave.pub</strong> renomeando o arquivo para <strong>authorized_keys</strong>. Nesse
+                primeiro envio ele ainda irá solicitar a senha para se atenticar ao server, mas no próximo login já irá
+                conectar diretamente pela chave gerada e carregado no host.
+            </p>
+
+            <p>Caso seja a primeira que você esteja se conectando ao host, ele ainda irá pedir a confirmação se deseja
+                adicionar esse host a lista de hosts confiáveis.</p>
+
+            <p>E basicamente é isso aí gurizada!</p>
+
+            <p>Com essa simples configuração já temos um acesso tranquilo a nossas máquinas através do SSH.</p>
+
+            <p>Claro, ainda há muita otimização pensando em segurança, principalmente se for expor o serviço do host
+                para a WAN. Mas isso é assundo para outro post ou para ser atualziado aqui posteriormente!</p>
+
+            <p>Abraços! ❤️</p>
+
+
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">
+                    Voltar para o Blog
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; 2026 Hacerfak
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

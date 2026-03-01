@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios | Hacerfak</title>
+    <meta name="generator" content="Jekyll v4.4.1" />
+    <meta property="og:title" content="Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Tutorial passo a passo para instalar e integrar Pi-hole com Wireguard no Linux, garantindo DNS seguro e privacidade móvel." />
+    <meta property="og:description"
+        content="Tutorial passo a passo para instalar e integrar Pi-hole com Wireguard no Linux, garantindo DNS seguro e privacidade móvel." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/pihole-wireguard.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/pihole-wireguard.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:image" content="https://hacerfak.com.br/assets/dns_vpn/pi-wire.avif" />
+    <meta property="og:image:alt" content="Capa de rede com Pi-hole e Wireguard" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2022-11-02T10:00:00-03:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://hacerfak.com.br/assets/dns_vpn/pi-wire.avif" />
+    <meta name="twitter:image:alt" content="Capa de rede com Pi-hole e Wireguard" />
+    <meta property="twitter:title" content="Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios" />
+    <meta name="google-site-verification" content="78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk" />
+    <meta name="msvalidate.01" content="44A86B1888654478DBDFD35ED2111049" />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eder Gross Cichelero"},"dateModified":"2024-06-10T12:00:00-03:00","datePublished":"2022-11-02T10:00:00-03:00","description":"Tutorial passo a passo para instalar e integrar Pi-hole com Wireguard no Linux, garantindo DNS seguro e privacidade móvel.","headline":"Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios","image":{"alt":"Capa de rede com Pi-hole e Wireguard","url":"https://hacerfak.com.br/assets/dns_vpn/pi-wire.avif","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://hacerfak.com.br/2022/11/02/pihole-wireguard/"},"url":"https://hacerfak.com.br/2022/11/02/pihole-wireguard/"}</script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="post-content">
+
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios</h1>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 02/11/2022
+
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Segurança
+
+                </div>
+            </header>
+
+            <h2 id="sobre-o-conteúdo">Sobre o conteúdo</h2>
+
+            <p>Nesse post vou ensinar a realizar a instalação e configuração de uma infra com Pihole para filtrar todas
+                as nossas requisições de DNS da rede interna e utilizar a VPN do WireGuard para criar um túnel para
+                direcionar o tráfego da rede de nossos dispositivos móveis para a nossa rede interna e assim se
+                beneficiar do filtro de DNS do Pihole.</p>
+
+            <h2 id="o-server">O Server</h2>
+
+            <p>Aqui estarei utilizando um notebook quase inutilizado como servidor. É um Acer A315-34-C5EY, com um
+                modesto <a
+                    href="https://www.intel.com.br/content/www/br/pt/products/sku/199892/intel-celeron-processor-n4000c-4m-cache-up-to-2-60-ghz/specifications.html">Celeron
+                    N4000C</a> e 4GB de RAM DDR4.</p>
+
+            <h2 id="instalação-do-server">Instalação do Server</h2>
+
+            <p>Aqui utilizo debian como servidor. Realizo uma instalação limpa dele apenas instalando o sistema base e o
+                servidor SSH que pode ser selecionado no Taksel durante a instalação.</p>
+
+            <p>Para um passo a passo da instalação do debian como servidor, recomendo seguir esse <a
+                    href="https://blog.remontti.com.br/7236">tutorial</a> do Rudimar Remontti. :D</p>
+
+            <h2 id="pós-instalação">Pós-Instalação</h2>
+
+            <p>Após ter o server instalado, configurado o sources.list e rodando com SSH, então começamos os trabalhos.
+            </p>
+
+            <p>Lembrando que você pode acessar seu server via SSH através de qualquer terminal linux ou windows que
+                tenham o cliente SSH habilitado. Para acessar usamos o seguinte comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>ssh usuário@servidor <span class="nt">-p</span> porta
+</code></pre>
+                </div>
+            </div>
+
+            <p>Onde:</p>
+            <ul>
+                <li><strong>usuário</strong> é o usuário que você definiu durante a instalação. Lembrando que por padrão
+                    o SSH não permite conexão diretamente com o usuário <strong>root</strong>, você pode acessar com seu
+                    usuário normal e depois mudar para root com o comando <code
+                        class="language-plaintext highlighter-rouge">su -</code>;</li>
+                <li><strong>servidor</strong> é o IP fixo do seu servidor, seja ele local ou remoto;</li>
+                <li>O argumento <code class="language-plaintext highlighter-rouge">-p</code> você usa apenas se tiver
+                    alterado a porta padrão de acesso do SSH, que é a porta <strong>22</strong>. Caso tenha alterado use
+                    o argumento passando a nova porta de comunicação com o servidor SSH</li>
+            </ul>
+
+            <p>Antes de tudo vamos instalar algumas dependências, que no caso são, o próprio <a
+                    href="https://www.wireguard.com/install/#debian-module-tools">server do WireGuard</a> e também vamos
+                utilizar um utilitário mais prático de firewall, o <a
+                    href="https://servidordebian.org/pt/buster/security/firewall/ufw">UFW</a>.</p>
+
+            <p>Para instalar os dois use o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>wireguard ufw
+</code></pre>
+                </div>
+            </div>
+
+            <p>Ele irá instalar os dois pacotes e todas as suas dependências.</p>
+
+            <h2 id="ufw">UFW</h2>
+
+            <p>A primeira coisa que iremos fazer é permitir a conexão SSH antes de habilitar o firewall, para isso
+                usamos o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw allow regra
+</code></pre>
+                </div>
+            </div>
+
+            <p>O SSH é possui uma regra padrão que habilita a conexão para a porta padrão 22. Nesse caso usamos o
+                comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw allow SSH
+</code></pre>
+                </div>
+            </div>
+
+            <p>Caso tenha alterado a porta padrão do servidor SSH então especifique a porta e o protocolo que deseja
+                liberar a conexão, exemplo:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw allow 2222/tcp
+</code></pre>
+                </div>
+            </div>
+            <p>assim será liberada as conexões de qualquer endereço para a porta <strong>2222</strong> utilizando
+                protocolo <strong>TCP</strong></p>
+
+            <p>Após liberar as conexões para o servidor SSH podemos habilitar o UFW com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw <span class="nb">enable</span>
+</code></pre>
+                </div>
+            </div>
+            <p>Ao longo do tutorial, iremos criar mais regras no firewall utilizando o UFW, mas por hora apenas
+                liberamos o acesse ao SSH para continuar os trabalhos.</p>
+
+            <h2 id="configurando-o-wireguard-ui">Configurando o WireGuard-UI</h2>
+
+            <p>Com o servidor WireGuard instalado, vamos começar a instação do WireGuard-UI, um utilitário Web para
+                configurar o servidor e também configurar os clientes da VPN.</p>
+
+            <h1 id="ip-forwarding">IP forwarding</h1>
+
+            <p>Vamos começar habilitando o IP forwarding do servidor, para que o server consiga encaminhar os pacotes
+                para redes diferentes.</p>
+
+            <p>Edite o arquivo <code class="language-plaintext highlighter-rouge">sysctl.conf</code> com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/sysctl.conf
+</code></pre>
+                </div>
+            </div>
+            <p>Ao abrir o arquivo, descomente a linha <code
+                    class="language-plaintext highlighter-rouge">#net.ipv4.ip_forward=1</code> apenas removendo o
+                <strong>#</strong> da frente.
+            </p>
+
+            <p>Após isso salve o arquivo com <strong>Ctrl+O</strong> e feche o arquivo com <strong>Ctrl+X</strong> e
+                rode o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>sysctl <span class="nt">-p</span>
+</code></pre>
+                </div>
+            </div>
+            <p>para atualizar as configurações do sistema.</p>
+
+            <h1 id="configurando-o-ufw">Configurando o UFW</h1>
+
+            <p>Agora vamos liberar as portas para acessar o Web-UI e também para permitir a conexão dos peers ao nosso
+                servidor VPN.</p>
+
+            <p>Como eu não quero que os paineis web sejam acessados fora da rede local, posteriormente no meu roteador
+                eu apenas irei fazer o port forwarding da porta UDP que o server do WireGuard irá utilizar, então se
+                quiser acessar os paineis, poderei fazer pela VPN que terá acesso a rede local :D</p>
+
+            <p>Para o WireGuard-UI utilizo a porta <strong>51821/tcp</strong> enquanto para o servidor do WireGuard
+                utilizo a porta <strong>51820/udp</strong></p>
+
+            <p>Então vamos criar as regras no UFW com o seguinte comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw allow 51821/tcp <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>ufw allow 51820/udp <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>ufw allow proto udp to any port 51820
+</code></pre>
+                </div>
+            </div>
+            <p>Após criar as novas regras, recarregamos o UFW com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw reload
+</code></pre>
+                </div>
+            </div>
+
+            <h1 id="baixando-e-configurando-o-wireguard-ui">Baixando e configurando o WireGuard-UI</h1>
+
+            <p>O WireGuard-UI é desenvolvido pela comunidade, e o repositório do projeto você encontra <a
+                    href="https://github.com/ngoduykhanh/Wireguard-ui">aqui</a>.</p>
+
+            <p>Primeiro passo é baixar os binários da sua arquitetura para seu servidor, para isso usaremos o <a
+                    href="https://packages.debian.org/bookworm/wget">wget</a>.</p>
+
+            <p>Primeiro acessamos a página de lançamentos do WireGuard-UI <a
+                    href="https://github.com/ngoduykhanh/wireguard-ui/releases">aqui</a> e copiamos o link de download
+                dos binários compatíveis com o nosso sistema, no nosso caso é o pacote <code
+                    class="language-plaintext highlighter-rouge">*-linux-amd64.tar.gz</code></p>
+
+            <p>Com o link copiado, então podemos rodar o comando de download do arquivo em nosso servidor com o wget.
+                Exemplo:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>wget https://github.com/ngoduykhanh/wireguard-ui/releases/download/v0.5.2/wireguard-ui-v0.5.2-linux-amd64.tar.gz
+</code></pre>
+                </div>
+            </div>
+            <p>Isso irá baixar o arquivo para nosso diretório atual, que deve ser o <strong>/home</strong></p>
+
+            <p>Após o download, é possível verificar o arquivo no diretório com um <code
+                    class="language-plaintext highlighter-rouge">ls</code></p>
+
+            <p><img src="/assets/dns_vpn/wireguard-ui-download.avif" alt="Binário salvo no sistema" /></p>
+
+            <p>Agora vamos extrair o conteúdo do arquivo com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">tar</span> <span class="nt">-xvzf</span>  wireguard-ui-<span class="k">*</span>.tar.gz
+</code></pre>
+                </div>
+            </div>
+
+            <p>Após criamos um diretório para armazenar os binários em <strong>/opt</strong></p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo mkdir</span> /opt/wireguard-ui
+</code></pre>
+                </div>
+            </div>
+            <p>Então movemos a pasta extraída para o diretório em /opt</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo mv </span>wireguard-ui /opt/wireguard-ui/
+</code></pre>
+                </div>
+            </div>
+
+            <p>O próximo passo é criar o arquivo de configuração <strong>.env</strong> no diretório raiz. Para isso
+                rodamos o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /opt/wireguard-ui/.env
+</code></pre>
+                </div>
+            </div>
+            <p>dessa forma o nano cria um arquivo novo assim que salvarmos a edição.</p>
+
+            <p>Dentro desse arquivo vamos informar as seguintes linhas:</p>
+
+            <div class="language-ini highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c"># /opt/wireguard-ui/.env
+</span><span class="py">SESSION_SECRET</span><span class="p">=</span><span class="s">Uma senha aleatória</span>
+<span class="py">WGUI_USERNAME</span><span class="p">=</span><span class="s">Seu usuário de acesso</span>
+<span class="py">WGUI_PASSWORD</span><span class="p">=</span><span class="s">Sua senha de acesso</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Exemplo:</p>
+
+            <div class="language-ini highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c"># /opt/wireguard-ui/.env
+</span><span class="py">SESSION_SECRET</span><span class="p">=</span><span class="s">123456789</span>
+<span class="py">WGUI_USERNAME</span><span class="p">=</span><span class="s">Eder</span>
+<span class="py">WGUI_PASSWORD</span><span class="p">=</span><span class="s">Eder123321</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Agora vamos confirmar qual é a interface de rede que estamos utilizando, para isso podemos rodar o
+                comando:</p>
+
+            <p><code class="language-plaintext highlighter-rouge">ip addr</code> ou <code
+                    class="language-plaintext highlighter-rouge">ip route</code></p>
+
+            <p>Vamos considerar a interface que possui o ip estático do servidor ou então a interface padrão de rota.
+                Que no meu caso é a <strong>enp2s0</strong>. Para você pode ser <strong>eth0</strong> ou qualquer outra,
+                sempre verifique.</p>
+
+            <p>Com o conhecimento da interface padrão do sistema, vamos criar dois scripts para criar as rotas e regras
+                de NAT quando serviço do WireGuard inicia e termina.</p>
+
+            <p>Primeiro criamos o script de pós-inicialização.</p>
+
+            <p>Rode o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /opt/wireguard-ui/postup.sh
+</code></pre>
+                </div>
+            </div>
+            <p>e cole as seguintes linhas:</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c">#!/usr/bin/bash</span>
+<span class="c"># /opt/wireguard-ui/postup.sh</span>
+ufw route allow <span class="k">in </span>on wg0 out on enp2s0
+iptables <span class="nt">-t</span> nat <span class="nt">-I</span> POSTROUTING <span class="nt">-o</span> enp2s0 <span class="nt">-j</span> MASQUERADE
+</code></pre>
+                </div>
+            </div>
+
+            <p><strong>OBS</strong>: Lembre de alterar a interface <em>enp2s0</em> para a interface do seu sistema.</p>
+
+            <p>Salve o arquivo com <strong>Ctrl+O</strong> e feche o arquivo com <strong>Ctrl+X</strong>.</p>
+
+            <p>Agora criaremos o arquivo de pós-termino do serviço, rodando o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /opt/wireguard-ui/postdown.sh
+</code></pre>
+                </div>
+            </div>
+            <p>e cole as seguintes linhas:</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c">#!/usr/bin/bash</span>
+<span class="c"># /opt/wireguard-ui/postdown.sh</span>
+ufw route delete allow <span class="k">in </span>on wg0 out on enp2s0
+iptables <span class="nt">-t</span> nat <span class="nt">-D</span> POSTROUTING <span class="nt">-o</span> enp2s0 <span class="nt">-j</span> MASQUERADE
+</code></pre>
+                </div>
+            </div>
+
+            <p><strong>OBS</strong>: Lembre de alterar a interface <em>enp2s0</em> para a interface do seu sistema.</p>
+
+            <p>Salve o arquivo com <strong>Ctrl+O</strong> e feche o arquivo com <strong>Ctrl+X</strong>.</p>
+
+            <p>Ao finalizar a criação dos dois scripts, vamos tornar eles executáveis, aplicando a seguinte regra:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo chmod</span> +x /opt/wireguard-ui/post<span class="k">*</span>.sh
+</code></pre>
+                </div>
+            </div>
+
+            <h1 id="criando-o-serviço-wireguard-ui-com-systemd">Criando o serviço WireGuard-UI com SystemD</h1>
+
+            <p>Para conseguirmos incializar o serviço e gerenciar ele através do SystemD que é o sistema de
+                inicialização padrão do Debian, precisamos criar os seu scripts de inicialização.</p>
+
+            <p>Vamos começar pelo script do serviço do WireGuard-UI.</p>
+
+            <p>Rode o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/systemd/system/wireguard-ui-daemon.service
+</code></pre>
+                </div>
+            </div>
+            <p>e cole as seguintes linhas:</p>
+
+            <div class="language-ini highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nn">[Unit]</span><span class="w">
+</span><span class="py">Description</span><span class="p">=</span><span class="s">Serviço WireGuard UI</span>
+<span class="py">Wants</span><span class="p">=</span><span class="s">network-online.target</span>
+<span class="py">After</span><span class="p">=</span><span class="s">network-online.target</span>
+<span class="w">
+</span><span class="nn">[Service]</span><span class="w">
+</span><span class="py">User</span><span class="p">=</span><span class="s">root</span>
+<span class="py">Group</span><span class="p">=</span><span class="s">root</span>
+<span class="py">Type</span><span class="p">=</span><span class="s">simple</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/opt/wireguard-ui</span>
+<span class="py">EnvironmentFile</span><span class="p">=</span><span class="s">/opt/wireguard-ui/.env</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/opt/wireguard-ui/wireguard-ui -bind-address "192.168.0.99:51821"</span>
+<span class="w">
+</span><span class="nn">[Install]</span><span class="w">
+</span><span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p><strong>OBS</strong>: Lembre de alterar o IP do argumento <em>bind-address</em> para o IP fixo do seu
+                server, além disso a porta aqui é a porta de acesso a interface web.</p>
+
+            <p>Salve o arquivo com <strong>Ctrl+O</strong> e feche o arquivo com <strong>Ctrl+X</strong>.</p>
+
+            <p>Agora, vamos reiniciar o serviço do SystemD para atualizar a lista de serviços que ele pode gerenciar e
+                assim carregar o novo serviço do WireGuard-UI.</p>
+
+            <p>Rode o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl daemon-reload <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>systemctl start wireguard-ui-daemon.service
+</code></pre>
+                </div>
+            </div>
+
+            <p>Dessa forma o sistema irá inciar o serviço do WireGuard-UI e já conseguirá visulizar ele rodando com o
+                comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl status wireguard-ui-daemon.service
+</code></pre>
+                </div>
+            </div>
+
+            <p>Por fim, vamos habilitar o serviço para ser inicializado junto com o sistema, caso ele reinicie.</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>wireguard-ui-daemon.service
+</code></pre>
+                </div>
+            </div>
+
+            <h1 id="serviço-para-monitorar-o-wireguard">Serviço para monitorar o WireGuard</h1>
+
+            <p>Como o WireGuard-UI cuida apenas da geração da configuração do WireGuard, você precisa de outro serviço
+                SystemD para observar as alterações e reiniciar o serviço WireGuard quando for necessário.</p>
+
+            <p>Para criar esse serviço rode o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/systemd/system/wgui.service
+</code></pre>
+                </div>
+            </div>
+            <p>e cole as seguintes linhas:</p>
+
+            <div class="language-ini highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nn">[Unit]</span><span class="w">
+</span><span class="py">Description</span><span class="p">=</span><span class="s">Reiniciar WireGuard</span>
+<span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
+<span class="w">
+</span><span class="nn">[Service]</span><span class="w">
+</span><span class="py">Type</span><span class="p">=</span><span class="s">oneshot</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/bin/systemctl restart wg-quick@wg0.service</span>
+<span class="w">
+</span><span class="nn">[Install]</span><span class="w">
+</span><span class="py">RequiredBy</span><span class="p">=</span><span class="s">wgui.path</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Salve o arquivo com <strong>Ctrl+O</strong> e feche o arquivo com <strong>Ctrl+X</strong> e crie outro
+                arquivo com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>nano /etc/systemd/system/wgui.path
+</code></pre>
+                </div>
+            </div>
+            <p>e cole as seguintes linhas:</p>
+
+            <div class="language-ini highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nn">[Unit]</span><span class="w">
+</span><span class="py">Description</span><span class="p">=</span><span class="s">Observar mudanças em /etc/wireguard/wg0.conf</span>
+<span class="w">
+</span><span class="nn">[Path]</span><span class="w">
+</span><span class="py">PathModified</span><span class="p">=</span><span class="s">/etc/wireguard/wg0.conf</span>
+<span class="w">
+</span><span class="nn">[Install]</span><span class="w">
+</span><span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Salve o arquivo com <strong>Ctrl+O</strong> e feche o arquivo com <strong>Ctrl+X</strong>.</p>
+
+            <p>E para finalizar aplique esses novos serviços no SystemD com os seguintes comandos:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl daemon-reload <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>systemctl <span class="nb">enable </span>wgui.<span class="o">{</span>path,service<span class="o">}</span> <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>systemctl start wgui.<span class="o">{</span>path,service<span class="o">}</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Configuração inicial finalizada!</p>
+
+            <hr />
+
+            <h2 id="acessando-o-wireguard-ui-e-finalizando-a-configuração">Acessando o WireGuard-UI e finalizando a
+                configuração</h2>
+
+            <p>Agora vamos acessar a interface web para finalizar a configuração do WireGuard e gerar os acessos dos
+                clientes.</p>
+
+            <p>A inteface poderá ser acessada pelo endereço estático do servidor, seguido pela porta, exemplo: <code
+                    class="language-plaintext highlighter-rouge">192.168.0.99:51821</code></p>
+
+            <p>Quando solicitar os dados de autenticação, preencha com os dados que você definiu nos campos
+                <strong>WGUI_USERNAME</strong> e <strong>WGUI_PASSWORD</strong> no arquivo <strong>.env</strong> que
+                criamos anteriormente.
+            </p>
+
+            <p>Ao acessar a interface, a primeira coisa que vamos fazer é configurar o servidor do WireGuard.</p>
+
+            <p>Acesse a página <strong>WireGuard Server</strong> e configure os campos dessa forma:</p>
+
+            <ul>
+                <li><strong>Listen Port</strong>: 51820</li>
+                <li><strong>Post Up Script</strong>: /opt/wireguard-ui/postup.sh</li>
+                <li><strong>Post Down Script</strong>: /opt/wireguard-ui/postup.sh</li>
+            </ul>
+
+            <p>Cliue em <strong>Save</strong> e então acesse a página <strong>Global Settings</strong> e verifique os
+                campos:</p>
+
+            <ul>
+                <li><strong>Endpoint Address</strong>: Aqui você pode usar seu IP público ou então o IP do servidor,
+                    vamos fazer o port forwarding logo em seguida no roteador.</li>
+                <li><strong>Wireguard Config File Path</strong>: Verifique se o mesmo está preenchido com o seguinte
+                    caminho: <code class="language-plaintext highlighter-rouge">/etc/wireguard/wg0.conf</code></li>
+            </ul>
+
+            <p>Após verificar, clique em <strong>Save</strong> e então volte para a página <strong>WireGuard
+                    Server</strong> e clique em <strong>Apply Config</strong> e aguarde alguns segundos para o servidor
+                WireGuard reiniciar.</p>
+
+            <p>Após isso você pode rodar o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>wg show 
+</code></pre>
+                </div>
+            </div>
+
+            <p>no terminal do servidor para verificar que a interface <strong>wg0</strong> esta ativa e escutando na
+                porta <strong>51820</strong>.</p>
+
+            <p>Ao finalizar essa etapa, agora o que resta a fazer é criar a regra de port forwarding no roteador, para
+                que clientes de redes externas consigam acessar o servidor e assim estabelecer a conexão para o túnel e
+                registrar os clientes no servidor para configurar os dispositivos clientes que irão usar a nossa VPN.
+            </p>
+
+            <h1 id="port-forwarding-no-roteador">Port Forwarding no roteador.</h1>
+
+            <p>Nessa infra, eu tenho meu roteador principal GPON que roda o servidor DHCP da rede interna e o meu server
+                que está rodando a VPN, então precisamos encaminhar todas as solicitações externas na porta 51820/UDP
+                para a porta 51820/UDP do meu servidor que está na rede interna.</p>
+
+            <p>Para fazer isso vou acessar a interface web do meu roteador, na seção de internet, vou na aba de
+                segurança e então lá tenho a opção de criar regras de encaminhamento de portas (port forwarding). O
+                caminho e as funções disponíveis em cada roteador variam conforme marca, modelo e sistema utilizado.</p>
+
+            <p>Aqui um exemplo de como fica a regra criada, lembrando que meu servidor tem IP estático.</p>
+
+            <p><img src="/assets/dns_vpn/wg-port-forwarding.avif"
+                    alt="Regra de encaminhamento de porta no meu roteador" /></p>
+
+            <h1 id="criando-um-cliente">Criando um cliente</h1>
+
+            <p>Para criar um cliente é muito simples. Na interface de gerenciamento do WireGuard, acesse em
+                <strong>WireGuard Clients</strong> e clique em <strong>+ New Client</strong> e então preencha o campo
+                <strong>Name</strong> e se desejar informe um e-mail no respectivo campo.
+            </p>
+
+            <p>Os demais campos, são padrões e basicamente já estão configurados de forma correta, a ponto de
+                redirecionar todo o tráfego dos clientes para a rede interna.</p>
+
+            <p>Após salvar, você pode realizar o download do arquivo de configuração ou gerar um QR Code para utilizar
+                na configuração de Smartphones com Android ou IOS, por exemplo.</p>
+
+            <p>E essa etapa inicial está concluída.</p>
+
+            <p>Agora vamos finalizar criando o server DNS com Pihole e finalizar a configuração do WireGuard para
+                utilizar o próprio Pihole como nosso servidor padrão de DNS para os clientes da VPN.</p>
+
+            <hr />
+
+            <h2 id="pihole">Pihole</h2>
+
+            <p>O Pihole irá atuar como nosso servidor DNS na rede interna, filtrando todas as requisições dos clientes
+                inclusive de quem estará remoto usando nosso túnel VPN. Para conhecer mais do projeto, acesse o site
+                deles: <a href="https://pi-hole.net/">https://pi-hole.net/</a></p>
+
+            <h1 id="regras-de-firewall">Regras de Firewall</h1>
+
+            <p>Antes de começar a instalação do Pihole, é necessário criar as regras de firewall para que os serviços
+                dele sejam acessíveis as todos os nós da rede interna.</p>
+
+            <p>As portas utilizadas pelo Pihole são as seguintes:</p>
+
+            <ul>
+                <li><strong>53</strong>: Para o serviço de DNS, precisa liberar para os protocolos TCP/UDP.</li>
+                <li><strong>67</strong>: Para o serviço DHCP que o Pihole oferece, precisa liberar para o protocolo UDP
+                    caso for utilizar o DHCP do Pihole.</li>
+                <li><strong>547</strong> Para o serviço DHCPv6 que o Pihole oferece, precisa liberar para o protocolo
+                    UDP caso for utilizar o DHCPv6 do Pihole.</li>
+                <li><strong>80</strong>: Para o serviço HTTP que é utilizado pelo <code
+                        class="language-plaintext highlighter-rouge">lighthttp</code> para acessar a interface web do
+                    Pihole. Precisa liberar o protocolo TCP.</li>
+            </ul>
+
+            <p>Como utilizamos o UFW para gerenciar nossas regras, segue a lista de regras para habilitar. Ative-as
+                conforme os serviços que irá utilizar:</p>
+
+            <p>IPv4:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw allow 80/tcp
+<span class="nb">sudo </span>ufw allow 53/tcp
+<span class="nb">sudo </span>ufw allow 53/udp
+<span class="nb">sudo </span>ufw allow 67/tcp
+<span class="nb">sudo </span>ufw allow 67/udp
+</code></pre>
+                </div>
+            </div>
+
+            <p>IPv6:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw allow 546:547/udp
+</code></pre>
+                </div>
+            </div>
+
+            <p>Após finalizar, lembre de reiniciar o UFW para que as novas regras entrem em vigor:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>ufw reload
+</code></pre>
+                </div>
+            </div>
+
+            <p>A parte mais legal do Pihole é que ele possui um instalador autônomo, então para iniciar os trabalhos
+                basta rodar o seguinte comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>curl <span class="nt">-sSL</span> https://install.pi-hole.net | bash
+</code></pre>
+                </div>
+            </div>
+
+            <p>Dessa forma ele faz todo o serviço de baixar os pacotes e dependências necessárias.</p>
+
+            <p>Ao realizar a instação ele irá fazer algums perguntas e basicamente instale o pighttpd para ter acesso a
+                interface web para gerenciamento do Pihole.</p>
+
+            <p>Lembre de anotar a senha que ele irá apresentar durante a instalação, essa será a senha de acesso ao
+                painel de gerenciamento.</p>
+
+            <p>Ao finalizar a instalação já poderá acessar a interface do Pihole acessando a URL <code
+                    class="language-plaintext highlighter-rouge">192.168.0.99/admin</code> lembrando que o IP será o IP
+                estático do seu servidor.</p>
+
+            <p>No painel do Pihole, basicamente vamos acessar a página <strong>Settings</strong> e na aba
+                <strong>DNS</strong> vamos habilitar os Servers DNS que queremos utilizar e também na seção
+                <strong>Interface settings</strong> vamos permitir as requisições de todas as origens marcando a opção
+                <strong>Permit all origins</strong>.
+            </p>
+
+            <p>Após isso basta salvar e finalizar a configuração no roteador e no WireGuard.</p>
+
+            <h1 id="usando-o-pihole-como-server-dns-da-rede-interna">Usando o Pihole como server DNS da rede interna
+            </h1>
+
+            <p>Para usar o Pihole que está rodando em nosso servidor da rede interna, vamos configurar o roteador que é
+                nosso servidor DHCP para utilizar o IP do servidor como server DNS, então todos os nós da rede serão
+                configurados automaticamente para utilizar o Pihole como DNS e assim se beneficiar dos filtros de
+                domínios.</p>
+
+            <p>Novamente vou acessar a interface do meu roteador e na página de configurações da rede local (LAN), irei
+                acessar as configurações do servidor DHCP e e alterar o endereço do DNS primário para o DNS do meu
+                servidor da rede interna, conforme o exemplo abaixo:</p>
+
+            <p><img src="/assets/dns_vpn/pi-hole-dns-dhcp.avif" alt="Configuração do servidor DHCP do roteador" /></p>
+
+            <p>Após essa configuração é só salvar e reiniciar o roteador.</p>
+
+            <h1 id="usando-o-pihole-como-server-dns-da-vpn-wireguard">Usando o Pihole como server DNS da VPN WireGuard
+            </h1>
+
+            <p>Para esse caso, basta acessarmos a interface web do WireGuard e na página <strong>Global
+                    Settings</strong> definir o IP do nosso servidor como servidor DNS do WireGuard.</p>
+
+            <p>Ao salvar as configurações, lembre-se de aplicar as configurações para que o novo endereço seja
+                utilizado, assim todos os cliente devem ter seus dados de configuração atualizados.</p>
+
+            <p>Se por acaso os dados dos clientes não atualizarem, exclua os clientes cadastrados atualmente e crie-os
+                novamente para que tenham as configurações atualizadas.</p>
+
+            <hr />
+
+            <p>E é isso pessoal!
+                Chegamos ao fim dessa configuração.</p>
+
+            <p>Espero poder ter contribuído para o projeto de vocês.
+                Abraços!</p>
+
+
+
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">
+                    Voltar para o Blog
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; 2026 Hacerfak
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

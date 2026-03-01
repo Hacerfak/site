@@ -1,0 +1,65 @@
+[
+    {
+        "title": "Como Gerenciar Entradas de Boot UEFI no Linux com efibootmgr",
+        "category": "Linux, Hardware",
+        "tags": "UEFI, efibootmgr, Bootloader, Dual Boot, Debian",
+        "url": "/posts/gerenciar-uefi-entrys.html",
+        "date": "06/12/2025"
+    },
+    {
+        "title": "SSL Grátis no Lighttpd com Let's Encrypt e Certbot",
+        "category": "Servidores, SSL",
+        "tags": "Lighttpd, Let's Encrypt, Certbot, HTTPS, Debian",
+        "url": "/posts/lighttpd-letsencrypt.html",
+        "date": "30/11/2025"
+    },
+    {
+        "title": "Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA",
+        "category": "Linux, Desktop",
+        "tags": "Wayland, GNOME, Debian, Interface Gráfica, NVIDIA",
+        "url": "/posts/configurando-wayland-gnome.html",
+        "date": "21/09/2025"
+    },
+    {
+        "title": "Guia de Pós-Instalação do Debian 13 (Trixie): O que Fazer Primeiro",
+        "category": "Linux, Debian",
+        "tags": "Debian 13, Trixie, Pós-instalação, Linux Desktop",
+        "url": "/posts/configuracao-debian-13.html",
+        "date": "21/09/2025"
+    },
+    {
+        "title": "Guia de Segurança SSH: Como Proteger o seu Servidor Linux",
+        "category": "Segurança, Servidores",
+        "tags": "SSH, Hardening, Debian, Segurança Digital",
+        "url": "/posts/configuracao-ssh.html",
+        "date": "20/07/2025"
+    },
+    {
+        "title": "Como Assinar Módulos DKMS para Secure Boot no Debian",
+        "category": "Linux, Kernel",
+        "tags": "DKMS, Secure Boot, Debian, MOK, UEFI",
+        "url": "/posts/assinando-modulos-dkms.html",
+        "date": "16/09/2023"
+    },
+    {
+        "title": "Configurações pós instalação do Debian 12",
+        "category": "Debian",
+        "tags": "",
+        "url": "/posts/configuracao-debian-12.html",
+        "date": "25/06/2023"
+    },
+    {
+        "title": "Configurando Pi-hole com Wireguard: VPN com Bloqueio de Anúncios",
+        "category": "Segurança, Redes",
+        "tags": "Pi-hole, Wireguard, VPN, Debian, Docker",
+        "url": "/posts/pihole_wireguard.html",
+        "date": "02/11/2022"
+    },
+    {
+        "title": "Como criar Alias no Bash: Produtividade no Terminal Linux",
+        "category": "Linux, Produtividade",
+        "tags": "Bash, Terminal, Atalhos, Debian",
+        "url": "/posts/alias-bash.html",
+        "date": "31/08/2022"
+    }
+]

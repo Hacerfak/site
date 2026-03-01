@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>Como Assinar Módulos DKMS para Secure Boot no Debian | Hacerfak</title>
+    <meta property="og:title" content="Como Assinar Módulos DKMS para Secure Boot no Debian" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Guia técnico sobre MOK (Machine Owner Key) e assinatura de módulos DKMS para garantir a compatibilidade do hardware com Secure Boot ativo." />
+    <meta property="og:description"
+        content="Guia técnico sobre MOK (Machine Owner Key) e assinatura de módulos DKMS para garantir a compatibilidade do hardware com Secure Boot ativo." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/assinando-modulos-dkms.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/assinando-modulos-dkms.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:image" content="https://hacerfak.com.br/assets/dkms/shim.avif" />
+    <meta property="og:image:alt" content="Gerenciador de chaves MOK Shim UEFI" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2023-09-16T10:00:00-03:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://hacerfak.com.br/assets/dkms/shim.avif" />
+    <meta name="twitter:image:alt" content="Gerenciador de chaves MOK Shim UEFI" />
+    <meta property="twitter:title" content="Como Assinar Módulos DKMS para Secure Boot no Debian" />
+    <meta name="google-site-verification" content="78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk" />
+    <meta name="msvalidate.01" content="44A86B1888654478DBDFD35ED2111049" />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eder Gross Cichelero"},"dateModified":"2024-07-19T20:00:00-03:00","datePublished":"2023-09-16T10:00:00-03:00","description":"Guia técnico sobre MOK (Machine Owner Key) e assinatura de módulos DKMS para garantir a compatibilidade do hardware com Secure Boot ativo.","headline":"Como Assinar Módulos DKMS para Secure Boot no Debian","image":{"alt":"Gerenciador de chaves MOK Shim UEFI","url":"https://hacerfak.com.br/assets/dkms/shim.avif","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://hacerfak.com.br/2023/09/16/assinando-modulos-dkms/"},"url":"https://hacerfak.com.br/2023/09/16/assinando-modulos-dkms/"}</script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="post-content">
+
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">Como Assinar Módulos DKMS para Secure Boot no Debian</h1>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 16/09/2023
+
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Linux
+
+                </div>
+            </header>
+
+            <h1 id="sobre-o-conteúdo">Sobre o conteúdo</h1>
+
+            <p>Nesse post, vou mostrar como é fácil assinar e carregar a chave pública para a BIOS UEFI para usar na
+                assinatura e validação dos módulos durante a incialização.</p>
+
+            <h2 id="a-máquina-️">A máquina 🖥️</h2>
+
+            <p>Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes
+                configurações:</p>
+
+            <ul>
+                <li><strong>CPU:</strong> Ryzen 5 5600x</li>
+                <li><strong>MB:</strong> Asus TUF Gaming X570-PLUS/BR
+                    <ul>
+                        <li><em>Áudio:</em> ALC S1200A (ALC1200)</li>
+                        <li><em>LAN:</em> Realtek L8200A (RTL8111/8168/8411)</li>
+                    </ul>
+                </li>
+                <li><strong>GPU:</strong> RTX 3070</li>
+                <li><strong>Wi-Fi/BT:</strong> Intel Wi-Fi 6 (AX210/AX211/AX411) 160MHz</li>
+                <li><strong>SO:</strong> Debian 12 (bookworm)</li>
+            </ul>
+
+            <p><strong>OBS:</strong> O SecureBoot está habilitado na BIOS e o sistema foi instalado com recursos
+                mínimos, sem uma DE e nem utilitários básicos do sistema. Você pode acompanhar o outro post sobre a
+                instação <a href="/posts/configuracao-debian-13.html">aqui</a>.</p>
+
+            <h2 id="pós-instalação">Pós-Instalação</h2>
+
+            <p>Após ter instalado o sistema, apenas temos a tela do console para realizar login, nisso entro no usuário
+                <code class="language-plaintext highlighter-rouge">root</code> e sigo com a instalção dos seguintes
+                pacotes:
+            </p>
+
+            <ul>
+                <li><a href="https://packages.debian.org/bookworm/openssl">openssl</a></li>
+                <li><a href="https://packages.debian.org/bookworm/dkms">dkms</a></li>
+            </ul>
+
+            <p>Com a instalação desses dois pacotes, você pode seguir com a instalação dos pacotes que deseja e então
+                prosseguir.</p>
+
+            <h2 id="dkms">DKMS</h2>
+
+            <p>O Dynamic Kernel Module System (DKMS) ou Suporte Dinâmico de Módulo de Kernel é um framework que permite
+                que ele recompile automaticamente todos os módulos DKMS quando uma nova versão do kernel é instalada.
+                Isto permite manter os drivers de dispositivos fora da linha principal do kernel funcionando mesmo após
+                uma atualização do kernel do Linux.</p>
+
+            <p>Ou seja, pegando um cenário onde você tenha um módulo do kernel que pode não ser atualizado junto com o
+                kernel, mas ao atuaizar o kernel para uma versão nova, o módulo é reconstruído para essa nova versão,
+                mantendo assim o módulo funcional com a nova versão do kernel.</p>
+
+            <p>A página oficial do DKMS você encontra <a href="https://github.com/dell/dkms">aqui</a>.</p>
+
+            <p>Seguindo o passo a passo da instalação na página do Github é possível ver a seção sobre a assinatura dos
+                módulos e a inicialização segura (SecureBoot).</p>
+
+            <p>De forma resumida, quando instalamos o DKMS ele não possui nenhuma chave pública ou privada para realizar
+                a assinatura dos módulos, porém ao realizar a primeira construção, ou seja, quando ele for executado
+                pela primeira vez, ele irá criar uma chave pública e privada padrão para utilização nas assinaturas.</p>
+
+            <p>Nesse ponto podemos customizar e criar nossas próprias chaves, mas em questão de praticidade vamos
+                utilizar as chaves padrões geradas por ele.</p>
+
+            <p>O nosso trabalho aqui será registrar a chave pública em nosso sistema UEFI. E aqui entra o <code
+                    class="language-plaintext highlighter-rouge">shim</code> e o <code
+                    class="language-plaintext highlighter-rouge">mokutil</code>.</p>
+
+            <h2 id="shim-e-o-mokutil">Shim e o MOKutil</h2>
+
+            <p>O <a href="https://packages.debian.org/bookworm/shim-signed">shim</a> é um gerenciador de inicialização
+                segura minimalista que permite verificar assinaturas de outros binários UEFI em relação ao DB/DBX de
+                inicialização segura ou verificar um banco de dados de assinaturas integrado.</p>
+
+            <p>O shim vem instalado automaticamente no Debian 12.</p>
+
+            <p>O <a href="https://packages.debian.org/bookworm/mokutil">mokutil</a> fornece os meios para inscrever e
+                apagar as chaves do proprietário da máquina (machine owner keys - MOK) armazenadas no banco de dados do
+                shim.</p>
+
+            <p>Com esses dois, vamos poder carregar a chave pública do DKMS para nosso sistema UEFI e assim quando o
+                sistema inicializar ele conseguirá validar os módulos assinados durante a construção no DKMS.</p>
+
+            <h2 id="a-inscrição-da-chave-na-bios-uefi">A inscrição da chave na BIOS UEFI</h2>
+
+            <p>As chaves padrões do DKMS ficam nesse local: <code
+                    class="language-plaintext highlighter-rouge">/var/lib/dkms</code></p>
+
+            <p>Como dito antes, após instalado o DKMS ele não vem com nenhuma chave, ela é gerada durante a primeira
+                execução. Por isso nesse caso dessa máquina tenho duas opções. O módulo de kernel da Nvidia e o módulo
+                de kernel da placa de rede. Instalando qualquer um dos dois, o DKMS já irá gerar as chaves.</p>
+
+            <p>Rodando o comando abaixo, baixamos um pacote de testes e o sistema inicia a instalação e construção
+                usando DKMS:</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>apt <span class="nb">install </span>dkms-test-dkms
+</code></pre>
+                </div>
+            </div>
+
+            <p>Após a instalação de um dos módulos, podemos verificar as chaves geradas em <code
+                    class="language-plaintext highlighter-rouge">/var/lib/dkms</code>, onde teremos a chave pública
+                <code class="language-plaintext highlighter-rouge">mok.pub</code> e a privada <code
+                    class="language-plaintext highlighter-rouge">mok.key</code>.
+            </p>
+
+            <p>Também já podemos verificar o módulo e sua assinatura rodando o comando <code
+                    class="language-plaintext highlighter-rouge">modinfo módulo</code>, no meu caso pode ser <code
+                    class="language-plaintext highlighter-rouge">modinfo r8168</code>, <code
+                    class="language-plaintext highlighter-rouge">modinfo nvidia-current</code> ou <code
+                    class="language-plaintext highlighter-rouge">modinfo dkms-test</code>.</p>
+
+            <p>Note que na descrição teremos inforações sobre a assinatura do módulo.</p>
+
+            <p>Antes de reiniciar o computador, teremos que realizar a inscrição da chave pública em nosso sistema UEFI.
+            </p>
+
+            <p>Para efetuar a inscrição da chave no sistema UEFI, rodamos o seguinte comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>mokutil <span class="nt">--import</span> /var/lib/dkms/mok.pub
+</code></pre>
+                </div>
+            </div>
+
+            <p>Ao realizar esse processo será solicitado que se crie uma senha de entrada única que deve possuir ao
+                menos 1 caractere.</p>
+
+            <p><strong>OBS:</strong> Se o comando de importar a chave não ocorrer com sucesso, provavelmente seu sistema
+                não permite carregar as chaves dessa forma, então você precisará realizar a cópia da chave para um disco
+                externo ou pendrive, por exemplo, e realizar a inscrição da chave diretamente na BIOS da sua placa mãe,
+                carregando ela no gerenciador de chaves DB/DBX.</p>
+
+            <p>Após isso reiniciamos a máquina para então realizarmos o enroll (inscrição) da chave no sistema UEFI.</p>
+
+            <p>Ao reiniciar, será apresentada a página para realizar a inscrição, nessa primeira parte pode pressionar
+                qualquer tecla.</p>
+
+            <p><img src="/assets/dkms/shim.avif" alt="Shim UEFI Key Management" /></p>
+
+            <p>Após, selecionamos a opção <strong>MOK Enroll</strong></p>
+
+            <p><img src="/assets/dkms/enrollmok.avif" alt="Enroll MOK" /></p>
+
+            <p>A partir desse ponto, na página <strong>Enroll MOK</strong> selecione a opção <strong>Continue</strong> e
+                depois na tela <strong>Enroll the Key(s)?</strong> selecione a opção <strong>Yes</strong>.</p>
+
+            <p>A próxima página irá solicitar a senha de uso único, digite a mesma que você criou quando inscreveu a
+                chave e por fim selecione a opção <strong>Reboot</strong>.</p>
+
+            <p>E está feito! 🍻</p>
+
+            <p>Quando o sistema inicializar é possível verificar as chaves carregadas com o comando:</p>
+
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code>mokutil <span class="nt">--list-enrolled</span>
+</code></pre>
+                </div>
+            </div>
+
+            <p>Você verá a CA do debian e também a chave do DKMS, além de outras chaves existentes em seu sistema UEFI.
+            </p>
+
+            <p>Até mais pessoal! 👋❤️</p>
+
+
+
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">
+                    Voltar para o Blog
+                </a>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; 2026 Hacerfak
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

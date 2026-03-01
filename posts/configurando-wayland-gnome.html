@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA | Hacerfak</title>
+    <meta name="generator" content="Jekyll v4.4.1" />
+    <meta property="og:title" content="Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Tutorial para utilizadores Debian sobre como migrar do X11 para o Wayland no GNOME, incluindo dicas de compatibilidade e performance com placas de vídeo NVIDIA." />
+    <meta property="og:description"
+        content="Tutorial para utilizadores Debian sobre como migrar do X11 para o Wayland no GNOME, incluindo dicas de compatibilidade e performance com placas de vídeo NVIDIA." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/configurando-wayland-gnome.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/configurando-wayland-gnome.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:image" content="https://hacerfak.com.br/assets/nvidia_driver/nvidia-wayland.avif" />
+    <meta property="og:image:alt" content="Ambiente de desktop GNOME rodando sobre Wayland com placa NVIDIA" />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2025-09-21T10:00:00-03:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://hacerfak.com.br/assets/nvidia_driver/nvidia-wayland.avif" />
+    <meta name="twitter:image:alt" content="Ambiente de desktop GNOME rodando sobre Wayland com placa NVIDIA" />
+    <meta property="twitter:title" content="Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA" />
+    <meta name="google-site-verification" content="78fcJ6RU8T8KcwG0c7BJAZpjRY6duoWOjWG9p3n5Uzk" />
+    <meta name="msvalidate.01" content="44A86B1888654478DBDFD35ED2111049" />
+    <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Eder Gross Cichelero"},"dateModified":"2025-09-27T17:25:00-03:00","datePublished":"2025-09-21T10:00:00-03:00","description":"Tutorial para utilizadores Debian sobre como migrar do X11 para o Wayland no GNOME, incluindo dicas de compatibilidade e performance com placas de vídeo NVIDIA.","headline":"Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA","image":{"alt":"Ambiente de desktop GNOME rodando sobre Wayland com placa NVIDIA","url":"https://hacerfak.com.br/assets/nvidia_driver/nvidia-wayland.avif","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://hacerfak.com.br/2025/09/21/configurando-wayland-gnome/"},"url":"https://hacerfak.com.br/2025/09/21/configurando-wayland-gnome/"}</script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <h1 id="sobre-o-conteúdo">Sobre o conteúdo</h1>
+
+    <p>Nesse post, vou mostrar como é fácil instalar e configurar o wayland no Gnome 48 com placa de vídeo
+        NVIDIA no Debian 12/13.</p>
+
+    <p>Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes
+        configurações:</p>
+
+    <ul>
+        <li><strong>OS:</strong> Debian sid
+            <ul>
+                <li><em>Kernel:</em> 6.16.7</li>
+                <li><em>DE:</em> Gnome 48.5</li>
+                <li><em>Greeter:</em> GDM3</li>
+                <li><em>Display Server:</em> Xorg</li>
+            </ul>
+        </li>
+        <li><strong>GPU:</strong> RTX 3070
+            <ul>
+                <li><em>Driver:</em> 580.82.09</li>
+            </ul>
+        </li>
+        <li><strong>SecureBoot:</strong> Ativado</li>
+        <li><strong>DKMS:</strong> Ativado</li>
+    </ul>
+
+    <h2 id="instalação-do-driver-nvidia">Instalação do driver NVIDIA</h2>
+
+    <p>No momento que escrevo esse post, já tenho o sistema rodando com driver NVIDIA usando o Xorg como
+        servidor gráfico.</p>
+
+    <p>Antes de tudo vou atualizar o driver para a versão mais recente, que no momento é a 580.82.09.</p>
+
+    <p>O download do driver você pode fazer diretamente no site da NVIDIA <a
+            href="https://www.nvidia.com/Download/index.aspx">aqui</a>.</p>
+
+    <p>Para instalar o driver, após o download, primeiramente torne o arquivo executável com permissão de
+        execução:</p>
+    <div class="language-shell highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="nb">chmod</span> +x NVIDIA-Linux-x86_64-580.82.09.run
+</code></pre>
+        </div>
+    </div>
+    <p>após isso, execute o arquivo como superusuário:</p>
+    <div class="language-shell highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="nb">sudo</span> ./NVIDIA-Linux-x86_64-580.82.09.run
+</code></pre>
+        </div>
+    </div>
+    <p>E siga o passo a passo da instalação.</p>
+
+    <p>A primeira etapa ele irá questionar sobre qual módulo vocẽ deseja utilizar, pois nesse sistema há duas
+        opções: NVidia Proprietário e MIT/GPL.
+        Eu geralmente utiliza o módulo de kernel open source (MIT/GPL), mas você pode escolher o que melhor se
+        adequa a sua necessidade.
+        <img src="/assets/nvidia_driver/nvidia_kernel_module.avif" alt="Módulo de kernel NVIDIA" />
+    </p>
+
+    <p>A próxima etapa ele avisa que estou executando o instalador em um ambiente gráfico e que é recomendado
+        sair do ambiente gráfico para evitar possíveis problemas. Porém eu costumo instalar direto no ambiente
+        gráfico e nunca tive problemas.
+        <img src="/assets/nvidia_driver/nvidia_graphic_env.avif" alt="Aviso de ambiente gráfico" />
+    </p>
+
+    <p>Logo após vem outro aviso sobre o módulo de kernel ‘nvidia-uvm’ que está carregado e que é necessário
+        descarregá-lo para continuar a instalação. Novamente, eu costumo prosseguir com a instalação mesmo com o
+        módulo carregado e nunca tive problemas.
+        <img src="/assets/nvidia_driver/nvidia_uvm_loaded.avif" alt="Aviso de módulo carregado" />
+    </p>
+
+    <p>Mais um aviso, que é sobre continuar a instalação mesmo sem a possibilidade de rodar as sanity checks,
+        novamente eu costumo prosseguir e nunca tive problemas.
+        <img src="/assets/nvidia_driver/nvidia_sanity_checks.avif" alt="Aviso de sanity checks" />
+    </p>
+
+    <p>E o último aviso apenas reforçando que algumas sanitiy checks não poderão ser executadas e que é
+        recomendado reiniciar o sistema após a instalação.
+        <img src="/assets/nvidia_driver/nvidia_final_warning.avif" alt="Aviso final" />
+    </p>
+
+    <p>Se você tem algum receio, pode seguir as recomendações e sair do ambiente gráfico, descarregar o módulo e
+        então rodar o instalador, mas como eu disse, nunca tive problemas em prosseguir com a instalação mesmo
+        com esses avisos.</p>
+
+    <p>O modo mais fácil é iniciar o sistema em modo de recuperação (recovery mode) e então prosseguir com a
+        instalação.</p>
+
+    <p>Após todos os avisos iniciais, vem mais um aviso kkkkkk
+        Agora sobre o sistema já possuir um driver instalado e que ele será removido durante a instalação.
+        <img src="/assets/nvidia_driver/nvidia_existing_driver.avif" alt="Aviso de driver existente" />
+    </p>
+
+    <p>Então ele começa a construir o módulo de kernel.
+        <img src="/assets/nvidia_driver/nvidia_building_kernel_module.avif" alt="Construção do módulo de kernel" />
+    </p>
+
+    <p>E ao concluir ele solicita se você deseja assinar o módulo de kernel.
+        Aqui é importante assinar o módulo, pois caso contrário, se você estiver com o SecureBoot habilitado na
+        BIOS, o módulo não será carregado.
+        <img src="/assets/nvidia_driver/nvidia_sign_kernel_module.avif" alt="Assinatura do módulo de kernel" />
+    </p>
+
+    <p>Ao assinar o módulo, ele irá solicitar se você já possui uma chave criada ou se deseja criar uma nova.
+        Se você já usa DKMS e já possui outros módulos assinados, pode usar a mesma chave.</p>
+
+    <p>Veja meu artigo sobre como <a href="/2023/09/16/assinando-modulos-dkms/">assinar módulos de kernel com
+            DKMS</a>.
+        <img src="/assets/nvidia_driver/nvidia_signing_key.avif" alt="Chave para assinatura do módulo" />
+    </p>
+
+    <p>Ao selecionar a opção de usar um par de chaves existentes, ele irá solicitar primeiro o arquivo da chave
+        privada e depois o arquivo da chave pública.
+        <img src="/assets/nvidia_driver/nvidia_select_private_key.avif" alt="Seleção da chave privada" />
+        <img src="/assets/nvidia_driver/nvidia_select_public_key.avif" alt="Seleção da chave pública" />
+    </p>
+
+    <p>Ao finalizar ele assina o módulo e solicita se você deseja instalar as bibliotecas de 32 bits.
+        Eu geralmente instalo, mas se você não for usar algum software que precise dessas bibliotecas, pode
+        optar por não instalar.
+        <img src="/assets/nvidia_driver/nvidia_install_32bits_libraries.avif"
+            alt="Instalação das bibliotecas de 32 bits" />
+    </p>
+
+    <p>Então ele irá desinstalar o driver antigo.
+        <img src="/assets/nvidia_driver/nvidia_uninstalling_old_driver.avif" alt="Desinstalação do driver antigo" />
+    </p>
+
+    <p>E ao terminar a desinstalação, ele pergunta se você deseja registrar os módulos do kernel no DKMS.
+        Aqui é importante selecionar “Yes”, assim o módulo será registrado no DKMS e sempre que houver uma
+        atualização do kernel, o módulo será reconstruído automaticamente.
+        <img src="/assets/nvidia_driver/nvidia_register_dkms.avif" alt="Registro no DKMS" />
+    </p>
+
+    <p>Ao aceitar o registro então ele prossegue com a instalação.
+        <img src="/assets/nvidia_driver/nvidia_dkms_registering.avif" alt="Registro no DKMS" />
+        <img src="/assets/nvidia_driver/nvidia_installing_driver.avif" alt="Instalação do driver" />
+    </p>
+
+    <p>Ao finalizar a instalação, ele pergunta se você deseja executar o utilitário de configuração
+        nvidia-xconfig para atualizar o arquivo xorg.conf.
+        Aqui é importante selecionar “No”, pois se você selecionar “Yes”, ele irá criar um arquivo xorg.conf que
+        é de uso do Xorg (X11), e como queremos usar o Wayland, não precisamos desse arquivo.</p>
+
+    <p>Ademais, já temos esse arquivo criado pois por padrão o gnome usa o Xorg como servidor gráfico quando
+        utilizado um driver proprietário da NVIDIA.
+        <img src="/assets/nvidia_driver/nvidia_xconfig.avif" alt="nvidia-xconfig" />
+    </p>
+
+    <p>E no final apenas temos a confirmação de que a instalação foi concluída com sucesso e novamente um
+        lembrete para reiniciar o sistema.
+        <img src="/assets/nvidia_driver/nvidia_installation_complete.avif" alt="Instalação concluída" />
+        <img src="/assets/nvidia_driver/nvidia_reboot_system.avif" alt="Reiniciar o sistema" />
+    </p>
+
+    <h2 id="habilitando-o-módulo-kernel-nvidia-drm">Habilitando o módulo kernel nvidia-drm</h2>
+
+    <p>No debian 12/13, o módulo <code class="language-plaintext highlighter-rouge">nvidia-drm</code> não é
+        carregado por padrão, e ele é essencial para que o Wayland funcione corretamente com o driver
+        proprietário da NVIDIA.</p>
+
+    <p>Para incializar o módulo <code class="language-plaintext highlighter-rouge">nvidia-drm</code> durante a
+        inicialização do sistema, podemos editar o editar o arquivo do gerenciador de inicialização.</p>
+
+    <p>No meu caso eu utilizo o GRUB, então edito o arquivo <code
+            class="language-plaintext highlighter-rouge">/etc/default/grub</code> e adiciono a seguinte linha:
+    </p>
+    <div class="language-conf highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="n">GRUB_CMDLINE_LINUX_DEFAULT</span>=<span class="s2">"quiet splash ... nvidia-drm.modeset=1"</span>
+</code></pre>
+        </div>
+    </div>
+
+    <p>Veja um exemplo do meu arquivo <code class="language-plaintext highlighter-rouge">/etc/default/grub</code>:</p>
+
+    <p><img src="/assets/nvidia_driver/grub_example.avif" alt="Exemplo do arquivo grub" /></p>
+
+    <p>Após editar o arquivo, salve e então atualize o GRUB com o comando:</p>
+    <div class="language-shell highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="nb">sudo </span>update-grub
+</code></pre>
+        </div>
+    </div>
+
+    <h2 id="verificando-os-serviços-adicionais-da-nvidia">Verificando os serviços adicionais da NVIDIA</h2>
+    <p>Também é importante verificar se os serviços adicionais da NVIDIA estão habilitados e rodando
+        corretamente.
+        Esses serviços são: <code class="language-plaintext highlighter-rouge">nvidia-hibernate.service</code>,
+        <code class="language-plaintext highlighter-rouge">nvidia-resume.service</code> e <code
+            class="language-plaintext highlighter-rouge">nvidia-suspend.service</code>.
+    </p>
+
+    <p>Para verificar o status desses serviços, rode o comando:</p>
+    <div class="language-shell highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="nb">sudo </span>systemctl status nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
+</code></pre>
+        </div>
+    </div>
+    <p>Se eles não estiverem habilitados, você pode habilitá-los com o comando:</p>
+    <div class="language-shell highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
+</code></pre>
+        </div>
+    </div>
+
+    <p>Além disso, você precisará verificar se o parâmetro <code
+            class="language-plaintext highlighter-rouge">PreserveVideoMemoryAllocations</code> do módulo NVIDIA
+        está ativado.
+        Para isso, rode o seguinte comando:</p>
+    <div class="language-shell highlighter-rouge">
+        <div class="highlight">
+            <pre class="highlight"><code><span class="nb">sudo echo</span> <span class="s1">'options nvidia NVreg_PreserveVideoMemoryAllocations=1'</span> <span class="o">&gt;</span> /etc/modprobe.d/nvidia-power-management.conf
+</code></pre>
+        </div>
+    </div>
+
+    <p>Esses serviços são importantes para o gerenciamento de energia e para evitar problemas de tela preta ao
+        suspender ou hibernar o sistema. E caso não estejam habilitados, o GDM não irá habilitar a opção de usar
+        o Wayland no Gnome.</p>
+
+    <p>As regras podem ser vistas no arquivo <code
+            class="language-plaintext highlighter-rouge">/usr/lib/udev/rules.d/61-gdm.rules</code>.</p>
+
+    <h2 id="finalizando">Finalizando</h2>
+
+    <p>Após todas essas configurações, reinicie o sistema e na tela de login do GDM, clique no ícone de
+        engrenagem e selecione a opção “GNOME”.
+        Você verá que além dessa opção, também estará disponível a opção “GNOME sobre Xorg”, que é o backend
+        X11.</p>
+
+    <p>Só selecionar a opção “GNOME” e fazer login normalmente.
+        Ao visualizar as informações do sistema, você verá que o Wayland está ativo.
+        <img src="/assets/nvidia_driver/gnome_wayland_active.avif" alt="Wayland ativo" />
+    </p>
+
+    <p>E é isso galera, espero que esse post tenha ajudado vocês a configurar o Wayland no Gnome com placa de
+        vídeo NVIDIA no Debian 12/13.</p>
+
+    <p>Abraços! ❤️</p>
+
+
+    <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+    <div style="text-align: center; margin-bottom: 50px;">
+        <a href="/blog.html" class="btn">
+            Voltar para o Blog
+        </a>
+    </div>
+
+    </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">
+                &copy; 2026 Hacerfak
+            </p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>
