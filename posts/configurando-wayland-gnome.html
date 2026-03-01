@@ -83,261 +83,276 @@
         </div>
     </header>
 
-    <h1 id="sobre-o-conteúdo">Sobre o conteúdo</h1>
+    <main class="container">
+        <article class="post-content">
 
-    <p>Nesse post, vou mostrar como é fácil instalar e configurar o wayland no Gnome 48 com placa de vídeo
-        NVIDIA no Debian 12/13.</p>
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">Como Ativar e Configurar Wayland no GNOME (Debian) com NVIDIA</h1>
 
-    <p>Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes
-        configurações:</p>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 21/09/2025
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Linux, Desktop
+                </div>
+            </header>
 
-    <ul>
-        <li><strong>OS:</strong> Debian sid
+            <h1 id="sobre-o-conteúdo">Sobre o conteúdo</h1>
+
+            <p>Nesse post, vou mostrar como é fácil instalar e configurar o wayland no Gnome 48 com placa de vídeo
+                NVIDIA no Debian 12/13.</p>
+
+            <p>Primeiro, é importante ressaltar que essa instalação será feita em uma máquina com as seguintes
+                configurações:</p>
+
             <ul>
-                <li><em>Kernel:</em> 6.16.7</li>
-                <li><em>DE:</em> Gnome 48.5</li>
-                <li><em>Greeter:</em> GDM3</li>
-                <li><em>Display Server:</em> Xorg</li>
+                <li><strong>OS:</strong> Debian sid
+                    <ul>
+                        <li><em>Kernel:</em> 6.16.7</li>
+                        <li><em>DE:</em> Gnome 48.5</li>
+                        <li><em>Greeter:</em> GDM3</li>
+                        <li><em>Display Server:</em> Xorg</li>
+                    </ul>
+                </li>
+                <li><strong>GPU:</strong> RTX 3070
+                    <ul>
+                        <li><em>Driver:</em> 580.82.09</li>
+                    </ul>
+                </li>
+                <li><strong>SecureBoot:</strong> Ativado</li>
+                <li><strong>DKMS:</strong> Ativado</li>
             </ul>
-        </li>
-        <li><strong>GPU:</strong> RTX 3070
-            <ul>
-                <li><em>Driver:</em> 580.82.09</li>
-            </ul>
-        </li>
-        <li><strong>SecureBoot:</strong> Ativado</li>
-        <li><strong>DKMS:</strong> Ativado</li>
-    </ul>
 
-    <h2 id="instalação-do-driver-nvidia">Instalação do driver NVIDIA</h2>
+            <h2 id="instalação-do-driver-nvidia">Instalação do driver NVIDIA</h2>
 
-    <p>No momento que escrevo esse post, já tenho o sistema rodando com driver NVIDIA usando o Xorg como
-        servidor gráfico.</p>
+            <p>No momento que escrevo esse post, já tenho o sistema rodando com driver NVIDIA usando o Xorg como
+                servidor gráfico.</p>
 
-    <p>Antes de tudo vou atualizar o driver para a versão mais recente, que no momento é a 580.82.09.</p>
+            <p>Antes de tudo vou atualizar o driver para a versão mais recente, que no momento é a 580.82.09.</p>
 
-    <p>O download do driver você pode fazer diretamente no site da NVIDIA <a
-            href="https://www.nvidia.com/Download/index.aspx">aqui</a>.</p>
+            <p>O download do driver você pode fazer diretamente no site da NVIDIA <a
+                    href="https://www.nvidia.com/Download/index.aspx">aqui</a>.</p>
 
-    <p>Para instalar o driver, após o download, primeiramente torne o arquivo executável com permissão de
-        execução:</p>
-    <div class="language-shell highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="nb">chmod</span> +x NVIDIA-Linux-x86_64-580.82.09.run
+            <p>Para instalar o driver, após o download, primeiramente torne o arquivo executável com permissão de
+                execução:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">chmod</span> +x NVIDIA-Linux-x86_64-580.82.09.run
 </code></pre>
-        </div>
-    </div>
-    <p>após isso, execute o arquivo como superusuário:</p>
-    <div class="language-shell highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="nb">sudo</span> ./NVIDIA-Linux-x86_64-580.82.09.run
+                </div>
+            </div>
+            <p>após isso, execute o arquivo como superusuário:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo</span> ./NVIDIA-Linux-x86_64-580.82.09.run
 </code></pre>
-        </div>
-    </div>
-    <p>E siga o passo a passo da instalação.</p>
+                </div>
+            </div>
+            <p>E siga o passo a passo da instalação.</p>
 
-    <p>A primeira etapa ele irá questionar sobre qual módulo vocẽ deseja utilizar, pois nesse sistema há duas
-        opções: NVidia Proprietário e MIT/GPL.
-        Eu geralmente utiliza o módulo de kernel open source (MIT/GPL), mas você pode escolher o que melhor se
-        adequa a sua necessidade.
-        <img src="/assets/nvidia_driver/nvidia_kernel_module.avif" alt="Módulo de kernel NVIDIA" />
-    </p>
+            <p>A primeira etapa ele irá questionar sobre qual módulo vocẽ deseja utilizar, pois nesse sistema há duas
+                opções: NVidia Proprietário e MIT/GPL.
+                Eu geralmente utiliza o módulo de kernel open source (MIT/GPL), mas você pode escolher o que melhor se
+                adequa a sua necessidade.
+                <img src="/assets/nvidia_driver/nvidia_kernel_module.avif" alt="Módulo de kernel NVIDIA" />
+            </p>
 
-    <p>A próxima etapa ele avisa que estou executando o instalador em um ambiente gráfico e que é recomendado
-        sair do ambiente gráfico para evitar possíveis problemas. Porém eu costumo instalar direto no ambiente
-        gráfico e nunca tive problemas.
-        <img src="/assets/nvidia_driver/nvidia_graphic_env.avif" alt="Aviso de ambiente gráfico" />
-    </p>
+            <p>A próxima etapa ele avisa que estou executando o instalador em um ambiente gráfico e que é recomendado
+                sair do ambiente gráfico para evitar possíveis problemas. Porém eu costumo instalar direto no ambiente
+                gráfico e nunca tive problemas.
+                <img src="/assets/nvidia_driver/nvidia_graphic_env.avif" alt="Aviso de ambiente gráfico" />
+            </p>
 
-    <p>Logo após vem outro aviso sobre o módulo de kernel ‘nvidia-uvm’ que está carregado e que é necessário
-        descarregá-lo para continuar a instalação. Novamente, eu costumo prosseguir com a instalação mesmo com o
-        módulo carregado e nunca tive problemas.
-        <img src="/assets/nvidia_driver/nvidia_uvm_loaded.avif" alt="Aviso de módulo carregado" />
-    </p>
+            <p>Logo após vem outro aviso sobre o módulo de kernel ‘nvidia-uvm’ que está carregado e que é necessário
+                descarregá-lo para continuar a instalação. Novamente, eu costumo prosseguir com a instalação mesmo com o
+                módulo carregado e nunca tive problemas.
+                <img src="/assets/nvidia_driver/nvidia_uvm_loaded.avif" alt="Aviso de módulo carregado" />
+            </p>
 
-    <p>Mais um aviso, que é sobre continuar a instalação mesmo sem a possibilidade de rodar as sanity checks,
-        novamente eu costumo prosseguir e nunca tive problemas.
-        <img src="/assets/nvidia_driver/nvidia_sanity_checks.avif" alt="Aviso de sanity checks" />
-    </p>
+            <p>Mais um aviso, que é sobre continuar a instalação mesmo sem a possibilidade de rodar as sanity checks,
+                novamente eu costumo prosseguir e nunca tive problemas.
+                <img src="/assets/nvidia_driver/nvidia_sanity_checks.avif" alt="Aviso de sanity checks" />
+            </p>
 
-    <p>E o último aviso apenas reforçando que algumas sanitiy checks não poderão ser executadas e que é
-        recomendado reiniciar o sistema após a instalação.
-        <img src="/assets/nvidia_driver/nvidia_final_warning.avif" alt="Aviso final" />
-    </p>
+            <p>E o último aviso apenas reforçando que algumas sanitiy checks não poderão ser executadas e que é
+                recomendado reiniciar o sistema após a instalação.
+                <img src="/assets/nvidia_driver/nvidia_final_warning.avif" alt="Aviso final" />
+            </p>
 
-    <p>Se você tem algum receio, pode seguir as recomendações e sair do ambiente gráfico, descarregar o módulo e
-        então rodar o instalador, mas como eu disse, nunca tive problemas em prosseguir com a instalação mesmo
-        com esses avisos.</p>
+            <p>Se você tem algum receio, pode seguir as recomendações e sair do ambiente gráfico, descarregar o módulo e
+                então rodar o instalador, mas como eu disse, nunca tive problemas em prosseguir com a instalação mesmo
+                com esses avisos.</p>
 
-    <p>O modo mais fácil é iniciar o sistema em modo de recuperação (recovery mode) e então prosseguir com a
-        instalação.</p>
+            <p>O modo mais fácil é iniciar o sistema em modo de recuperação (recovery mode) e então prosseguir com a
+                instalação.</p>
 
-    <p>Após todos os avisos iniciais, vem mais um aviso kkkkkk
-        Agora sobre o sistema já possuir um driver instalado e que ele será removido durante a instalação.
-        <img src="/assets/nvidia_driver/nvidia_existing_driver.avif" alt="Aviso de driver existente" />
-    </p>
+            <p>Após todos os avisos iniciais, vem mais um aviso kkkkkk
+                Agora sobre o sistema já possuir um driver instalado e que ele será removido durante a instalação.
+                <img src="/assets/nvidia_driver/nvidia_existing_driver.avif" alt="Aviso de driver existente" />
+            </p>
 
-    <p>Então ele começa a construir o módulo de kernel.
-        <img src="/assets/nvidia_driver/nvidia_building_kernel_module.avif" alt="Construção do módulo de kernel" />
-    </p>
+            <p>Então ele começa a construir o módulo de kernel.
+                <img src="/assets/nvidia_driver/nvidia_building_kernel_module.avif"
+                    alt="Construção do módulo de kernel" />
+            </p>
 
-    <p>E ao concluir ele solicita se você deseja assinar o módulo de kernel.
-        Aqui é importante assinar o módulo, pois caso contrário, se você estiver com o SecureBoot habilitado na
-        BIOS, o módulo não será carregado.
-        <img src="/assets/nvidia_driver/nvidia_sign_kernel_module.avif" alt="Assinatura do módulo de kernel" />
-    </p>
+            <p>E ao concluir ele solicita se você deseja assinar o módulo de kernel.
+                Aqui é importante assinar o módulo, pois caso contrário, se você estiver com o SecureBoot habilitado na
+                BIOS, o módulo não será carregado.
+                <img src="/assets/nvidia_driver/nvidia_sign_kernel_module.avif" alt="Assinatura do módulo de kernel" />
+            </p>
 
-    <p>Ao assinar o módulo, ele irá solicitar se você já possui uma chave criada ou se deseja criar uma nova.
-        Se você já usa DKMS e já possui outros módulos assinados, pode usar a mesma chave.</p>
+            <p>Ao assinar o módulo, ele irá solicitar se você já possui uma chave criada ou se deseja criar uma nova.
+                Se você já usa DKMS e já possui outros módulos assinados, pode usar a mesma chave.</p>
 
-    <p>Veja meu artigo sobre como <a href="/2023/09/16/assinando-modulos-dkms/">assinar módulos de kernel com
-            DKMS</a>.
-        <img src="/assets/nvidia_driver/nvidia_signing_key.avif" alt="Chave para assinatura do módulo" />
-    </p>
+            <p>Veja meu artigo sobre como <a href="/2023/09/16/assinando-modulos-dkms/">assinar módulos de kernel com
+                    DKMS</a>.
+                <img src="/assets/nvidia_driver/nvidia_signing_key.avif" alt="Chave para assinatura do módulo" />
+            </p>
 
-    <p>Ao selecionar a opção de usar um par de chaves existentes, ele irá solicitar primeiro o arquivo da chave
-        privada e depois o arquivo da chave pública.
-        <img src="/assets/nvidia_driver/nvidia_select_private_key.avif" alt="Seleção da chave privada" />
-        <img src="/assets/nvidia_driver/nvidia_select_public_key.avif" alt="Seleção da chave pública" />
-    </p>
+            <p>Ao selecionar a opção de usar um par de chaves existentes, ele irá solicitar primeiro o arquivo da chave
+                privada e depois o arquivo da chave pública.
+                <img src="/assets/nvidia_driver/nvidia_select_private_key.avif" alt="Seleção da chave privada" />
+                <img src="/assets/nvidia_driver/nvidia_select_public_key.avif" alt="Seleção da chave pública" />
+            </p>
 
-    <p>Ao finalizar ele assina o módulo e solicita se você deseja instalar as bibliotecas de 32 bits.
-        Eu geralmente instalo, mas se você não for usar algum software que precise dessas bibliotecas, pode
-        optar por não instalar.
-        <img src="/assets/nvidia_driver/nvidia_install_32bits_libraries.avif"
-            alt="Instalação das bibliotecas de 32 bits" />
-    </p>
+            <p>Ao finalizar ele assina o módulo e solicita se você deseja instalar as bibliotecas de 32 bits.
+                Eu geralmente instalo, mas se você não for usar algum software que precise dessas bibliotecas, pode
+                optar por não instalar.
+                <img src="/assets/nvidia_driver/nvidia_install_32bits_libraries.avif"
+                    alt="Instalação das bibliotecas de 32 bits" />
+            </p>
 
-    <p>Então ele irá desinstalar o driver antigo.
-        <img src="/assets/nvidia_driver/nvidia_uninstalling_old_driver.avif" alt="Desinstalação do driver antigo" />
-    </p>
+            <p>Então ele irá desinstalar o driver antigo.
+                <img src="/assets/nvidia_driver/nvidia_uninstalling_old_driver.avif"
+                    alt="Desinstalação do driver antigo" />
+            </p>
 
-    <p>E ao terminar a desinstalação, ele pergunta se você deseja registrar os módulos do kernel no DKMS.
-        Aqui é importante selecionar “Yes”, assim o módulo será registrado no DKMS e sempre que houver uma
-        atualização do kernel, o módulo será reconstruído automaticamente.
-        <img src="/assets/nvidia_driver/nvidia_register_dkms.avif" alt="Registro no DKMS" />
-    </p>
+            <p>E ao terminar a desinstalação, ele pergunta se você deseja registrar os módulos do kernel no DKMS.
+                Aqui é importante selecionar “Yes”, assim o módulo será registrado no DKMS e sempre que houver uma
+                atualização do kernel, o módulo será reconstruído automaticamente.
+                <img src="/assets/nvidia_driver/nvidia_register_dkms.avif" alt="Registro no DKMS" />
+            </p>
 
-    <p>Ao aceitar o registro então ele prossegue com a instalação.
-        <img src="/assets/nvidia_driver/nvidia_dkms_registering.avif" alt="Registro no DKMS" />
-        <img src="/assets/nvidia_driver/nvidia_installing_driver.avif" alt="Instalação do driver" />
-    </p>
+            <p>Ao aceitar o registro então ele prossegue com a instalação.
+                <img src="/assets/nvidia_driver/nvidia_dkms_registering.avif" alt="Registro no DKMS" />
+                <img src="/assets/nvidia_driver/nvidia_installing_driver.avif" alt="Instalação do driver" />
+            </p>
 
-    <p>Ao finalizar a instalação, ele pergunta se você deseja executar o utilitário de configuração
-        nvidia-xconfig para atualizar o arquivo xorg.conf.
-        Aqui é importante selecionar “No”, pois se você selecionar “Yes”, ele irá criar um arquivo xorg.conf que
-        é de uso do Xorg (X11), e como queremos usar o Wayland, não precisamos desse arquivo.</p>
+            <p>Ao finalizar a instalação, ele pergunta se você deseja executar o utilitário de configuração
+                nvidia-xconfig para atualizar o arquivo xorg.conf.
+                Aqui é importante selecionar “No”, pois se você selecionar “Yes”, ele irá criar um arquivo xorg.conf que
+                é de uso do Xorg (X11), e como queremos usar o Wayland, não precisamos desse arquivo.</p>
 
-    <p>Ademais, já temos esse arquivo criado pois por padrão o gnome usa o Xorg como servidor gráfico quando
-        utilizado um driver proprietário da NVIDIA.
-        <img src="/assets/nvidia_driver/nvidia_xconfig.avif" alt="nvidia-xconfig" />
-    </p>
+            <p>Ademais, já temos esse arquivo criado pois por padrão o gnome usa o Xorg como servidor gráfico quando
+                utilizado um driver proprietário da NVIDIA.
+                <img src="/assets/nvidia_driver/nvidia_xconfig.avif" alt="nvidia-xconfig" />
+            </p>
 
-    <p>E no final apenas temos a confirmação de que a instalação foi concluída com sucesso e novamente um
-        lembrete para reiniciar o sistema.
-        <img src="/assets/nvidia_driver/nvidia_installation_complete.avif" alt="Instalação concluída" />
-        <img src="/assets/nvidia_driver/nvidia_reboot_system.avif" alt="Reiniciar o sistema" />
-    </p>
+            <p>E no final apenas temos a confirmação de que a instalação foi concluída com sucesso e novamente um
+                lembrete para reiniciar o sistema.
+                <img src="/assets/nvidia_driver/nvidia_installation_complete.avif" alt="Instalação concluída" />
+                <img src="/assets/nvidia_driver/nvidia_reboot_system.avif" alt="Reiniciar o sistema" />
+            </p>
 
-    <h2 id="habilitando-o-módulo-kernel-nvidia-drm">Habilitando o módulo kernel nvidia-drm</h2>
+            <h2 id="habilitando-o-módulo-kernel-nvidia-drm">Habilitando o módulo kernel nvidia-drm</h2>
 
-    <p>No debian 12/13, o módulo <code class="language-plaintext highlighter-rouge">nvidia-drm</code> não é
-        carregado por padrão, e ele é essencial para que o Wayland funcione corretamente com o driver
-        proprietário da NVIDIA.</p>
+            <p>No debian 12/13, o módulo <code class="language-plaintext highlighter-rouge">nvidia-drm</code> não é
+                carregado por padrão, e ele é essencial para que o Wayland funcione corretamente com o driver
+                proprietário da NVIDIA.</p>
 
-    <p>Para incializar o módulo <code class="language-plaintext highlighter-rouge">nvidia-drm</code> durante a
-        inicialização do sistema, podemos editar o editar o arquivo do gerenciador de inicialização.</p>
+            <p>Para incializar o módulo <code class="language-plaintext highlighter-rouge">nvidia-drm</code> durante a
+                inicialização do sistema, podemos editar o editar o arquivo do gerenciador de inicialização.</p>
 
-    <p>No meu caso eu utilizo o GRUB, então edito o arquivo <code
-            class="language-plaintext highlighter-rouge">/etc/default/grub</code> e adiciono a seguinte linha:
-    </p>
-    <div class="language-conf highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="n">GRUB_CMDLINE_LINUX_DEFAULT</span>=<span class="s2">"quiet splash ... nvidia-drm.modeset=1"</span>
+            <p>No meu caso eu utilizo o GRUB, então edito o arquivo <code
+                    class="language-plaintext highlighter-rouge">/etc/default/grub</code> e adiciono a seguinte linha:
+            </p>
+            <div class="language-conf highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="n">GRUB_CMDLINE_LINUX_DEFAULT</span>=<span class="s2">"quiet splash ... nvidia-drm.modeset=1"</span>
 </code></pre>
-        </div>
-    </div>
+                </div>
+            </div>
 
-    <p>Veja um exemplo do meu arquivo <code class="language-plaintext highlighter-rouge">/etc/default/grub</code>:</p>
+            <p>Veja um exemplo do meu arquivo <code
+                    class="language-plaintext highlighter-rouge">/etc/default/grub</code>:</p>
 
-    <p><img src="/assets/nvidia_driver/grub_example.avif" alt="Exemplo do arquivo grub" /></p>
+            <p><img src="/assets/nvidia_driver/grub_example.avif" alt="Exemplo do arquivo grub" /></p>
 
-    <p>Após editar o arquivo, salve e então atualize o GRUB com o comando:</p>
-    <div class="language-shell highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="nb">sudo </span>update-grub
+            <p>Após editar o arquivo, salve e então atualize o GRUB com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>update-grub
 </code></pre>
-        </div>
-    </div>
+                </div>
+            </div>
 
-    <h2 id="verificando-os-serviços-adicionais-da-nvidia">Verificando os serviços adicionais da NVIDIA</h2>
-    <p>Também é importante verificar se os serviços adicionais da NVIDIA estão habilitados e rodando
-        corretamente.
-        Esses serviços são: <code class="language-plaintext highlighter-rouge">nvidia-hibernate.service</code>,
-        <code class="language-plaintext highlighter-rouge">nvidia-resume.service</code> e <code
-            class="language-plaintext highlighter-rouge">nvidia-suspend.service</code>.
-    </p>
+            <h2 id="verificando-os-serviços-adicionais-da-nvidia">Verificando os serviços adicionais da NVIDIA</h2>
+            <p>Também é importante verificar se os serviços adicionais da NVIDIA estão habilitados e rodando
+                corretamente.
+                Esses serviços são: <code class="language-plaintext highlighter-rouge">nvidia-hibernate.service</code>,
+                <code class="language-plaintext highlighter-rouge">nvidia-resume.service</code> e <code
+                    class="language-plaintext highlighter-rouge">nvidia-suspend.service</code>.
+            </p>
 
-    <p>Para verificar o status desses serviços, rode o comando:</p>
-    <div class="language-shell highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="nb">sudo </span>systemctl status nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
+            <p>Para verificar o status desses serviços, rode o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl status nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
 </code></pre>
-        </div>
-    </div>
-    <p>Se eles não estiverem habilitados, você pode habilitá-los com o comando:</p>
-    <div class="language-shell highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
+                </div>
+            </div>
+            <p>Se eles não estiverem habilitados, você pode habilitá-los com o comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>nvidia-hibernate.service nvidia-resume.service nvidia-suspend.service
 </code></pre>
-        </div>
-    </div>
+                </div>
+            </div>
 
-    <p>Além disso, você precisará verificar se o parâmetro <code
-            class="language-plaintext highlighter-rouge">PreserveVideoMemoryAllocations</code> do módulo NVIDIA
-        está ativado.
-        Para isso, rode o seguinte comando:</p>
-    <div class="language-shell highlighter-rouge">
-        <div class="highlight">
-            <pre class="highlight"><code><span class="nb">sudo echo</span> <span class="s1">'options nvidia NVreg_PreserveVideoMemoryAllocations=1'</span> <span class="o">&gt;</span> /etc/modprobe.d/nvidia-power-management.conf
+            <p>Além disso, você precisará verificar se o parâmetro <code
+                    class="language-plaintext highlighter-rouge">PreserveVideoMemoryAllocations</code> do módulo NVIDIA
+                está ativado.
+                Para isso, rode o seguinte comando:</p>
+            <div class="language-shell highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo echo</span> <span class="s1">'options nvidia NVreg_PreserveVideoMemoryAllocations=1'</span> <span class="o">&gt;</span> /etc/modprobe.d/nvidia-power-management.conf
 </code></pre>
-        </div>
-    </div>
+                </div>
+            </div>
 
-    <p>Esses serviços são importantes para o gerenciamento de energia e para evitar problemas de tela preta ao
-        suspender ou hibernar o sistema. E caso não estejam habilitados, o GDM não irá habilitar a opção de usar
-        o Wayland no Gnome.</p>
+            <p>Esses serviços são importantes para o gerenciamento de energia e para evitar problemas de tela preta ao
+                suspender ou hibernar o sistema. E caso não estejam habilitados, o GDM não irá habilitar a opção de usar
+                o Wayland no Gnome.</p>
 
-    <p>As regras podem ser vistas no arquivo <code
-            class="language-plaintext highlighter-rouge">/usr/lib/udev/rules.d/61-gdm.rules</code>.</p>
+            <p>As regras podem ser vistas no arquivo <code
+                    class="language-plaintext highlighter-rouge">/usr/lib/udev/rules.d/61-gdm.rules</code>.</p>
 
-    <h2 id="finalizando">Finalizando</h2>
+            <h2 id="finalizando">Finalizando</h2>
 
-    <p>Após todas essas configurações, reinicie o sistema e na tela de login do GDM, clique no ícone de
-        engrenagem e selecione a opção “GNOME”.
-        Você verá que além dessa opção, também estará disponível a opção “GNOME sobre Xorg”, que é o backend
-        X11.</p>
+            <p>Após todas essas configurações, reinicie o sistema e na tela de login do GDM, clique no ícone de
+                engrenagem e selecione a opção “GNOME”.
+                Você verá que além dessa opção, também estará disponível a opção “GNOME sobre Xorg”, que é o backend
+                X11.</p>
 
-    <p>Só selecionar a opção “GNOME” e fazer login normalmente.
-        Ao visualizar as informações do sistema, você verá que o Wayland está ativo.
-        <img src="/assets/nvidia_driver/gnome_wayland_active.avif" alt="Wayland ativo" />
-    </p>
+            <p>Só selecionar a opção “GNOME” e fazer login normalmente.
+                Ao visualizar as informações do sistema, você verá que o Wayland está ativo.
+                <img src="/assets/nvidia_driver/gnome_wayland_active.avif" alt="Wayland ativo" />
+            </p>
 
-    <p>E é isso galera, espero que esse post tenha ajudado vocês a configurar o Wayland no Gnome com placa de
-        vídeo NVIDIA no Debian 12/13.</p>
+            <p>E é isso galera, espero que esse post tenha ajudado vocês a configurar o Wayland no Gnome com placa de
+                vídeo NVIDIA no Debian 12/13.</p>
 
-    <p>Abraços! ❤️</p>
+            <p>Abraços! ❤️</p>
 
 
-    <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
 
-    <div style="text-align: center; margin-bottom: 50px;">
-        <a href="/blog.html" class="btn">
-            Voltar para o Blog
-        </a>
-    </div>
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">
+                    Voltar para o Blog
+                </a>
+            </div>
 
-    </article>
+        </article>
     </main>
 
     <footer class="site-footer">
