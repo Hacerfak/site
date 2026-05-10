@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="application/atom+xml" rel="alternate" href="https://hacerfak.com.br/feed.xml" title="Hacerfak" />
+
+    <title>Como Habilitar as Ventoinhas (Fans) da NVIDIA na Inicialização (GNOME + X11) | Hacerfak</title>
+    <meta property="og:title" content="Como Habilitar as Ventoinhas (Fans) da NVIDIA na Inicialização (GNOME + X11)" />
+    <meta name="author" content="Eder Gross Cichelero" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="description"
+        content="Aprenda a criar um script e um serviço no systemd para resolver o erro 'Operation not permitted' e habilitar o controle de fans da NVIDIA no Debian.">
+    <meta property="og:description"
+        content="Aprenda a criar um script e um serviço no systemd para resolver o erro 'Operation not permitted' e habilitar o controle de fans da NVIDIA no Debian." />
+    <link rel="canonical" href="https://hacerfak.com.br/posts/habilitar-fans-nvidia-gnome-x11.html" />
+    <meta property="og:url" content="https://hacerfak.com.br/posts/habilitar-fans-nvidia-gnome-x11.html" />
+    <meta property="og:site_name" content="Hacerfak" />
+    <meta property="og:type" content="article" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Segoe+UI:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1BK324EDDE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-1BK324EDDE');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4241608895500197"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Hacerfak</a>
+            <nav>
+                <a href="/blog.html" style="color: var(--primary-color);">Posts</a>
+                <a href="/sobre.html">Sobre</a>
+                <button id="theme-toggle" title="Mudar Tema">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="post-content">
+
+            <header style="margin-top: 20px; margin-bottom: 40px;">
+                <h1 style="margin-bottom: 10px;">Como Habilitar as Ventoinhas (Fans) da NVIDIA na Inicialização (GNOME +
+                    X11)</h1>
+
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-calendar"></i> 10/05/2026
+                    &nbsp; • &nbsp; <i class="fa-solid fa-folder-open"></i> Hardware, Linux, Debian
+                </div>
+            </header>
+
+            <h2 id="o-problema">O Problema a ser resolvido!</h2>
+
+            <p>Se você utiliza o driver proprietário da NVIDIA no Linux e tenta definir a velocidade das ventoinhas
+                (fans) automaticamente durante a inicialização do sistema, é muito comum se deparar com o seguinte erro
+                no log do sistema:</p>
+
+            <div class="language-plaintext highlighter-rouge">
+                <div class="highlight">
+                    <pre
+                        class="highlight"><code>ERROR: Error assigning value 1 to attribute 'GPUFanControlState' (Ryzen:0[gpu:0]) as specified in assignment '[gpu:0]/GPUFanControlState=1' (Operation not permitted for the current user).</code></pre>
+                </div>
+            </div>
+
+            <p>Esse erro ocorre em ambientes desktop (como o GNOME 48 rodando sob X11) porque o comando
+                <code>nvidia-settings</code> precisa se comunicar com o servidor gráfico. Durante o boot, ou quando
+                executado através de um serviço em background como <code>root</code>, as variáveis de ambiente
+                necessárias (<code>DISPLAY</code> e <code>XAUTHORITY</code>) ainda não estão devidamente configuradas ou
+                acessíveis.
+            </p>
+
+            <p>A solução? Criar um script inteligente que aguarda o servidor gráfico inicializar, captura essas
+                variáveis e, em seguida, um serviço do systemd para orquestrar essa execução de forma automática.</p>
+
+            <h2 id="passo-1">1º Passo: Criando o script de ativação</h2>
+
+            <p>Vamos criar o script e salvá-lo em um local apropriado do sistema (<code>/usr/local/bin/</code>). Ele
+                ficará encarregado de verificar ativamente quando o Xorg está pronto.</p>
+
+            <p>Abra o terminal e crie o arquivo:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre
+                        class="highlight"><code><span class="nb">sudo </span>nano /usr/local/bin/enable-nvidia-fans.sh</code></pre>
+                </div>
+            </div>
+
+            <p>Cole o seguinte conteúdo dentro do arquivo:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
+
+<span class="c"># Tempo máximo de espera (segundos) para o X aparecer</span>
+<span class="nv">MAX_WAIT</span><span class="o">=</span>360
+<span class="nv">SLEEP_INTERVAL</span><span class="o">=</span>1
+<span class="nv">elapsed</span><span class="o">=</span>0
+
+<span class="c"># Função para tentar descobrir DISPLAY e XAUTHORITY</span>
+<span class="k">function </span>find_display_and_xauth<span class="o">()</span> <span class="o">{</span>
+  <span class="c"># Procura processos Xorg ou X que pertençam a um usuário gráfico</span>
+  <span class="k">for </span>pid <span class="k">in</span> <span class="k">$(</span>pgrep <span class="nt">-x</span> Xorg <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="p">;</span> <span class="k">do
+    </span><span class="c"># tenta ler DISPLAY e XAUTHORITY do ambiente do processo Xorg</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-r</span> /proc/<span class="nv">$pid</span>/environ <span class="o">]</span><span class="p">;</span> <span class="k">then
+      </span><span class="nv">env</span><span class="o">=</span><span class="k">$(</span><span class="nb">tr</span> <span class="s1">'\0'</span> <span class="s1">'\n'</span> &lt; /proc/<span class="nv">$pid</span>/environ<span class="k">)</span>
+      <span class="nv">display</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$env</span><span class="s2">"</span> | <span class="nb">awk</span> <span class="nt">-F</span><span class="o">=</span> <span class="s1">'/^DISPLAY=/{print $2; exit}'</span><span class="k">)</span>
+      <span class="nv">xauth</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$env</span><span class="s2">"</span> | <span class="nb">awk</span> <span class="nt">-F</span><span class="o">=</span> <span class="s1">'/^XAUTHORITY=/{print $2; exit}'</span><span class="k">)</span>
+      <span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$display</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$display</span><span class="s2">|</span><span class="nv">$xauth</span><span class="s2">"</span>
+        <span class="k">return </span>0
+      <span class="k">fi
+    fi
+  done
+
+  </span><span class="c"># fallback: procura sessões X em /run/user/*/gdm or user's .Xauthority</span>
+  <span class="k">for </span>xauthfile <span class="k">in</span> /run/user/<span class="k">*</span>/gdm/Xauthority /home/<span class="k">*</span>/.Xauthority /var/run/gdm/auth-for-<span class="k">*</span>/database<span class="p">;</span> <span class="k">do
+    if</span> <span class="o">[</span> <span class="nt">-e</span> <span class="s2">"</span><span class="nv">$xauthfile</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="c"># assume DISPLAY :0 por fallback</span>
+      <span class="nb">echo</span> <span class="s2">":0|</span><span class="nv">$xauthfile</span><span class="s2">"</span>
+      <span class="k">return </span>0
+    <span class="k">fi
+  done
+
+  return </span>1
+<span class="o">}</span>
+
+<span class="c"># Espera até o X aparecer ou timeout</span>
+<span class="k">while</span> <span class="o">[</span> <span class="nv">$elapsed</span> <span class="nt">-lt</span> <span class="nv">$MAX_WAIT</span> <span class="o">]</span><span class="p">;</span> <span class="k">do
+  if </span><span class="nv">result</span><span class="o">=</span><span class="k">$(</span>find_display_and_xauth<span class="k">)</span><span class="p">;</span> <span class="k">then
+    </span><span class="nv">DISPLAY_VAL</span><span class="o">=</span><span class="k">${</span><span class="nv">result</span><span class="p">%%|*</span><span class="k">}</span>
+    <span class="nv">XAUTH_VAL</span><span class="o">=</span><span class="k">${</span><span class="nv">result</span><span class="p">#*|</span><span class="k">}</span>
+    
+    <span class="c"># Se XAUTH_VAL for vazio, tenta caminhos comuns</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-z</span> <span class="s2">"</span><span class="nv">$XAUTH_VAL</span><span class="s2">"</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$XAUTH_VAL</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">$DISPLAY_VAL</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="c"># tenta localizar .Xauthority do usuário que tem sessão ativa</span>
+      <span class="nv">user</span><span class="o">=</span><span class="k">$(</span>who | <span class="nb">awk</span> <span class="s1">'/:0/{print $1; exit}'</span> <span class="o">||</span> <span class="nb">true</span><span class="k">)</span>
+      <span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$user</span><span class="s2">"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="nt">-e</span> <span class="s2">"/home/</span><span class="nv">$user</span><span class="s2">/.Xauthority"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nv">XAUTH_VAL</span><span class="o">=</span><span class="s2">"/home/</span><span class="nv">$user</span><span class="s2">/.Xauthority"</span>
+      <span class="k">fi
+    fi
+
+    </span><span class="c"># Se ainda vazio, tenta /run/user/1000/gdm/Xauthority</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-z</span> <span class="s2">"</span><span class="nv">$XAUTH_VAL</span><span class="s2">"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="nt">-e</span> <span class="s2">"/run/user/1000/gdm/Xauthority"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+      </span><span class="nv">XAUTH_VAL</span><span class="o">=</span><span class="s2">"/run/user/1000/gdm/Xauthority"</span>
+    <span class="k">fi
+
+    </span><span class="c"># Exporta e executa o comando</span>
+    <span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span><span class="s2">"</span><span class="nv">$DISPLAY_VAL</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$XAUTH_VAL</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+      </span><span class="nb">export </span><span class="nv">XAUTHORITY</span><span class="o">=</span><span class="s2">"</span><span class="nv">$XAUTH_VAL</span><span class="s2">"</span>
+    <span class="k">fi
+
+    </span><span class="c"># Comando real (ajuste velocidades conforme necessário)</span>
+    /usr/bin/nvidia-settings <span class="nt">-a</span> <span class="o">[</span>gpu:0]/GPUFanControlState<span class="o">=</span>1 <span class="se">\</span>
+                             <span class="nt">-a</span> <span class="o">[</span>fan:0]/GPUTargetFanSpeed<span class="o">=</span>50 <span class="se">\</span>
+                             <span class="nt">-a</span> <span class="o">[</span>fan:1]/GPUTargetFanSpeed<span class="o">=</span>50
+
+    <span class="nb">exit </span>0
+  <span class="k">fi
+
+  </span><span class="nb">sleep</span> <span class="nv">$SLEEP_INTERVAL</span>
+  <span class="nv">elapsed</span><span class="o">=</span><span class="k">$((</span>elapsed + SLEEP_INTERVAL<span class="k">))</span>
+<span class="k">done
+
+</span><span class="nb">echo</span> <span class="s2">"enable-nvidia-fans: timeout waiting for X server"</span> <span class="o">&gt;</span>&amp;2
+<span class="nb">exit </span>1</code></pre>
+                </div>
+            </div>
+
+            <p>Salve o arquivo. É imprescindível transformar esse script num executável para que o sistema consiga
+                rodá-lo:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre
+                        class="highlight"><code><span class="nb">sudo chmod</span> +x /usr/local/bin/enable-nvidia-fans.sh</code></pre>
+                </div>
+            </div>
+
+            <h2 id="passo-2">2º Passo: Registrar o Serviço no Systemd</h2>
+
+            <p>Para automatizar o processo, criaremos um serviço no systemd. Esse serviço vai garantir que o nosso
+                script seja chamado na hora exata — logo após o gerenciador de exibição (Display Manager, como o GDM3)
+                subir.</p>
+
+            <p>Crie o arquivo de configuração do serviço:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre
+                        class="highlight"><code><span class="nb">sudo </span>nano /etc/systemd/system/fan.service</code></pre>
+                </div>
+            </div>
+
+            <p>E cole o seguinte conteúdo:</p>
+
+            <div class="language-ini highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nn">[Unit]</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">Enable Nvidia fan control after display manager</span>
+<span class="py">After</span><span class="p">=</span><span class="s">display-manager.service</span>
+<span class="py">Wants</span><span class="p">=</span><span class="s">display-manager.service</span>
+
+<span class="nn">[Service]</span>
+<span class="py">Type</span><span class="p">=</span><span class="s">oneshot</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/usr/local/bin/enable-nvidia-fans.sh</span>
+<span class="py">TimeoutStartSec</span><span class="p">=</span><span class="s">120</span>
+<span class="py">RemainAfterExit</span><span class="p">=</span><span class="s">yes</span>
+
+<span class="nn">[Install]</span>
+<span class="py">WantedBy</span><span class="p">=</span><span class="s">graphical.target</span></code></pre>
+                </div>
+            </div>
+
+            <p>Salve e feche o arquivo.</p>
+
+            <h2 id="passo-3">3º Passo: Habilitar o Serviço</h2>
+
+            <p>Por fim, precisamos dizer ao sistema operacional que esse novo serviço existe e que ele deve ser iniciado
+                automaticamente junto com o PC.</p>
+
+            <p>Execute a seguinte sequência de comandos no terminal:</p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="c"># Recarrega as configurações do systemd para encontrar o novo arquivo</span>
+<span class="nb">sudo </span>systemctl daemon-reload
+
+<span class="c"># Habilita o serviço para iniciar no boot</span>
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>fan.service
+
+<span class="c"># (Opcional) Inicia o serviço agora sem precisar reiniciar o computador</span>
+<span class="nb">sudo </span>systemctl start fan.service</code></pre>
+                </div>
+            </div>
+
+            <p>Se quiser confirmar se deu tudo certo e se o script rodou sem erros, basta verificar o status do serviço:
+            </p>
+
+            <div class="language-bash highlighter-rouge">
+                <div class="highlight">
+                    <pre class="highlight"><code><span class="nb">sudo </span>systemctl status fan.service</code></pre>
+                </div>
+            </div>
+
+            <h2 id="finalizando">Finalizando</h2>
+
+            <p>Pronto! Agora o erro <code>Operation not permitted</code> não vai mais ocorrer durante a incialização.
+                Seu script aguarda tranquilamente em background até o servidor X11 liberar as variáveis de ambiente
+                necessárias e, de forma transparente, ajusta as velocidades das ventoinhas para manter a temperatura da
+                sua GPU sob controle.</p>
+
+            <p>Abraços! ❤️🍻</p>
+
+            <hr style="margin: 60px 0 40px 0; border: 0; border-top: 1px solid var(--border-color);">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <a href="/blog.html" class="btn">Voltar para o Blog</a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Hacerfak" target="_blank" class="social-btn" aria-label="GitHub"
+                    title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.youtube.com/channel/UCHUWL6eACdcEROIiLGff1vw" target="_blank" class="social-btn"
+                    aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://open.spotify.com/artist/7rU9vqJmap4T5Qg0QoeXPo" target="_blank" class="social-btn"
+                    aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></a>
+                <a href="https://soundcloud.com/hacerfak-music" target="_blank" class="social-btn"
+                    aria-label="SoundCloud" title="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a>
+                <a href="https://steamcommunity.com/id/hacerfak" target="_blank" class="social-btn" aria-label="Steam"
+                    title="Steam"><i class="fa-brands fa-steam"></i></a>
+                <a href="/feed.xml" target="_blank" class="social-btn" aria-label="RSS" title="RSS Feed"><i
+                        class="fa-solid fa-rss"></i></a>
+            </div>
+            <p style="font-size:0.9rem; color: var(--text-muted);">© 2026 Hacerfak</p>
+        </div>
+    </footer>
+    <script src="/assets/js/theme.js"></script>
+</body>
+
+</html>

@@ -1,5 +1,12 @@
 [
     {
+        "title": "Como Habilitar as Ventoinhas (Fans) da NVIDIA na Inicialização (GNOME + X11)",
+        "category": "Hardware, Linux, Debian",
+        "tags": "Nvidia, Fans, Systemd, Bash, X11, Script",
+        "url": "/posts/habilitar-fans-nvidia-gnome-x11.html",
+        "date": "10/05/2026"
+    },
+    {
         "title": "Como Gerenciar Entradas de Boot UEFI no Linux com efibootmgr",
         "category": "Linux, Hardware",
         "tags": "UEFI, efibootmgr, Bootloader, Dual Boot, Debian",

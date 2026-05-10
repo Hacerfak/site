@@ -13,6 +13,19 @@
     </author>
 
     <entry>
+        <title type="html">Como Habilitar as Ventoinhas (Fans) da NVIDIA na Inicialização (GNOME +
+            X11)</title>
+        <link href="https://hacerfak.com.br/posts/habilitar-fans-nvidia-gnome-x11.html"
+            rel="alternate" type="text/html" />
+        <published>2026-05-10T12:00:00-03:00</published>
+        <updated>2026-05-10T12:00:00-03:00</updated>
+        <id>https://hacerfak.com.br/posts/habilitar-fans-nvidia-gnome-x11.html</id>
+        <summary type="html"><![CDATA[Aprenda a criar um script e um serviço no systemd para resolver o erro "Operation not permitted" e habilitar o controle de fans da NVIDIA no Debian.]]></summary>
+        <category term="Hardware" />
+        <category term="Linux" />
+    </entry>
+
+    <entry>
         <title type="html">Como Gerenciar Entradas de Boot UEFI no Linux com efibootmgr</title>
         <link href="https://hacerfak.com.br/posts/gerenciar-uefi-entrys.html" rel="alternate"
             type="text/html" />
