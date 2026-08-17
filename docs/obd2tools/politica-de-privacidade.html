@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade – OBD2 Tools</title>
+    <style>
+        :root {
+            --primary-color: #00adb5;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #222831;
+            --text-muted: #555555;
+            --border-color: #e9ecef;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #00adb5;
+                --bg-color: #12151c;
+                --card-bg: #1e222d;
+                --text-color: #ececec;
+                --text-muted: #b0b0b0;
+                --border-color: #2a2e3d;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        ul {
+            margin-bottom: 16px;
+            padding-left: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-box {
+            background-color: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px 16px;
+                margin: 10px auto;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Política de Privacidade – OBD2 Tools</h1>
+        <div class="last-updated">Última atualização: 17 de Agosto de 2026</div>
+
+        <p>A sua privacidade é importante para nós. É política do <strong>OBD2 Tools</strong> (desenvolvido por
+            <strong>Eder Gross Cichelero / Hacerfak</strong>) respeitar a sua privacidade em relação a qualquer
+            informação que possamos coletar no aplicativo.
+        </p>
+
+        <h2>1. Informações que Coletamos e Como as Utilizamos</h2>
+        <p>O <strong>OBD2 Tools</strong> foi projetado para funcionar como um scanner de diagnóstico automotivo local.
+            Não exigimos criação de conta, login ou cadastro pessoal.</p>
+
+        <h3>A. Dados de Diagnóstico e Veículo (Processamento Local)</h3>
+        <ul>
+            <li><strong>O que é coletado:</strong> Dados de telemetria da ECU do veículo (como rotação do motor,
+                velocidade, temperatura, códigos de falha DTC, VIN, etc.).</li>
+            <li><strong>Como usamos:</strong> Essas informações são lidas via Bluetooth a partir do seu adaptador OBD2 e
+                processadas <strong>exclusivamente em tempo real no seu dispositivo</strong>.</li>
+            <li><strong>Armazenamento:</strong> Os dados de diagnóstico do seu veículo <strong>não são enviados para
+                    nenhum servidor externo</strong> nem compartilhados com terceiros.</li>
+        </ul>
+
+        <h3>B. Permissões de Bluetooth e Localização</h3>
+        <ul>
+            <li><strong>Permissões solicitadas:</strong> <code>BLUETOOTH_CONNECT</code>, <code>BLUETOOTH_SCAN</code>,
+                <code>ACCESS_FINE_LOCATION</code> e <code>ACCESS_COARSE_LOCATION</code>.
+            </li>
+            <li><strong>Como usamos:</strong> As permissões de Bluetooth são necessárias para conectar o aplicativo ao
+                adaptador OBD2 físico (ELM327 ou similar). A permissão de localização é um requisito técnico do sistema
+                operacional Android para permitir a busca por dispositivos Bluetooth próximos.</li>
+            <li><strong>Nota importante:</strong> O <strong>OBD2 Tools NÃO rastreia, armazena nem compartilha sua
+                    localização geográfica</strong>.</li>
+        </ul>
+
+        <h3>C. Armazenamento Local no Dispositivo (SharedPreferences)</h3>
+        <ul>
+            <li><strong>O que é salvo:</strong> Suas preferências de uso dentro do aplicativo, como:
+                <ul>
+                    <li>Endereço MAC do último scanner conectado (para reconexão automática).</li>
+                    <li>Paleta de cores selecionada (tema claro/escuro).</li>
+                    <li>Sensores selecionados no Painel (HUD).</li>
+                    <li>Taxa de atualização (intervalo de polling).</li>
+                </ul>
+            </li>
+            <li><strong>Onde fica salvo:</strong> Todos esses dados ficam armazenados unicamente na memória interna do
+                seu próprio dispositivo.</li>
+        </ul>
+
+        <h2>2. Serviços de Terceiros e Anúncios</h2>
+        <p>Para manter o aplicativo gratuito e apoiar o seu desenvolvimento contínuo, utilizamos o serviço de anúncios
+            do Google:</p>
+        <ul>
+            <li><strong>Google AdMob:</strong>
+                <ul>
+                    <li>O aplicativo utiliza o SDK do <strong>Google AdMob</strong> para exibir banners de anúncios.
+                    </li>
+                    <li>O AdMob pode coletar e utilizar identificadores do dispositivo (como o <em>Advertising ID</em>
+                        do Android), endereço IP e dados técnicos do aparelho para veicular anúncios relevantes,
+                        controlar a frequência de exibição e prevenir fraudes.</li>
+                    <li>Para mais detalhes sobre como o Google gerencia e protege os dados coletados por seus serviços,
+                        consulte a <a href="https://policies.google.com/privacy" target="_blank"
+                            rel="noopener noreferrer">Política de Privacidade do Google</a>.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>3. Compartilhamento de Dados</h2>
+        <p><strong>Não vendemos, trocamos nem transferimos a terceiros quaisquer informações pessoais.</strong> Os
+            únicos dados coletados por terceiros são aqueles gerenciados automaticamente pelo Google AdMob para
+            veiculação de anúncios, conforme descrito no item 2.</p>
+
+        <h2>4. Segurança das Informações</h2>
+        <p>Valorizamos a sua confiança no fornecimento de suas permissões. Como o aplicativo não armazena dados pessoais
+            em servidores em nuvem próprios, o risco de vazamento de dados na infraestrutura do app é inexistente.
+            Recomendamos que você mantenha o sistema operacional do seu dispositivo sempre atualizado para garantir a
+            segurança dos dados armazenados localmente.</p>
+
+        <h2>5. Direitos do Usuário (LGPD / GDPR)</h2>
+        <p>Como usuário, você tem total controle sobre as suas informações:</p>
+        <ul>
+            <li><strong>Revogação de Permissões:</strong> Você pode revogar as permissões de Bluetooth e Localização a
+                qualquer momento através das configurações do seu smartphone.</li>
+            <li><strong>Limpeza de Dados:</strong> Você pode apagar todas as configurações salvas no app limpando o
+                cache/dados do aplicativo nas configurações do Android ou desinstalando o <strong>OBD2 Tools</strong>.
+            </li>
+        </ul>
+
+        <h2>6. Alterações nesta Política de Privacidade</h2>
+        <p>Podemos atualizar nossa Política de Privacidade de tempos em tempos. Recomendamos que você revise esta página
+            periodicamente para verificar quaisquer alterações. As mudanças entram em vigor imediatamente após a
+            publicação nesta página.</p>
+
+        <h2>7. Contato</h2>
+        <p>Se você tiver alguma dúvida ou sugestão sobre nossa Política de Privacidade, entre em contato conosco:</p>
+
+        <div class="contact-box">
+            <p><strong>Desenvolvedor:</strong> Eder Gross Cichelero / Hacerfak</p>
+            <p><strong>E-mail de Suporte:</strong> <a
+                    href="mailto:hacerfak@hacerfak.com.br">hacerfak@hacerfak.com.br</a>
+            </p>
+            <p><strong>Website:</strong> <a href="https://hacerfak.com.br" target="_blank">https://hacerfak.com.br</a>
+            </p>
+        </div>
+    </div>
+
+</body>
+
+</html>
