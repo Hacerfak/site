@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade - Leitor e Assinador de PDF</title>
+    <style>
+        :root {
+            --primary-color: #0061A6;
+            --background-color: #F8F9FE;
+            --card-background: #FFFFFF;
+            --text-primary: #191C1E;
+            --text-secondary: #42474E;
+            --border-color: #E0E2EC;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #A1C9FF;
+                --background-color: #111318;
+                --card-background: #1A1C22;
+                --text-primary: #E2E2E9;
+                --text-secondary: #C2C6CF;
+                --border-color: #42474E;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-background);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .update-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        p, li {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-box {
+            background-color: rgba(0, 97, 166, 0.08);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Política de Privacidade</h1>
+    <div class="update-date">Última atualização: 31 de agosto de 2026</div>
+
+    <p>A sua privacidade é de extrema importância para nós. Esta Política de Privacidade descreve como o aplicativo <strong>Leitor e Assinador de PDF</strong> lida com as suas informações, documentos digitais e arquivos pessoais.</p>
+
+    <div class="highlight-box">
+        <p>🔒 Resumo Importante: Nós NÃO coletamos, armazenamos ou transmitimos seus arquivos PDF, certificados digitais (P12/PFX) ou senhas para servidores externos. Todo o processamento de assinatura e leitura ocorre 100% no seu próprio dispositivo.</p>
+    </div>
+
+    <h2>1. Informações e Arquivos Processados Localmente</h2>
+    <p>Para fornecer as funcionalidades essenciais do aplicativo, acessamos e processamos informações diretamente na memória do seu dispositivo:</p>
+    <ul>
+        <li><strong>Documentos PDF:</strong> Os arquivos selecionados por você para visualização, exportação em PNG ou assinatura são lidos e modificados localmente.</li>
+        <li><strong>Certificados Digitais (P12 / PFX):</strong> Os arquivos de certificado ICP-Brasil selecionados e suas respectivas senhas são utilizados estritamente durante a execução da assinatura digital na memória RAM. Suas senhas nunca são salvas no disco nem enviadas pela internet.</li>
+        <li><strong>Histórico de Arquivos Recentes:</strong> O aplicativo armazena apenas os caminhos locais dos últimos documentos abertos no armazenamento interno do seu aparelho para facilitar o acesso rápido.</li>
+    </ul>
+
+    <h2>2. Serviços de Terceiros e Anúncios</h2>
+    <p>O aplicativo utiliza o serviço de monetização <strong>Google AdMob</strong> para exibir anúncios (Banners, Anúncios Retangulares e Vídeos Recompensados). O Google AdMob pode coletar e utilizar determinados dados de identificação do dispositivo de forma automatizada para veiculação de anúncios e prevenção de fraudes, incluindo:</p>
+    <ul>
+        <li>Endereço IP e identificadores de publicidade do dispositivo (Advertising ID).</li>
+        <li>Dados de interação com os anúncios exibidos.</li>
+        <li>Informações de diagnóstico e desempenho do aplicativo (Crash logs).</li>
+    </ul>
+    <p>Para mais detalhes sobre como o Google gerencia os dados de publicidade, consulte a <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidade do Google</a>.</p>
+
+    <h2>3. Permissões do Dispositivo</h2>
+    <p>Para o correto funcionamento, o aplicativo pode solicitar as seguintes permissões ao sistema operacional Android:</p>
+    <ul>
+        <li><strong>Acesso ao Armazenamento / Arquivos:</strong> Necessário para abrir documentos PDF do seu dispositivo, salvar arquivos assinados e exportar imagens.</li>
+        <li><strong>Acesso à Internet:</strong> Necessário exclusivamente para o carregamento dos anúncios veiculados pelo Google AdMob.</li>
+    </ul>
+
+    <h2>4. Segurança das Informações</h2>
+    <p>Como não mantemos servidores próprios ou bancos de dados em nuvem para armazenamento de documentos, a segurança dos seus arquivos PDF e certificados digitais depende da segurança do seu próprio dispositivo móvel. Recomendamos o uso de senhas ou biometria para proteção do seu aparelho.</p>
+
+    <h2>5. Privacidade de Crianças</h2>
+    <p>Nosso aplicativo não é direcionado a crianças menores de 13 anos e não coleta intencionalmente qualquer informação de identificação pessoal de crianças.</p>
+
+    <h2>6. Alterações nesta Política de Privacidade</h2>
+    <p>Podemos atualizar nossa Política de Privacidade periodicamente. Recomendamos que você revise esta página regularmente para verificar quaisquer alterações. As modificações entram em vigor imediatamente após a publicação nesta página.</p>
+
+    <h2>7. Contato</h2>
+    <p>Se você tiver alguma dúvida ou sugestão sobre nossa Política de Privacidade, não hesite em nos contatar através do e-mail:</p>
+    <p>📧 <strong>suporte@seu-dominio.com.br</strong></p>
+
+    <footer>
+        &copy; 2026 Leitor e Assinador de PDF. Todos os direitos reservados.
+    </footer>
+</div>
+
+</body>
+</html>
