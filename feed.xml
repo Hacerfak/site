@@ -18,7 +18,7 @@
         <link href="https://hacerfak.com.br/posts/habilitar-fans-nvidia-gnome-x11.html"
             rel="alternate" type="text/html" />
         <published>2026-05-10T12:00:00-03:00</published>
-        <updated>2026-05-10T12:00:00-03:00</updated>
+        <updated>2026-05-27T23:01:00-03:00</updated>
         <id>https://hacerfak.com.br/posts/habilitar-fans-nvidia-gnome-x11.html</id>
         <summary type="html"><![CDATA[Aprenda a criar um script e um serviço no systemd para resolver o erro "Operation not permitted" e habilitar o controle de fans da NVIDIA no Debian.]]></summary>
         <category term="Hardware" />
